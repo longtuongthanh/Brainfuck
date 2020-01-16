@@ -9,6 +9,8 @@
 
 typedef DXGI_SAMPLE_DESC MultisampleSetting;
 
+const auto CULLMODE = D3D11_CULL_BACK;
+
 const D3D11_DEPTH_STENCILOP_DESC FRONTFACE =
 {
     D3D11_STENCIL_OP_KEEP,

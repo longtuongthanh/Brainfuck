@@ -87,7 +87,7 @@ RESULT TextureObject::Render(ID3D11DeviceContext* deviceContext,
     unsigned int offset = 0;
 
     deviceContext->IASetVertexBuffers(0, 1, &vertexBuf, &stride, &offset);
-    deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
     // Shader render
     BLOCKCALL(shader->Render(deviceContext, pointCount, worldMatrix, viewMatrix, projectionMatrix, texture),
@@ -102,9 +102,9 @@ RESULT TextureObject::InitializeData()
 
     BLOCKALLOC(VertexType[pointCount], pointArray);
 
-    (*this)[0].position = D3DXVECTOR3(-0.1f, -0.1f, 0.2f);   // Bottom left
-    (*this)[1].position = D3DXVECTOR3(0.1f, -0.1f, 0.2f);    // Bottom right
-    (*this)[2].position = D3DXVECTOR3(0.0f, 0.1f, 0.2f);     // Top middle
+    (*this)[0].position = D3DXVECTOR3(-1.0f, -1.0f, 2.0f);   // Bottom left
+    (*this)[1].position = D3DXVECTOR3(1.0f, -1.0f, 2.0f);    // Bottom right
+    (*this)[2].position = D3DXVECTOR3(0.0f, 1.0f, 2.0f);     // Top middle
 
     (*this)[0].texture = D3DXVECTOR2(0.0f, 1.0f);
     (*this)[1].texture = D3DXVECTOR2(1.0f, 1.0f);

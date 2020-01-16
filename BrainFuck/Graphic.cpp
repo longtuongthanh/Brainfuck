@@ -44,10 +44,6 @@ RESULT Graphic::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 RESULT Graphic::draw()
 {
-    shaderLib->worldMatrix = controller->worldMatrix;
-    shaderLib->viewMatrix = camera->viewMatrix;
-    shaderLib->projectionMatrix = controller->projectionMatrix;
-
     if (controller->display()) {
         cerr << "warning: cannot display\n";
         return 1;
@@ -59,6 +55,12 @@ RESULT Graphic::draw()
 
 RESULT Graphic::DrawSetup3D()
 {
+	controller->TurnZBufferOn();
+
+	shaderLib->worldMatrix = controller->worldMatrix;
+	shaderLib->viewMatrix = camera->viewMatrix;
+	shaderLib->projectionMatrix = controller->projectionMatrix;
+
     if (controller->draw()) {
         cerr << "warning: cannot clear screen\n";
         return 1;
@@ -69,13 +71,18 @@ RESULT Graphic::DrawSetup3D()
         cerr << "warning: failed to switch perspective\n";
         return 1;
     }
-    controller->TurnZBufferOn();
     // else cerr << "camera on\n";
     return 0;
 }
 
 RESULT Graphic::DrawSetup2D()
 {
+	shaderLib->worldMatrix = controller->worldMatrix;
+	shaderLib->viewMatrix = camera->viewMatrix;
+	shaderLib->projectionMatrix = controller->orthoMatrix;
+
+	controller->TurnZBufferOff();
+
     if (controller->draw()) {
         cerr << "warning: cannot clear screen\n";
         return 1;
@@ -86,7 +93,6 @@ RESULT Graphic::DrawSetup2D()
         cerr << "warning: failed to switch perspective\n";
         return 1;
     }
-    controller->TurnZBufferOff();
     // else cerr << "camera on\n";
     return 0;
 }

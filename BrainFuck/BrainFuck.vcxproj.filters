@@ -13,21 +13,27 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Object">
+      <UniqueIdentifier>{020b337d-bf0c-4a5b-91f6-bfeebd4b4a1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphic">
+      <UniqueIdentifier>{67c5a1f3-2ca9-4df9-9982-997cc53e12e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Camera">
+      <UniqueIdentifier>{d79b1e5d-c8ab-40b8-ba28-00bd6066642f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphic">
+      <UniqueIdentifier>{529fb429-4631-4481-8673-9288d1bee180}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Camera">
+      <UniqueIdentifier>{bf89101e-7426-484a-9d93-d638352cb134}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Object">
+      <UniqueIdentifier>{d2f7af2c-cca1-413e-b452-0f665cc7ae13}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BrainFuck.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraClass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="D3Dcontroller.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Input.cpp">
@@ -36,36 +42,39 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderLibrary.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureClass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="useful_stuff.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WindowInitialSetting.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TextureObject.cpp">
+      <Filter>Source Files\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="D3Dcontroller.cpp">
+      <Filter>Source Files\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderLibrary.cpp">
+      <Filter>Source Files\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureShader.cpp">
+      <Filter>Source Files\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureClass.cpp">
+      <Filter>Source Files\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphic.cpp">
+      <Filter>Source Files\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraClass.cpp">
+      <Filter>Source Files\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CameraClass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="D3Dcontroller.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Input.h">
@@ -77,17 +86,26 @@
     <ClInclude Include="ShaderLibrary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TextureClass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="useful_stuff.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D3Dcontroller.h">
+      <Filter>Header Files\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphic.h">
+      <Filter>Header Files\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureShader.h">
+      <Filter>Header Files\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureClass.h">
+      <Filter>Header Files\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraClass.h">
+      <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureObject.h">
+      <Filter>Header Files\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

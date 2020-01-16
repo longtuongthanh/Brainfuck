@@ -34,9 +34,13 @@ RESULT D3Dcontroller::Initialize(D3Dcontroller_setting& setting) {
         return 1;
     }
     if (CreateDepthBuffer3D(setting.screenWidth, setting.screenHeight, setting.msaa)){
-        cerr << "Failed to create depth buffer\n";
+        cerr << "Failed to create 3D depth buffer\n";
         return 1;
     }
+	if (CreateDepthBuffer2D(setting.screenWidth, setting.screenHeight, setting.msaa)) {
+		cerr << "Failed to create 2D depth buffer\n";
+		return 1;
+	}
     if (CreateRasterState(setting.screenWidth, setting.screenHeight)){
         cerr << "Failed to create raster state\n";
         return 1;
@@ -167,6 +171,8 @@ RESULT D3Dcontroller::CreateSwapChain(HWND hwnd,
     COMCALL(swapchain->GetBuffer(0, IID_ID3D11Texture2D, (LPVOID*)& backBuffer));
     COMCALL(device->CreateRenderTargetView(backBuffer, NULL, &renderTargetView));
     backBuffer->Release();
+
+	deviceContext->OMSetRenderTargets(1, &renderTargetView, depthStencilView);
     return 0;
 }
 
@@ -209,8 +215,49 @@ RESULT D3Dcontroller::CreateDepthBuffer3D(int screenWidth,
     depthStencilDesc.BackFace = BACKFACE;
 
     COMCALL(device->CreateDepthStencilState(&depthStencilDesc, &depthStencilState3D));
-    deviceContext->OMSetRenderTargets(1, &renderTargetView, depthStencilView);
     return 0;
+}
+
+RESULT D3Dcontroller::CreateDepthBuffer2D(int screenWidth,
+	int screenHeight,
+	MultisampleSetting& msaa)
+{
+	D3D11_TEXTURE2D_DESC depthStencilBufferDesc;
+	D3D11_DEPTH_STENCIL_DESC depthStencilDesc = {}; // Zero initialization
+	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
+
+	depthStencilBufferDesc.Width = screenWidth;
+	depthStencilBufferDesc.Height = screenHeight;
+	// precalculated pictures of smaller size.
+	depthStencilBufferDesc.MipLevels = 1;
+	// 1 for multisample texture
+
+	depthStencilBufferDesc.ArraySize = 1;
+	// Number of texture
+
+	depthStencilBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	depthStencilBufferDesc.SampleDesc = msaa;
+	depthStencilBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	depthStencilBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+
+	depthStencilBufferDesc.CPUAccessFlags = 0; // No CPU access, only GPU access
+	depthStencilBufferDesc.MiscFlags = 0; // No special options
+
+	COMCALL(device->CreateTexture2D(&depthStencilBufferDesc, NULL, &depthStencilBuffer));
+
+	depthStencilDesc.DepthEnable = false; // Enable depth testing.
+	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
+
+	depthStencilDesc.StencilEnable = true; // stencil test save time?
+	depthStencilDesc.StencilReadMask = 0xff;
+	depthStencilDesc.StencilWriteMask = 0xff;
+
+	depthStencilDesc.FrontFace = FRONTFACE;
+	depthStencilDesc.BackFace = BACKFACE;
+
+	COMCALL(device->CreateDepthStencilState(&depthStencilDesc, &depthStencilState2D));
+	return 0;
 }
 
 RESULT D3Dcontroller::CreateRasterState(int screenWidth, int screenHeight)
@@ -218,15 +265,15 @@ RESULT D3Dcontroller::CreateRasterState(int screenWidth, int screenHeight)
     D3D11_RASTERIZER_DESC rasterDesc;
     D3D11_VIEWPORT viewport;
 
-    rasterDesc.AntialiasedLineEnable = false;
-    rasterDesc.CullMode = D3D11_CULL_NONE; // Triangles facing backwards are not drawn
+	rasterDesc.MultisampleEnable = true; // MULTISAMPLER off
+    rasterDesc.AntialiasedLineEnable = true;
+    rasterDesc.CullMode = CULLMODE;
     rasterDesc.DepthBias = 0; // larger value to draw shadow to make shadows not coplane
     rasterDesc.DepthBiasClamp = 0.0f;
     rasterDesc.DepthClipEnable = true;
     rasterDesc.FillMode = D3D11_FILL_SOLID;
     rasterDesc.FrontCounterClockwise = false;
     rasterDesc.SlopeScaledDepthBias = 0.0f;
-    rasterDesc.MultisampleEnable = false; // MULTISAMPLER off
 
     // Scissor test culling pixels outside of a rectangle for GUI use
     rasterDesc.ScissorEnable = false;
@@ -246,49 +293,6 @@ RESULT D3Dcontroller::CreateRasterState(int screenWidth, int screenHeight)
     return 0;
 }
 
-
-RESULT D3Dcontroller::CreateDepthBuffer2D(int screenWidth,
-                                      int screenHeight,
-                                      MultisampleSetting& msaa)
-{
-    D3D11_TEXTURE2D_DESC depthStencilBufferDesc;
-    D3D11_DEPTH_STENCIL_DESC depthStencilDesc = {}; // Zero initialization
-    D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
-
-    depthStencilBufferDesc.Width = screenWidth;
-    depthStencilBufferDesc.Height = screenHeight;
-    // precalculated pictures of smaller size.
-    depthStencilBufferDesc.MipLevels = 1;
-    // 1 for multisample texture
-
-    depthStencilBufferDesc.ArraySize = 1;
-    // Number of texture
-
-    depthStencilBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-    depthStencilBufferDesc.SampleDesc = msaa;
-    depthStencilBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-    depthStencilBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-
-    depthStencilBufferDesc.CPUAccessFlags = 0; // No CPU access, only GPU access
-    depthStencilBufferDesc.MiscFlags = 0; // No special options
-
-    COMCALL(device->CreateTexture2D(&depthStencilBufferDesc, NULL, &depthStencilBuffer));
-
-    depthStencilDesc.DepthEnable = false; // Enable depth testing.
-    depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-    depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
-
-    depthStencilDesc.StencilEnable = true; // stencil test save time?
-    depthStencilDesc.StencilReadMask = 0xff;
-    depthStencilDesc.StencilWriteMask = 0xff;
-
-    depthStencilDesc.FrontFace = FRONTFACE;
-    depthStencilDesc.BackFace = BACKFACE;
-
-    COMCALL(device->CreateDepthStencilState(&depthStencilDesc, &depthStencilState2D));
-    return 0;
-}
-
 RESULT D3Dcontroller::CreateMatrix(int screenWidth,
                                    int screenHeight,
                                    float screenNear,
@@ -298,7 +302,35 @@ RESULT D3Dcontroller::CreateMatrix(int screenWidth,
     float screenRatio = float(screenWidth) / screenHeight;
     D3DXMatrixPerspectiveFovLH(&projectionMatrix, viewArc, screenRatio, screenNear, screenDepth);
     D3DXMatrixIdentity(&worldMatrix);
-    D3DXMatrixOrthoLH(&orthoMatrix, screenWidth, (float) screenHeight, (float) screenNear, screenDepth);
+    D3DXMatrixOrthoLH(&orthoMatrix, 2, 2, screenNear, screenDepth);
+	/*
+	for (int i = 0; i < 16; i++) {
+		cerr << projectionMatrix[i];
+		if (i % 4 == 3)
+			cerr << '\n';
+		else
+			cerr << ' ';
+	}
+	cerr << "-------------";
+
+	for (int i = 0; i < 16; i++) {
+		cerr << orthoMatrix[i];
+		if (i % 4 == 3)
+			cerr << '\n';
+		else
+			cerr << ' ';
+	}
+	cerr << "-------------";
+
+	for (int i = 0; i < 16; i++) {
+		cerr << worldMatrix[i];
+		if (i % 4 == 3)
+			cerr << '\n';
+		else
+			cerr << ' ';
+	}
+	// */
+
     return 0;
 }
 

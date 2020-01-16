@@ -9,13 +9,13 @@
 
 const bool FULLSCREEN = false;
 const bool VSYNC_ENABLED = true;
-const float SCREEN_DEPTH = 1000.0f;
-const float SCREEN_NEAR = 0.1f;
+const float SCREEN_DEPTH = 1000.0f;			// Cut off everything further
+const float SCREEN_NEAR = 0.1f;				// Cut off everything closer
 const DXGI_SAMPLE_DESC MSAA_SETTING =
 {
-    1,          // Number of multisample per pixel
+    8,          // Number of multisample per pixel (1,2,4,8 is guarantied)
     0           // Image quality level
-}; // MULTISAMPLING off
+}; // Multisampling on
 
 class Graphic : private NonCopyable
 {
