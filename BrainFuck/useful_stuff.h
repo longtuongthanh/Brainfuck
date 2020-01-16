@@ -6,6 +6,7 @@
 #include <iostream>
 #include <sal.h>
 #include <windows.h>
+#include <math.h>
 
 /**
     Typo:
@@ -29,9 +30,9 @@
 /** Result of command*/
 #define BLOCKALLOC(type, pname) if (!(pname = new type)) {cerr << "out of memory\n";return 1;}
 /** Allocate the variable. If out of memory, return 1 */
-#define BLOCKCALL(COM_command) if (FAILED(COM_command)) return 1
+#define COMCALL(COM_command) if (FAILED(COM_command)) return 1
 /** Call the COM command. If it fails, return 1*/
-#define CALL(command, errorString) if (command) {cerr << errorString; return 1;}
+#define BLOCKCALL(command, errorString) if (command) {cerr << errorString; return 1;}
 /** Call the command. If it fails, return 1*/
 struct DXGI_RATIONAL;
 typedef DXGI_RATIONAL RefreshRate;
@@ -62,5 +63,21 @@ private:
     void* param;
 };
 
+struct Point
+{
+    double x;
+    double y;
+    double length();
+    double operator * (const Point& p) const;
+    Point operator * (double k) const;
+    Point operator - (const Point& p) const;
+    Point operator + (const Point& p) const;
+    Point(double a=0, double b=0): x(a), y(b){}
+};
+
+#define CODE_KILL 2
+#define CODE_ERROR 1
+
+#define CODE_PRIORITIZE 4
 
 #endif // USEFUL_STUFF_H

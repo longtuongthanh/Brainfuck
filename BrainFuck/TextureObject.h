@@ -9,7 +9,6 @@
 
 static const CHAR* TEXTURE_FILE = "texture.dds";
 
-
 class TextureObject
 {
     struct VertexType
@@ -20,19 +19,21 @@ class TextureObject
     public:
         TextureObject();
         TextureObject(const TextureObject&);
-        TextureObject& operator = (const TextureObject&);
-        ~TextureObject();
+        virtual TextureObject& operator = (const TextureObject&);
+        virtual ~TextureObject();
 
         RESULT Initialize(ID3D11Device*, const CHAR*, TextureClass*, TextureShader*);
         RESULT Release();
         RESULT Render(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX, D3DXMATRIX);
 
-        RESULT InitializeData();
+        virtual RESULT InitializeData();
         RESULT Frame();
 
         int GetPointCount();
         ID3D11ShaderResourceView* GetTexture();
-        VertexType& operator[](int);
+        inline VertexType& operator[](int x)
+        /** Denoted counterclockwise */
+        {return pointArray[ (x*2 < pointCount) ? x*2 : (pointCount - x)*2 - 1];}
     protected:
         RESULT Setup(ID3D11Device*);
 

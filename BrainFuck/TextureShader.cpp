@@ -29,14 +29,14 @@ RESULT TextureShader::Initialize(ID3D11Device* device, HWND hwnd)
     matrixBufDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
     matrixBufDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
-    BLOCKCALL(device->CreateBuffer(&matrixBufDesc, NULL, &matrixBuf));
+    COMCALL(device->CreateBuffer(&matrixBufDesc, NULL, &matrixBuf));
 
     return 0;
 }
 RESULT TextureShader::InitShader(ID3D11Device* device,
                                     HWND hwnd,
-                                    CHAR* vertexShaderFile,
-                                    CHAR* pixelShaderFile) {
+                                    const CHAR* vertexShaderFile,
+                                    const CHAR* pixelShaderFile) {
     ID3D10Blob* errorMessage = 0;
     ID3D10Blob* VSbuf = 0;
     ID3D10Blob* PSbuf = 0;
@@ -69,9 +69,9 @@ RESULT TextureShader::InitShader(ID3D11Device* device,
         return 1;}
     // else cerr << "Load PShader succeed\n";
 
-    BLOCKCALL(device->CreateVertexShader(VSbuf->GetBufferPointer(), VSbuf->GetBufferSize(),
+    COMCALL(device->CreateVertexShader(VSbuf->GetBufferPointer(), VSbuf->GetBufferSize(),
                                          NULL, &vertexShader));
-    BLOCKCALL(device->CreatePixelShader( PSbuf->GetBufferPointer(), PSbuf->GetBufferSize(),
+    COMCALL(device->CreatePixelShader( PSbuf->GetBufferPointer(), PSbuf->GetBufferSize(),
                                          NULL, &pixelShader));
 
     pointDesc[0].SemanticName = "POSITION";
@@ -84,7 +84,7 @@ RESULT TextureShader::InitShader(ID3D11Device* device,
     pointDesc[0].InputSlotClass =
     pointDesc[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 
-    BLOCKCALL(device->CreateInputLayout(pointDesc, pointDescCount,
+    COMCALL(device->CreateInputLayout(pointDesc, pointDescCount,
                                         VSbuf->GetBufferPointer(),
                                         VSbuf->GetBufferSize(),
                                         &layout));
@@ -104,7 +104,7 @@ RESULT TextureShader::InitShader(ID3D11Device* device,
 	samplerDesc.MinLOD = 0;                                 // biggest, most detailed mipmap
 	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;                 // smallest, least detailed mipmap
 
-	BLOCKCALL(device->CreateSamplerState(&samplerDesc, &sampleState));
+	COMCALL(device->CreateSamplerState(&samplerDesc, &sampleState));
     return 0;
 }
 RESULT TextureShader::Release() {
@@ -123,7 +123,7 @@ RESULT TextureShader::Render(ID3D11DeviceContext* deviceContext, int pointCount,
 }
 void TextureShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage,
                                            HWND hwnd,
-                                           CHAR* shaderFuncName) {
+                                           const CHAR* shaderFuncName) {
     cerr << "ERROR:  ";
     char* compileError = (char*)errorMessage->GetBufferPointer();
     int bufSize = errorMessage->GetBufferSize();
@@ -147,7 +147,7 @@ RESULT TextureShader::LoadDrawData(ID3D11DeviceContext* deviceContext,
     // Transpose matrix, required for DX11
     //D3DXMATRIX matrix = worldMatrix * viewMatrix * projectionMatrix;
 
-    BLOCKCALL(deviceContext->Map(matrixBuf, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+    COMCALL(deviceContext->Map(matrixBuf, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
 
     pdata = (MatrixBufferType*)mappedResource.pData;
 
@@ -158,8 +158,7 @@ RESULT TextureShader::LoadDrawData(ID3D11DeviceContext* deviceContext,
     deviceContext->Unmap(matrixBuf, 0);
 
     deviceContext->VSSetConstantBuffers(0, 1, &matrixBuf);
-	deviceContext->PSSetShaderResources(0, 1, &texture);
-
+    deviceContext->PSSetShaderResources(0, 1, &texture);
     return 0;
 }
 

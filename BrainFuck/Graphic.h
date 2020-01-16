@@ -27,7 +27,8 @@ class Graphic : private NonCopyable
         RESULT Release();
 
         RESULT draw();
-        RESULT DrawSetup();
+        RESULT DrawSetup3D();
+        RESULT DrawSetup2D();
 
         inline ID3D11Device* GetDevice() {return controller->GetDevice();}
         inline ID3D11DeviceContext* GetDeviceContext() {return controller->GetDeviceContext();}

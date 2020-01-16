@@ -6,10 +6,10 @@
 #include <D3DX10math.h>
 #include <D3DX11async.h>
 
-static char VSHADER_FUNC_NAME[] = "VShader";
-static char PSHADER_FUNC_NAME[] = "PShader";
-static char VSHADER_FILE[] = "texture.vs";
-static char PSHADER_FILE[] = "texture.ps";
+static const char* VSHADER_FUNC_NAME = "VShader";
+static const char* PSHADER_FUNC_NAME = "PShader";
+static const char* VSHADER_FILE = "texture.vs";
+static const char* PSHADER_FILE = "texture.ps";
 
 class TextureShader : private NonCopyable
 {
@@ -29,8 +29,8 @@ class TextureShader : private NonCopyable
         RESULT Render(ID3D11DeviceContext*, int, D3DXMATRIX, D3DXMATRIX, D3DXMATRIX, ID3D11ShaderResourceView*);
 
     protected:
-        RESULT InitShader(ID3D11Device*, HWND, CHAR*, CHAR*);
-        void OutputShaderErrorMessage(ID3D10Blob*, HWND, CHAR*);
+        RESULT InitShader(ID3D11Device*, HWND, const CHAR*, const CHAR*);
+        void OutputShaderErrorMessage(ID3D10Blob*, HWND, const CHAR*);
 
         RESULT LoadDrawData(ID3D11DeviceContext*, D3DXMATRIX&, D3DXMATRIX&, D3DXMATRIX&, ID3D11ShaderResourceView*);
         void RenderShader(ID3D11DeviceContext*, int);

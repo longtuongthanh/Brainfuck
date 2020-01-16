@@ -47,6 +47,9 @@ class D3Dcontroller
         RESULT draw(float red = 0.0f, float green = 0.2f, float blue = 0.4f, float alpha = 1.0f);
         RESULT display();
 
+        void TurnZBufferOn();
+        void TurnZBufferOff();
+
         // Write-protected member
         ID3D11Device* GetDevice();
         ID3D11DeviceContext* GetDeviceContext();
@@ -61,7 +64,8 @@ class D3Dcontroller
     protected:
         RESULT GetVideoCardInfo(int, int);
         RESULT CreateSwapChain(HWND, int, int, bool, MultisampleSetting&);
-        RESULT CreateDepthBuffer(int, int, MultisampleSetting&);
+        RESULT CreateDepthBuffer3D(int, int, MultisampleSetting&);
+        RESULT CreateDepthBuffer2D(int, int, MultisampleSetting&);
         RESULT CreateRasterState(int, int);
         RESULT CreateMatrix(int, int, float, float);
     private:
@@ -72,7 +76,8 @@ class D3Dcontroller
         ID3D11DeviceContext* deviceContext;
         ID3D11RenderTargetView* renderTargetView;
         ID3D11Texture2D* depthStencilBuffer;
-        ID3D11DepthStencilState* depthStencilState;
+        ID3D11DepthStencilState* depthStencilState3D;
+        ID3D11DepthStencilState* depthStencilState2D;
         ID3D11DepthStencilView* depthStencilView;
         ID3D11RasterizerState* rasterState;
         RefreshRate refreshRate;

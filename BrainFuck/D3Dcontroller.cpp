@@ -6,7 +6,8 @@ D3Dcontroller::D3Dcontroller() {
     deviceContext = 0;
     renderTargetView = 0;
     depthStencilBuffer = 0;
-    depthStencilState = 0;
+    depthStencilState3D = 0;
+    depthStencilState2D = 0;
     depthStencilView = 0;
     rasterState = 0;
 }
@@ -14,7 +15,8 @@ D3Dcontroller::~D3Dcontroller() {
     if (swapchain) swapchain->SetFullscreenState(false, NULL);
     DESTROY(rasterState);
     DESTROY(depthStencilView);
-    DESTROY(depthStencilState);
+    DESTROY(depthStencilState3D);
+    DESTROY(depthStencilState2D);
     DESTROY(depthStencilBuffer);
     DESTROY(renderTargetView);
     DESTROY(swapchain);
@@ -31,7 +33,7 @@ RESULT D3Dcontroller::Initialize(D3Dcontroller_setting& setting) {
         cerr << "Failed to create swap chain\n";
         return 1;
     }
-    if (CreateDepthBuffer(setting.screenWidth, setting.screenHeight, setting.msaa)){
+    if (CreateDepthBuffer3D(setting.screenWidth, setting.screenHeight, setting.msaa)){
         cerr << "Failed to create depth buffer\n";
         return 1;
     }
@@ -86,15 +88,15 @@ RESULT D3Dcontroller::GetVideoCardInfo(int screenWidth, int screenHeight)
     DXGI_MODE_DESC* displayModeList;
     DXGI_ADAPTER_DESC adapterDesc;
 
-    BLOCKCALL(CreateDXGIFactory(IID_IDXGIFactory, (void**)&factory));
-    BLOCKCALL(factory->EnumAdapters(0, &adapter));
-    BLOCKCALL(adapter->EnumOutputs(0, &adapterOutput));
-    BLOCKCALL(adapterOutput->GetDisplayModeList(DXGI_FORMAT_B8G8R8A8_UNORM,
+    COMCALL(CreateDXGIFactory(IID_IDXGIFactory, (void**)&factory));
+    COMCALL(factory->EnumAdapters(0, &adapter));
+    COMCALL(adapter->EnumOutputs(0, &adapterOutput));
+    COMCALL(adapterOutput->GetDisplayModeList(DXGI_FORMAT_B8G8R8A8_UNORM,
                                                 DXGI_ENUM_MODES_INTERLACED,
                                                 &numModes,
                                                 NULL));
     BLOCKALLOC(DXGI_MODE_DESC[numModes], displayModeList);
-    BLOCKCALL(adapterOutput->GetDisplayModeList(DXGI_FORMAT_B8G8R8A8_UNORM,
+    COMCALL(adapterOutput->GetDisplayModeList(DXGI_FORMAT_B8G8R8A8_UNORM,
                                                 DXGI_ENUM_MODES_INTERLACED,
                                                 &numModes,
                                                 displayModeList));
@@ -102,7 +104,7 @@ RESULT D3Dcontroller::GetVideoCardInfo(int screenWidth, int screenHeight)
         if (displayModeList[i].Height == screenHeight && displayModeList[i].Width == screenWidth)
             refreshRate = displayModeList[i].RefreshRate;
 
-    BLOCKCALL(adapter->GetDesc(&adapterDesc));
+    COMCALL(adapter->GetDesc(&adapterDesc));
     wcstombs(videoCardDescription,adapterDesc.Description,128);
 
     delete[] displayModeList;
@@ -162,13 +164,13 @@ RESULT D3Dcontroller::CreateSwapChain(HWND hwnd,
         cerr << "Incompatible hardware\n";
         return 1;
     }
-    BLOCKCALL(swapchain->GetBuffer(0, IID_ID3D11Texture2D, (LPVOID*)& backBuffer));
-    BLOCKCALL(device->CreateRenderTargetView(backBuffer, NULL, &renderTargetView));
+    COMCALL(swapchain->GetBuffer(0, IID_ID3D11Texture2D, (LPVOID*)& backBuffer));
+    COMCALL(device->CreateRenderTargetView(backBuffer, NULL, &renderTargetView));
     backBuffer->Release();
     return 0;
 }
 
-RESULT D3Dcontroller::CreateDepthBuffer(int screenWidth,
+RESULT D3Dcontroller::CreateDepthBuffer3D(int screenWidth,
                                       int screenHeight,
                                       MultisampleSetting& msaa)
 {
@@ -193,7 +195,7 @@ RESULT D3Dcontroller::CreateDepthBuffer(int screenWidth,
     depthStencilBufferDesc.CPUAccessFlags = 0; // No CPU access, only GPU access
     depthStencilBufferDesc.MiscFlags = 0; // No special options
 
-    BLOCKCALL(device->CreateTexture2D(&depthStencilBufferDesc, NULL, &depthStencilBuffer));
+    COMCALL(device->CreateTexture2D(&depthStencilBufferDesc, NULL, &depthStencilBuffer));
 
     depthStencilDesc.DepthEnable = true; // Enable depth testing.
     depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
@@ -206,7 +208,7 @@ RESULT D3Dcontroller::CreateDepthBuffer(int screenWidth,
     depthStencilDesc.FrontFace = FRONTFACE;
     depthStencilDesc.BackFace = BACKFACE;
 
-    BLOCKCALL(device->CreateDepthStencilState(&depthStencilDesc, &depthStencilState));
+    COMCALL(device->CreateDepthStencilState(&depthStencilDesc, &depthStencilState3D));
     deviceContext->OMSetRenderTargets(1, &renderTargetView, depthStencilView);
     return 0;
 }
@@ -230,7 +232,7 @@ RESULT D3Dcontroller::CreateRasterState(int screenWidth, int screenHeight)
     rasterDesc.ScissorEnable = false;
     /////////////////////////////////////////////////////////////////
 
-    BLOCKCALL(device->CreateRasterizerState(&rasterDesc, &rasterState));
+    COMCALL(device->CreateRasterizerState(&rasterDesc, &rasterState));
     deviceContext->RSSetState(rasterState);
 
     viewport.Height = screenHeight;
@@ -241,6 +243,49 @@ RESULT D3Dcontroller::CreateRasterState(int screenWidth, int screenHeight)
     viewport.TopLeftY = 0.0f;
 
     deviceContext->RSSetViewports(1, &viewport);
+    return 0;
+}
+
+
+RESULT D3Dcontroller::CreateDepthBuffer2D(int screenWidth,
+                                      int screenHeight,
+                                      MultisampleSetting& msaa)
+{
+    D3D11_TEXTURE2D_DESC depthStencilBufferDesc;
+    D3D11_DEPTH_STENCIL_DESC depthStencilDesc = {}; // Zero initialization
+    D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
+
+    depthStencilBufferDesc.Width = screenWidth;
+    depthStencilBufferDesc.Height = screenHeight;
+    // precalculated pictures of smaller size.
+    depthStencilBufferDesc.MipLevels = 1;
+    // 1 for multisample texture
+
+    depthStencilBufferDesc.ArraySize = 1;
+    // Number of texture
+
+    depthStencilBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+    depthStencilBufferDesc.SampleDesc = msaa;
+    depthStencilBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+    depthStencilBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+
+    depthStencilBufferDesc.CPUAccessFlags = 0; // No CPU access, only GPU access
+    depthStencilBufferDesc.MiscFlags = 0; // No special options
+
+    COMCALL(device->CreateTexture2D(&depthStencilBufferDesc, NULL, &depthStencilBuffer));
+
+    depthStencilDesc.DepthEnable = false; // Enable depth testing.
+    depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+    depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
+
+    depthStencilDesc.StencilEnable = true; // stencil test save time?
+    depthStencilDesc.StencilReadMask = 0xff;
+    depthStencilDesc.StencilWriteMask = 0xff;
+
+    depthStencilDesc.FrontFace = FRONTFACE;
+    depthStencilDesc.BackFace = BACKFACE;
+
+    COMCALL(device->CreateDepthStencilState(&depthStencilDesc, &depthStencilState2D));
     return 0;
 }
 
@@ -257,3 +302,12 @@ RESULT D3Dcontroller::CreateMatrix(int screenWidth,
     return 0;
 }
 
+void D3Dcontroller::TurnZBufferOn()
+{
+    deviceContext->OMSetDepthStencilState(depthStencilState3D, 1);
+}
+
+void D3Dcontroller::TurnZBufferOff()
+{
+    deviceContext->OMSetDepthStencilState(depthStencilState2D, 1);
+}

@@ -9,7 +9,7 @@ GameState::GameState()
 GameState::~GameState()
 {
     DESTROY(textureLib);
-    for (auto i : object)
+    for (auto i : texObject)
         DESTROY(i);
 }
 
@@ -30,8 +30,9 @@ LONG GameState::Initialize(ID3D11Device* device, ID3D11DeviceContext* context, S
 }
 
 LONG GameState::Frame()
+/** Animations, calculations, etc goes here.*/
 {
-    for (auto i : object)
+    for (auto i : texObject)
         if (i->Frame()) {
             cerr << "warning: animation failed\n";
         }
@@ -47,7 +48,7 @@ LONG GameState::Release()
 LONG GameState::Draw()
 {
     // Game object render
-    for (auto i : object)
+    for (auto i : texObject)
         if (i->Render(context, shaderLib->worldMatrix,
                                 shaderLib->viewMatrix,
                                 shaderLib->projectionMatrix)) {
@@ -60,6 +61,9 @@ LONG GameState::Draw()
 }
 
 TextureObject* GameState::NewTextureObject(const CHAR* filename, TextureObject* target)
+/** Creates a new TextureObject and add it to list of objects to render.
+    You may provide a target and it will initialize that object for you
+    (Used for initializing an object inheriting from TextureObject.*/
 {
     if (target == NULL)
         target = new TextureObject;
@@ -71,6 +75,6 @@ TextureObject* GameState::NewTextureObject(const CHAR* filename, TextureObject* 
         DESTROY(target);
         return NULL;
     }
-    object.insert(target);
+    texObject.insert(target);
     return target;
 }

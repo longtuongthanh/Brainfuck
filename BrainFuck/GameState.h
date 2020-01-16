@@ -12,11 +12,8 @@ class GameState
 {
     public:
         virtual RESULT Frame();
-        /** Animations, calculations, etc goes here.*/
         TextureObject* NewTextureObject(const CHAR* filename, TextureObject* target = NULL);
-        /** Creates a new TextureObject and add it to list of objects to render.
-            You may provide a target and it will initialize that object for you
-            (Used for initializing an object inheriting from TextureObject.*/
+        // documentary moved to cpp file
     public:
         GameState();
         ~GameState();
@@ -24,7 +21,7 @@ class GameState
         RESULT Release();
         RESULT Draw();
     protected:
-        std::unordered_set<TextureObject*> object;
+        std::unordered_set<TextureObject*> texObject;
     private:
         TextureClass* textureLib;
         ShaderLibrary* shaderLib;

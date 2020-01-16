@@ -57,14 +57,14 @@ RESULT TextureObject::Setup(ID3D11Device* device)
 
     vertexData.pSysMem = pointArray;
 
-    BLOCKCALL(device->CreateBuffer(&vertexBufDesc, &vertexData, &vertexBuf));
+    COMCALL(device->CreateBuffer(&vertexBufDesc, &vertexData, &vertexBuf));
     return 0;
 }
 RESULT TextureObject::Initialize(ID3D11Device* device, const CHAR* textureFile, TextureClass* texture, TextureShader* shader)
 {
     //refreshRate = rate;
     this->shader = shader;
-	this->texture = texture->GetTexture(textureFile);
+    this->texture = texture->GetTexture(textureFile);
     if (InitializeData()) return 1;
     if (Setup(device)) return 1;
     return 0;
@@ -79,7 +79,7 @@ RESULT TextureObject::Render(ID3D11DeviceContext* deviceContext,
                                      D3DXMATRIX projectionMatrix)
 {
     D3D11_MAPPED_SUBRESOURCE mappedVertices;
-    BLOCKCALL(deviceContext->Map(vertexBuf, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedVertices));
+    COMCALL(deviceContext->Map(vertexBuf, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedVertices));
     memcpy(mappedVertices.pData, pointArray, sizeof(VertexType) * pointCount);
     deviceContext->Unmap(vertexBuf, 0);
 
@@ -90,7 +90,7 @@ RESULT TextureObject::Render(ID3D11DeviceContext* deviceContext,
     deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
     // Shader render
-    CALL(shader->Render(deviceContext, pointCount, worldMatrix, viewMatrix, projectionMatrix, texture),
+    BLOCKCALL(shader->Render(deviceContext, pointCount, worldMatrix, viewMatrix, projectionMatrix, texture),
          "warning: shader render failed\n")
     // else cerr << "shader on\n";
 
@@ -102,13 +102,13 @@ RESULT TextureObject::InitializeData()
 
     BLOCKALLOC(VertexType[pointCount], pointArray);
 
-    pointArray[0].position = D3DXVECTOR3(-0.1f, -0.1f, 0.2f);   // Bottom left
-    pointArray[1].position = D3DXVECTOR3(0.0f, 0.1f, 0.2f);     // Top middle
-    pointArray[2].position = D3DXVECTOR3(0.1f, -0.1f, 0.2f);    // Bottom right
+    (*this)[0].position = D3DXVECTOR3(-0.1f, -0.1f, 0.2f);   // Bottom left
+    (*this)[1].position = D3DXVECTOR3(0.1f, -0.1f, 0.2f);    // Bottom right
+    (*this)[2].position = D3DXVECTOR3(0.0f, 0.1f, 0.2f);     // Top middle
 
-    pointArray[0].texture = D3DXVECTOR2(0.0f, 1.0f);
-    pointArray[1].texture = D3DXVECTOR2(0.5f, 0.0f);
-    pointArray[2].texture = D3DXVECTOR2(1.0f, 1.0f);
+    (*this)[0].texture = D3DXVECTOR2(0.0f, 1.0f);
+    (*this)[1].texture = D3DXVECTOR2(1.0f, 1.0f);
+    (*this)[2].texture = D3DXVECTOR2(0.5f, 0.0f);
     return 0;
 }
 RESULT TextureObject::Frame()
@@ -120,6 +120,3 @@ int TextureObject::GetPointCount() {
 ID3D11ShaderResourceView* TextureObject::GetTexture() {
     return texture;
 }
-TextureObject::VertexType& TextureObject::operator[](int x)
-/** Denoted counterclockwise */
-{   return pointArray[ (x*2 < pointCount) ? x*2 : (pointCount - x)*2 - 1];}

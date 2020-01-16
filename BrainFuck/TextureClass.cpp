@@ -7,8 +7,7 @@ TextureClass::TextureClass()
 
 TextureClass::~TextureClass()
 {
-    for (std::map<const CHAR*, ID3D11ShaderResourceView*>::iterator i = texture.begin(); i != texture.end(); ++i)
-    {
+    for (std::map<const CHAR*, ID3D11ShaderResourceView*>::iterator i = texture.begin(); i != texture.end(); ++i){
         DESTROY(i->second);
     }
     // DO NOT DESTROY DEVICE
@@ -33,11 +32,10 @@ ID3D11ShaderResourceView* TextureClass::GetTexture(const CHAR* filename)
         ID3D11ShaderResourceView* newTex;
 		if (FAILED(D3DX11CreateShaderResourceViewFromFile(device, filename, NULL, NULL, &newTex, NULL)))
 		{
-			cerr << "cannot load file";
+			cerr << "cannot load texture " << filename;
 			return NULL;
 		}
-        texture[filename] = newTex;
-		return newTex;
+        return texture[filename] = newTex;
     }
     else
         return trg->second;

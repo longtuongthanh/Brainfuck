@@ -57,7 +57,7 @@ RESULT Graphic::draw()
     return 0;
 }
 
-RESULT Graphic::DrawSetup()
+RESULT Graphic::DrawSetup3D()
 {
     if (controller->draw()) {
         cerr << "warning: cannot clear screen\n";
@@ -69,6 +69,24 @@ RESULT Graphic::DrawSetup()
         cerr << "warning: failed to switch perspective\n";
         return 1;
     }
+    controller->TurnZBufferOn();
+    // else cerr << "camera on\n";
+    return 0;
+}
+
+RESULT Graphic::DrawSetup2D()
+{
+    if (controller->draw()) {
+        cerr << "warning: cannot clear screen\n";
+        return 1;
+    }
+    // else cerr << "clear complete\n";
+
+    if (camera->Render()) {
+        cerr << "warning: failed to switch perspective\n";
+        return 1;
+    }
+    controller->TurnZBufferOff();
     // else cerr << "camera on\n";
     return 0;
 }

@@ -13,7 +13,7 @@ ShaderLibrary::~ShaderLibrary()
 LONG ShaderLibrary::Initialize(ID3D11Device* device, HWND hwnd)
 {
     BLOCKALLOC(TextureShader, texShader);
-    CALL(texShader->Initialize(device, hwnd),"failed to load texture shader\n");
+    BLOCKCALL(texShader->Initialize(device, hwnd),"failed to load texture shader\n");
     return 0;
 }
 
