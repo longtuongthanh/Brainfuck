@@ -7,6 +7,7 @@
 #include "TextureObject.h"
 #include "ShaderLibrary.h"
 #include "TextureClass.h"
+#include "HexagonMap.h"
 
 class GameState
 {
@@ -27,6 +28,7 @@ class GameState
         ShaderLibrary* shaderLib;
         ID3D11Device* device;
         ID3D11DeviceContext* context;
+        HexagonMap* map;
 };
 
 #endif // GAMESTATE_H

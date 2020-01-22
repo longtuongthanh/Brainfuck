@@ -60,6 +60,7 @@ RESULT TextureObject::Setup(ID3D11Device* device)
     COMCALL(device->CreateBuffer(&vertexBufDesc, &vertexData, &vertexBuf));
     return 0;
 }
+
 RESULT TextureObject::Initialize(ID3D11Device* device, const CHAR* textureFile, TextureClass* texture, TextureShader* shader)
 {
     //refreshRate = rate;
@@ -98,17 +99,8 @@ RESULT TextureObject::Render(ID3D11DeviceContext* deviceContext,
 }
 RESULT TextureObject::InitializeData()
 {
-    pointCount = 3;
+    pointCount = 0;
 
-    BLOCKALLOC(VertexType[pointCount], pointArray);
-
-    (*this)[0].position = D3DXVECTOR3(-1.0f, -1.0f, 2.0f);   // Bottom left
-    (*this)[1].position = D3DXVECTOR3(1.0f, -1.0f, 2.0f);    // Bottom right
-    (*this)[2].position = D3DXVECTOR3(0.0f, 1.0f, 2.0f);     // Top middle
-
-    (*this)[0].texture = D3DXVECTOR2(0.0f, 1.0f);
-    (*this)[1].texture = D3DXVECTOR2(1.0f, 1.0f);
-    (*this)[2].texture = D3DXVECTOR2(0.5f, 0.0f);
     return 0;
 }
 RESULT TextureObject::Frame()

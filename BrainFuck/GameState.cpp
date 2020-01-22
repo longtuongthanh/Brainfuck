@@ -24,7 +24,8 @@ LONG GameState::Initialize(ID3D11Device* device, ID3D11DeviceContext* context, S
         return 1;
     }
 
-    NewTextureObject(TEXTURE_FILE);
+    map = new HexagonMap(0.15, 0.2, 0.01);
+    NewTextureObject(TEXTURE_FILE, map);
     // else cerr << "object load success\n";
     return 0;
 }

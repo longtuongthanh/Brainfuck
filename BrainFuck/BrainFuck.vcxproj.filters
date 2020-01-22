@@ -72,6 +72,9 @@
     <ClCompile Include="CameraClass.cpp">
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="HexagonMap.cpp">
+      <Filter>Source Files\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameState.h">
@@ -105,6 +108,9 @@
       <Filter>Header Files\Camera</Filter>
     </ClInclude>
     <ClInclude Include="TextureObject.h">
+      <Filter>Header Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="HexagonMap.h">
       <Filter>Header Files\Object</Filter>
     </ClInclude>
   </ItemGroup>
