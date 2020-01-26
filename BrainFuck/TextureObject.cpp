@@ -87,7 +87,7 @@ RESULT TextureObject::Render(ID3D11DeviceContext* deviceContext,
     unsigned int offset = 0;
 
     deviceContext->IASetVertexBuffers(0, 1, &vertexBuf, &stride, &offset);
-    deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+    deviceContext->IASetPrimitiveTopology(topology());
 
     // Shader render
     BLOCKCALL(shader->Render(deviceContext, pointCount, worldMatrix, viewMatrix, projectionMatrix, texture),

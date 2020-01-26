@@ -2,6 +2,7 @@
 #define SHADERLIBRARY_H
 
 #include "TextureShader.h"
+#include "FontShader.h"
 
 class ShaderLibrary
 {
@@ -13,11 +14,13 @@ class ShaderLibrary
         RESULT Release();
 
         TextureShader* GetTextureShader();
+		FontShader* GetFontShader();
         D3DXMATRIX worldMatrix, viewMatrix, projectionMatrix;
     protected:
 
     private:
         TextureShader* texShader;
+		FontShader* fontShader;
 };
 
 #endif // SHADERLIBRARY_H

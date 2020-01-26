@@ -6,16 +6,18 @@
 #include <D3DX10math.h>
 #include "TextureClass.h"
 #include "TextureShader.h"
+#include "GraphicObject.h"
 
 static const CHAR* TEXTURE_FILE = "texture.dds";
 
-class TextureObject
+class TextureObject : public GraphicObject
 {
-    struct VertexType
-    {
-        D3DXVECTOR3 position;
-        D3DXVECTOR2 texture;
-    };
+	private:
+		struct VertexType
+		{
+			D3DXVECTOR3 position;
+			D3DXVECTOR2 texture;
+		};
     public:
         TextureObject();
         TextureObject(const TextureObject&);
@@ -23,11 +25,11 @@ class TextureObject
         virtual ~TextureObject();
 
         RESULT Initialize(ID3D11Device*, const CHAR*, TextureClass*, TextureShader*);
-        RESULT Release();
+        virtual RESULT Release();
         RESULT Render(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX, D3DXMATRIX);
 
         virtual RESULT InitializeData();
-        RESULT Frame();
+        virtual RESULT Frame();
 
         int GetPointCount();
         ID3D11ShaderResourceView* GetTexture();
@@ -37,6 +39,8 @@ class TextureObject
     protected:
         RESULT Setup(ID3D11Device*);
 
+		virtual D3D11_PRIMITIVE_TOPOLOGY topology()
+		{return D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;}
         int pointCount;
         VertexType* pointArray;
 

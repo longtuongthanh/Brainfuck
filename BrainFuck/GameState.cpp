@@ -9,7 +9,7 @@ GameState::GameState()
 GameState::~GameState()
 {
     DESTROY(textureLib);
-    for (auto i : texObject)
+    for (auto i : objects)
         DESTROY(i);
 }
 
@@ -24,7 +24,8 @@ LONG GameState::Initialize(ID3D11Device* device, ID3D11DeviceContext* context, S
         return 1;
     }
 
-    NewTextureObject(TEXTURE_FILE);
+    //NewTextureObject(TEXTURE_FILE);
+	NewTextString();
     // else cerr << "object load success\n";
     return 0;
 }
@@ -32,7 +33,7 @@ LONG GameState::Initialize(ID3D11Device* device, ID3D11DeviceContext* context, S
 LONG GameState::Frame()
 /** Animations, calculations, etc goes here.*/
 {
-    for (auto i : texObject)
+    for (auto i : objects)
         if (i->Frame()) {
             cerr << "warning: animation failed\n";
         }
@@ -48,7 +49,7 @@ LONG GameState::Release()
 LONG GameState::Draw()
 {
     // Game object render
-    for (auto i : texObject)
+    for (auto i : objects)
         if (i->Render(context, shaderLib->worldMatrix,
                                 shaderLib->viewMatrix,
                                 shaderLib->projectionMatrix)) {
@@ -75,6 +76,22 @@ TextureObject* GameState::NewTextureObject(const CHAR* filename, TextureObject* 
         DESTROY(target);
         return NULL;
     }
-    texObject.insert(target);
+    objects.insert(target);
     return target;
+}
+
+TextString * GameState::NewTextString(TextString* target)
+{
+	if (target == NULL)
+		target = new TextString;
+	if (target == NULL) {
+		cerr << "Out of memory";
+		return NULL;
+	}
+	if (target->Initialize(device, 100, textureLib, shaderLib->GetFontShader())) {
+		DESTROY(target);
+		return NULL;
+	}
+	objects.insert(target);
+	return target;
 }
