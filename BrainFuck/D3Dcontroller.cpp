@@ -10,9 +10,11 @@ D3Dcontroller::D3Dcontroller() {
     depthStencilState2D = 0;
     depthStencilView = 0;
     rasterState = 0;
+	blendState = 0;
 }
 D3Dcontroller::~D3Dcontroller() {
     if (swapchain) swapchain->SetFullscreenState(false, NULL);
+	DESTROY(blendState);
     DESTROY(rasterState);
     DESTROY(depthStencilView);
     DESTROY(depthStencilState3D);
@@ -25,30 +27,19 @@ D3Dcontroller::~D3Dcontroller() {
 }
 RESULT D3Dcontroller::Initialize(D3Dcontroller_setting& setting) {
     vsyncEnable = setting.vsyncEnable;
-    if (GetVideoCardInfo(setting.screenWidth, setting.screenHeight)){
-        cerr << "Failed to get video card info\n";
-        return 1;
-    }
-    if (CreateSwapChain(setting.hwnd, setting.screenWidth, setting.screenHeight, setting.fullScreen, setting.msaa)){
-        cerr << "Failed to create swap chain\n";
-        return 1;
-    }
-    if (CreateDepthBuffer3D(setting.screenWidth, setting.screenHeight, setting.msaa)){
-        cerr << "Failed to create 3D depth buffer\n";
-        return 1;
-    }
-	if (CreateDepthBuffer2D(setting.screenWidth, setting.screenHeight, setting.msaa)) {
-		cerr << "Failed to create 2D depth buffer\n";
-		return 1;
-	}
-    if (CreateRasterState(setting.screenWidth, setting.screenHeight)){
-        cerr << "Failed to create raster state\n";
-        return 1;
-    }
-    if (CreateMatrix(setting.screenWidth, setting.screenHeight, setting.screenNear, setting.screenDepth)){
-        cerr << "Failed to create world matrix\n";
-        return 1;
-    }
+    BLOCKCALL(GetVideoCardInfo(setting.screenWidth, setting.screenHeight),
+        "Failed to get video card info\n");
+    BLOCKCALL(CreateSwapChain(setting.hwnd, setting.screenWidth, setting.screenHeight, setting.fullScreen, setting.msaa), 
+		"Failed to create swap chain\n");
+	BLOCKCALL(CreateDepthBuffer3D(setting.screenWidth, setting.screenHeight, setting.msaa), 
+		"Failed to create 3D depth buffer\n");
+	BLOCKCALL(CreateDepthBuffer2D(setting.screenWidth, setting.screenHeight, setting.msaa), 
+		"Failed to create 2D depth buffer\n");
+	BLOCKCALL(CreateRasterState(setting.screenWidth, setting.screenHeight), 
+		"Failed to create raster state\n");
+	BLOCKCALL(CreateMatrix(setting.screenWidth, setting.screenHeight, setting.screenNear, setting.screenDepth), 
+		"Failed to create world matrix\n");
+	BLOCKCALL(CreateBlendState(), "Failed to create blend state\n");
     return 0;
 }
 RESULT D3Dcontroller::Release() {
@@ -332,6 +323,30 @@ RESULT D3Dcontroller::CreateMatrix(int screenWidth,
 	// */
 
     return 0;
+}
+
+
+RESULT D3Dcontroller::CreateBlendState()
+{
+	D3D11_BLEND_DESC blendDesc;
+
+	blendDesc.AlphaToCoverageEnable = true;
+	blendDesc.IndependentBlendEnable = false;
+
+	blendDesc.RenderTarget[0].BlendEnable = true;
+	blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_SRC_ALPHA;
+	blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_DEST_ALPHA;
+	blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+	float blendFactor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+
+	BLOCKCALL(device->CreateBlendState(&blendDesc, &blendState), "");
+	deviceContext->OMSetBlendState(blendState, blendFactor, 0xffffffff);
+	return 0;
 }
 
 void D3Dcontroller::TurnZBufferOn()

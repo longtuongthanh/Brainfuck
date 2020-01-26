@@ -70,6 +70,7 @@ class D3Dcontroller
         RESULT CreateDepthBuffer2D(int, int, MultisampleSetting&);
         RESULT CreateRasterState(int, int);
         RESULT CreateMatrix(int, int, float, float);
+		RESULT CreateBlendState();
     private:
         bool vsyncEnable;
 
@@ -82,6 +83,7 @@ class D3Dcontroller
         ID3D11DepthStencilState* depthStencilState2D;
         ID3D11DepthStencilView* depthStencilView;
         ID3D11RasterizerState* rasterState;
+		ID3D11BlendState* blendState;
         RefreshRate refreshRate;
 };
 
