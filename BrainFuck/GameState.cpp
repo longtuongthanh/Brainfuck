@@ -2,7 +2,7 @@
 
 GameState::GameState()
 {
-    shaderLib = 0;
+    pShaderLib = 0;
     textureLib = 0;
 }
 
@@ -15,9 +15,9 @@ GameState::~GameState()
 
 LONG GameState::Initialize(ID3D11Device* device, ID3D11DeviceContext* context, ShaderLibrary* shaderLib)
 {
-    this->context = context;
-    this->device = device;
-    this->shaderLib = shaderLib;
+    this->pContext = context;
+    this->pDevice = device;
+    this->pShaderLib = shaderLib;
     BLOCKALLOC(TextureClass, textureLib);
     if (textureLib->Initialize(device)) {
         cerr << "failed to setup TextureClass\n";
@@ -49,9 +49,9 @@ LONG GameState::Draw()
 {
     // Game object render
     for (auto i : texObject)
-        if (i->Render(context, shaderLib->worldMatrix,
-                                shaderLib->viewMatrix,
-                                shaderLib->projectionMatrix)) {
+        if (i->Render(pContext, pShaderLib->worldMatrix,
+                                pShaderLib->viewMatrix,
+                                pShaderLib->projectionMatrix)) {
             cerr << "warning: loading object failed\n";
             return 1;
         }
@@ -71,7 +71,7 @@ TextureObject* GameState::NewTextureObject(const CHAR* filename, TextureObject* 
         cerr << "Out of memory";
         return NULL;
     }
-    if (target->Initialize(device, filename, textureLib, shaderLib->GetTextureShader())) {
+    if (target->Initialize(pDevice, filename, textureLib, pShaderLib->GetTextureShader())) {
         DESTROY(target);
         return NULL;
     }

@@ -38,7 +38,7 @@ private:
 	std::vector<FUNCTION(void*, , Point)> mouseClickCondition;
 	std::vector<Invokable*> onMouseClick;
 	
-	Input* input;
+	Input* pInput;
 	bool locked;
 };
 

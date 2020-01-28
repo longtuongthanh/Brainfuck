@@ -2,7 +2,7 @@
 
 TextureObject::TextureObject() {
     vertexBuf = 0;
-    device = 0;
+    pDevice = 0;
     pointArray = 0;
     texture = 0;
     shader = 0;
@@ -22,7 +22,7 @@ TextureObject::TextureObject(const TextureObject& object) {
     pointArray = new VertexType[pointCount];
     memcpy(pointArray, object.pointArray, sizeof(VertexType) * pointCount);
 
-    Setup(object.device);
+    Setup(object.pDevice);
 }
 TextureObject& TextureObject::operator = (const TextureObject& object) {
     DESTROY(vertexBuf);
@@ -34,14 +34,14 @@ TextureObject& TextureObject::operator = (const TextureObject& object) {
     pointArray = new VertexType[pointCount];
     memcpy(pointArray, object.pointArray, sizeof(VertexType) * pointCount);
 
-    Setup(object.device);
+    Setup(object.pDevice);
     texture = object.texture;
     shader = object.shader;
     return *this;
 }
 RESULT TextureObject::Setup(ID3D11Device* device)
 {
-    this->device = device;
+    this->pDevice = device;
 
     D3D11_BUFFER_DESC vertexBufDesc;
     D3D11_SUBRESOURCE_DATA vertexData;

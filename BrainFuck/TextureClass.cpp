@@ -2,7 +2,7 @@
 
 TextureClass::TextureClass()
 {
-    device = 0;
+    pDevice = 0;
 }
 
 TextureClass::~TextureClass()
@@ -15,7 +15,7 @@ TextureClass::~TextureClass()
 
 RESULT TextureClass::Initialize(ID3D11Device* device)
 {
-    this->device = device;
+    this->pDevice = device;
     return 0;
 }
 
@@ -30,7 +30,7 @@ ID3D11ShaderResourceView* TextureClass::GetTexture(const CHAR* filename)
     std::map<const CHAR*, ID3D11ShaderResourceView*>::iterator trg = texture.find(filename);
     if (trg == texture.end()){
         ID3D11ShaderResourceView* newTex;
-		if (FAILED(D3DX11CreateShaderResourceViewFromFile(device, filename, NULL, NULL, &newTex, NULL)))
+		if (FAILED(D3DX11CreateShaderResourceViewFromFile(pDevice, filename, NULL, NULL, &newTex, NULL)))
 		{
 			cerr << "cannot load texture " << filename;
 			return NULL;

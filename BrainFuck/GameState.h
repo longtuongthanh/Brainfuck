@@ -24,9 +24,9 @@ class GameState
         std::unordered_set<TextureObject*> texObject;
     private:
         TextureClass* textureLib;
-        ShaderLibrary* shaderLib;
-        ID3D11Device* device;
-        ID3D11DeviceContext* context;
+        ShaderLibrary* pShaderLib;
+        ID3D11Device* pDevice;
+        ID3D11DeviceContext* pContext;
 };
 
 #endif // GAMESTATE_H

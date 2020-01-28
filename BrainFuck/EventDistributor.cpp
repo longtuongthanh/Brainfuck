@@ -4,6 +4,8 @@
 
 EventDistributor::EventDistributor()
 {
+	locked = false;
+	pInput = 0;
 }
 
 
@@ -13,14 +15,14 @@ EventDistributor::~EventDistributor()
 
 RESULT EventDistributor::Initialize(Input* input)
 {
-	this->input = input;
+	this->pInput = input;
 	return 0;
 }
 
 RESULT EventDistributor::Frame()
 {
 	for (char i = 0; i < 256; i++) {
-		switch (input->keyboard(i))
+		switch (pInput->keyboard(i))
 		{
 		case 3:
 			for (auto command : onKeyDown[i])
@@ -34,10 +36,10 @@ RESULT EventDistributor::Frame()
 			break;
 		}
 	}
-	if (input->MouseFlag() & 0x0100) {
+	if (pInput->MouseFlag() & 0x0100) {
 		for (int i = 0; i < mouseClickCondition.size(); i++)
 		{
-			void* result = mouseClickCondition[i](input->Mouse());
+			void* result = mouseClickCondition[i](pInput->Mouse());
 			if (result != NULL)
 				onMouseClick[i]->Invoke(result);
 		}
@@ -65,6 +67,7 @@ RESULT EventDistributor::Lock()
 		return 1;
 	}
 	);
+	locked = true;
 	return 0;
 }
 
