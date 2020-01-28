@@ -162,6 +162,7 @@
     <ClCompile Include="BrainFuck.cpp" />
     <ClCompile Include="CameraClass.cpp" />
     <ClCompile Include="D3Dcontroller.cpp" />
+    <ClCompile Include="EventDistributor.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -176,6 +177,7 @@
   <ItemGroup>
     <ClInclude Include="CameraClass.h" />
     <ClInclude Include="D3Dcontroller.h" />
+    <ClInclude Include="EventDistributor.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="Input.h" />

@@ -20,18 +20,16 @@ NonCopyable& NonCopyable::operator=(const NonCopyable&)
 	return *this;
 }
 
-Invokable::Invokable(FUNCTION(void, func, void*), void* param)
+Invokable::Invokable(FUNCTION(void, func, void*))
 {
     this->func = func;
-    this->param = param;
 }
 
 Invokable::~Invokable()
 {
-    Invoke();
 }
 
-void Invokable::Invoke()
+void Invokable::Invoke(void* param)
 {
     func(param);
 }

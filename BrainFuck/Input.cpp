@@ -20,6 +20,9 @@ RESULT Input::Initialize()
 
 RESULT Input::frame()
 {
+	for (int i = 0; i < 256; i++)
+		opcode[i] &= -3;
+	mouseFlag &= 0x00ff;
     return exitCode;
 }
 
@@ -34,11 +37,21 @@ RESULT Input::keyboard(char x)
     return opcode[x];
 }
 
+Point Input::Mouse()
+{
+	return mouse;
+}
+
+int Input::MouseFlag()
+{
+	return mouseFlag;
+}
+
 RESULT Input::keydown(WPARAM wparam, LPARAM)
 // warning: may be thread-unsafe, need buffer
 {
     if (wparam < 256)
-        opcode[wparam] = true;
+        opcode[wparam] = KEY_STATE_ON_DOWN;
     else
         cerr << "Key not captured " << wparam << '\n';
 
@@ -57,14 +70,20 @@ RESULT Input::keydown(WPARAM wparam, LPARAM)
 
 RESULT Input::keyup(WPARAM wparam, LPARAM)
 {
-    opcode[wparam] = false;
+    opcode[wparam] = KEY_STATE_ON_UP;
     cerr << char(254);
     return 0;
 }
 
-RESULT Input::mousemove(WPARAM wparam, LPARAM lparam)
+RESULT Input::mousechange(WPARAM wparam, LPARAM lparam)
 {
     mouse.x = GET_X_LPARAM(lparam);
     mouse.y = GET_Y_LPARAM(lparam);
+
+	if (mouseFlag != wparam)
+	{
+		mouseFlag = wparam | (((mouseFlag ^ wparam) & 0x00ff) << 8);
+	}
+
     return 0;
 }
