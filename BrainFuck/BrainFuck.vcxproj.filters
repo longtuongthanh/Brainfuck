@@ -72,6 +72,15 @@
     <ClCompile Include="CameraClass.cpp">
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="FontShader.cpp">
+      <Filter>Source Files\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="TextString.cpp">
+      <Filter>Source Files\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicObject.cpp">
+      <Filter>Source Files\Object</Filter>
+    </ClCompile>
     <ClCompile Include="HexagonMap.cpp">
       <Filter>Source Files\Object</Filter>
     </ClCompile>
@@ -84,9 +93,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Main.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderLibrary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="useful_stuff.h">
@@ -110,6 +116,18 @@
     <ClInclude Include="TextureObject.h">
       <Filter>Header Files\Object</Filter>
     </ClInclude>
+    <ClInclude Include="FontShader.h">
+      <Filter>Header Files\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="TextString.h">
+      <Filter>Header Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderLibrary.h">
+      <Filter>Header Files\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicObject.h">
+      <Filter>Header Files\Object</Filter>
+    </ClInclude>
     <ClInclude Include="HexagonMap.h">
       <Filter>Header Files\Object</Filter>
     </ClInclude>
@@ -117,8 +135,16 @@
   <ItemGroup>
     <None Include="texture.PS" />
     <None Include="texture.VS" />
+    <None Include="font.PS" />
+    <None Include="font.VS" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="texture.dds" />
+    <Image Include="font.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="char_size.txt" />
   </ItemGroup>
 </Project>

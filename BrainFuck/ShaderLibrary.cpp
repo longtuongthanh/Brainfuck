@@ -14,6 +14,9 @@ LONG ShaderLibrary::Initialize(ID3D11Device* device, HWND hwnd)
 {
     BLOCKALLOC(TextureShader, texShader);
     BLOCKCALL(texShader->Initialize(device, hwnd),"failed to load texture shader\n");
+	BLOCKALLOC(FontShader, fontShader);
+	BLOCKCALL(fontShader->Initialize(device, hwnd), "failed to load font shader\n");
+
     return 0;
 }
 
@@ -26,4 +29,9 @@ LONG ShaderLibrary::Release()
 TextureShader* ShaderLibrary::GetTextureShader()
 {
     return texShader;
+}
+
+FontShader * ShaderLibrary::GetFontShader()
+{
+	return fontShader;
 }

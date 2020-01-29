@@ -162,12 +162,15 @@
     <ClCompile Include="BrainFuck.cpp" />
     <ClCompile Include="CameraClass.cpp" />
     <ClCompile Include="D3Dcontroller.cpp" />
+    <ClCompile Include="FontShader.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="HexagonMap.cpp" />
+    <ClCompile Include="GraphicObject.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ShaderLibrary.cpp" />
+    <ClCompile Include="TextString.cpp" />
     <ClCompile Include="TextureClass.cpp" />
     <ClCompile Include="TextureObject.cpp" />
     <ClCompile Include="TextureShader.cpp" />
@@ -177,23 +180,32 @@
   <ItemGroup>
     <ClInclude Include="CameraClass.h" />
     <ClInclude Include="D3Dcontroller.h" />
+    <ClInclude Include="FontShader.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="HexagonMap.h" />
+    <ClInclude Include="GraphicObject.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="ShaderLibrary.h" />
+    <ClInclude Include="TextString.h" />
     <ClInclude Include="TextureClass.h" />
     <ClInclude Include="TextureObject.h" />
     <ClInclude Include="TextureShader.h" />
     <ClInclude Include="useful_stuff.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="font.PS" />
+    <None Include="font.VS" />
     <None Include="texture.PS" />
     <None Include="texture.VS" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="font.png" />
     <Image Include="texture.dds" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="char_size.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

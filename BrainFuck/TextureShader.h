@@ -6,10 +6,6 @@
 #include <D3DX10math.h>
 #include <D3DX11async.h>
 
-static const char* VSHADER_FUNC_NAME = "VShader";
-static const char* PSHADER_FUNC_NAME = "PShader";
-static const char* VSHADER_FILE = "texture.vs";
-static const char* PSHADER_FILE = "texture.ps";
 
 class TextureShader : private NonCopyable
 {
@@ -20,6 +16,10 @@ class TextureShader : private NonCopyable
             D3DXMATRIX view;
             D3DXMATRIX projection;
         };
+		static constexpr const char* VSHADER_FUNC_NAME = "VShader";
+		static constexpr const char* PSHADER_FUNC_NAME = "PShader";
+		static constexpr const char* VSHADER_FILE = "texture.vs";
+		static constexpr const char* PSHADER_FILE = "texture.ps";
     public:
         TextureShader();
         ~TextureShader();
