@@ -162,6 +162,7 @@
     <ClCompile Include="BrainFuck.cpp" />
     <ClCompile Include="CameraClass.cpp" />
     <ClCompile Include="D3Dcontroller.cpp" />
+    <ClCompile Include="EventDistributor.cpp" />
     <ClCompile Include="FontShader.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Graphic.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="CameraClass.h" />
     <ClInclude Include="D3Dcontroller.h" />
     <ClInclude Include="FontShader.h" />
+    <ClInclude Include="EventDistributor.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="HexagonMap.h" />

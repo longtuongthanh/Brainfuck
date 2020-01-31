@@ -84,6 +84,9 @@
     <ClCompile Include="HexagonMap.cpp">
       <Filter>Source Files\Object</Filter>
     </ClCompile>
+    <ClCompile Include="EventDistributor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameState.h">
@@ -130,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="HexagonMap.h">
       <Filter>Header Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="EventDistributor.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

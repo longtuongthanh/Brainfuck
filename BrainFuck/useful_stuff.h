@@ -22,18 +22,27 @@
         Constants should be defined in relevant HEADERS.
 */
 
-#define FUNCTION(returntype,name,arguement) returntype (*name) (arguement)
 /** Function pointer quick-define*/
-#define DESTROY(p_COM_object) if (p_COM_object) {p_COM_object->Release();p_COM_object = NULL;}
+#define FUNCTION(returntype,name,arguement) returntype (*name) (arguement)
+
 /** Call Release of target object. No error checking.*/
-#define RESULT LONG
+#define DESTROY(p_COM_object) if (p_COM_object) {p_COM_object->Release();p_COM_object = NULL;}
+
 /** Result of command*/
-#define BLOCKALLOC(type, pname) if (!(pname = new type)) {cerr << "out of memory\n";return 1;}
+#define RESULT LONG
+
 /** Allocate the variable. If out of memory, return 1 */
-#define COMCALL(COM_command) if (FAILED(COM_command)) return 1
+#define BLOCKALLOC(type, pname) if (!(pname = new type)) {cerr << "out of memory\n";return 1;}
+
 /** Call the COM command. If it fails, return 1*/
-#define BLOCKCALL(command, errorString) if (command) {cerr << errorString; return 1;}
+#define COMCALL(COM_command) if (FAILED(COM_command)) return 1
+
 /** Call the command. If it fails, return 1*/
+#define BLOCKCALL(command, errorString) if (command) {cerr << errorString; return 1;}
+
+/** Mark as error checking. Will be defined as nothing in final code*/
+#define ERRORCHECK(stuff) stuff
+
 struct DXGI_RATIONAL;
 typedef DXGI_RATIONAL RefreshRate;
 
@@ -55,12 +64,11 @@ class NonCopyable
 class Invokable
 {
 public:
-    Invokable(FUNCTION(void, func, void*), void* param);
+    Invokable(FUNCTION(void, func, void*));
     ~Invokable();
-    void Invoke();
+    void Invoke(void*);
 private:
     FUNCTION(void, func, void*);
-    void* param;
 };
 
 struct Point
@@ -73,6 +81,7 @@ struct Point
     Point operator - (const Point& p) const;
     Point operator + (const Point& p) const;
     Point(double a=0, double b=0): x(a), y(b){}
+	Point(const Point& p):x(p.x), y(p.y) {}
 };
 
 #define CODE_KILL 2

@@ -49,7 +49,7 @@ class TextureObject : public GraphicObject
     private:
         ID3D11Buffer *vertexBuf;
 
-        ID3D11Device* device;
+        ID3D11Device* pDevice;
         CHAR* imageSrc;
         TextureShader* shader;
         //RefreshRate refreshRate;

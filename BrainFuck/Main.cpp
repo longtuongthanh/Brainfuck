@@ -11,7 +11,13 @@ LRESULT Main::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)
 			return input->keyup(wparam, lparam);
 
         case WM_MOUSEMOVE:
-            return input->mousemove(wparam, lparam);
+		case WM_LBUTTONUP:
+		case WM_LBUTTONDOWN:
+		case WM_MBUTTONUP:
+		case WM_MBUTTONDOWN:
+		case WM_RBUTTONUP:
+		case WM_RBUTTONDOWN:
+			return input->mousechange(wparam, lparam);
 
 		case WM_DESTROY:{
 			PostQuitMessage(0);
@@ -97,6 +103,7 @@ RESULT Main::Run()
 			DispatchMessage(&msg);
             if(msg.message == WM_QUIT)
                 break;
+
 		}
 		else
 			if (frame())
@@ -125,5 +132,7 @@ RESULT Main::frame()
         return 1;
     }
     // else cerr << "FRAME COMPLETE\n";
+
+	BLOCKCALL(input->frame(), "CANNOT CLEAR INPUT");
     return 0;
 }

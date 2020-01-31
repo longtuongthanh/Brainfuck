@@ -20,7 +20,7 @@ class TextureClass : NonCopyable
 
     private:
         std::map<const CHAR*, ID3D11ShaderResourceView*> texture;
-        ID3D11Device* device;
+        ID3D11Device* pDevice;
 };
 
 #endif // TEXTURECLASS_H
