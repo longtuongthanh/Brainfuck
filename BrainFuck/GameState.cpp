@@ -18,15 +18,17 @@ LONG GameState::Initialize(ID3D11Device* device, ID3D11DeviceContext* context, S
     this->context = context;
     this->device = device;
     this->shaderLib = shaderLib;
-    BLOCKALLOC(TextureClass, textureLib);
-    if (textureLib->Initialize(device)) {
-        cerr << "failed to setup TextureClass\n";
-        return 1;
-    }
 
+    BLOCKALLOC(TextureClass, textureLib);
+    BLOCKCALL(textureLib->Initialize(device), 
+		"failed to setup TextureClass\n");
+
+	BLOCKALLOC(CameraClass, camera);
+	BLOCKCALL(camera->Initialize(), 
+		"cannot init camera.");
     //NewTextureObject(TEXTURE_FILE);
 	NewTextString();
-    // else cerr << "object load success\n";
+
     return 0;
 }
 
@@ -51,12 +53,14 @@ LONG GameState::Draw()
     // Game object render
     for (auto i : objects)
         if (i->Render(context, shaderLib->worldMatrix,
-                                shaderLib->viewMatrix,
+                                camera->viewMatrix,
                                 shaderLib->projectionMatrix)) {
             cerr << "warning: loading object failed\n";
             return 1;
         }
     // else cerr << "object on\n";
+
+	BLOCKCALL(camera->Render(), "Cannot switch perspective.");
 
     return 0;
 }

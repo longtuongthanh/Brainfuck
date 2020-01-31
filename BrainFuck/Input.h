@@ -4,7 +4,7 @@
 #include "useful_stuff.h"
 #include "windowsx.h"
 
-class Input : private NonCopyable
+class Input final : private NonCopyable
 {
     public:
         Input();

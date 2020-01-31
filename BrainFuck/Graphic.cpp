@@ -4,14 +4,12 @@ Graphic::Graphic()
 {
     controller = NULL;
     shaderLib = NULL;
-    camera = NULL;
 }
 
 Graphic::~Graphic()
 {
     DESTROY(controller);
     DESTROY(shaderLib);
-    DESTROY(camera);
 }
 
 RESULT Graphic::Initialize(int screenWidth, int screenHeight, HWND hwnd)
@@ -33,12 +31,7 @@ RESULT Graphic::Initialize(int screenWidth, int screenHeight, HWND hwnd)
         return 1;
     }
     // else cerr << "shader load success\n";
-    BLOCKALLOC(CameraClass, camera);
-    if (camera->Initialize()) {
-        cerr << "failed to load camera\n";
-        return 1;
-    }
-    // else cerr << "camera load success\n";
+
     return 0;
 }
 
@@ -58,7 +51,6 @@ RESULT Graphic::DrawSetup3D()
 	controller->TurnZBufferOn();
 
 	shaderLib->worldMatrix = controller->worldMatrix;
-	shaderLib->viewMatrix = camera->viewMatrix;
 	shaderLib->projectionMatrix = controller->projectionMatrix;
 
     if (controller->draw()) {
@@ -67,18 +59,12 @@ RESULT Graphic::DrawSetup3D()
     }
     // else cerr << "clear complete\n";
 
-    if (camera->Render()) {
-        cerr << "warning: failed to switch perspective\n";
-        return 1;
-    }
-    // else cerr << "camera on\n";
     return 0;
 }
 
 RESULT Graphic::DrawSetup2D()
 {
 	shaderLib->worldMatrix = controller->worldMatrix;
-	shaderLib->viewMatrix = camera->viewMatrix;
 	shaderLib->projectionMatrix = controller->orthoMatrix;
 
 	controller->TurnZBufferOff();
@@ -89,11 +75,6 @@ RESULT Graphic::DrawSetup2D()
     }
     // else cerr << "clear complete\n";
 
-    if (camera->Render()) {
-        cerr << "warning: failed to switch perspective\n";
-        return 1;
-    }
-    // else cerr << "camera on\n";
     return 0;
 }
 

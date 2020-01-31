@@ -32,6 +32,7 @@ public:
 
 	virtual RESULT InitializeData();
 	virtual RESULT Frame();
+	virtual RESULT LoadRenderData(void*);
 
 	ID3D11ShaderResourceView* GetTexture();
 protected:
@@ -41,6 +42,7 @@ protected:
 	float size;
 	int maxLength;
 	Point position;
+	int pointCount;
 
 	ID3D11ShaderResourceView* texture;
 private:

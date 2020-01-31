@@ -8,11 +8,12 @@
 #include "ShaderLibrary.h"
 #include "TextureClass.h"
 #include "TextString.h"
+#include "CameraClass.h"
 
-class GameState
+class GameState final : private NonCopyable
 {
     public:
-        virtual RESULT Frame();
+        RESULT Frame();
         TextureObject* NewTextureObject(const CHAR* filename, TextureObject* target = NULL);
 		TextString* NewTextString(TextString* target = NULL);
         // documentary moved to cpp file
@@ -29,6 +30,7 @@ class GameState
         ShaderLibrary* shaderLib;
         ID3D11Device* device;
         ID3D11DeviceContext* context;
+		CameraClass* camera;
 };
 
 #endif // GAMESTATE_H
