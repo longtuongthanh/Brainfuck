@@ -1,7 +1,7 @@
 #include "CameraClass.h"
 
 CameraClass::CameraClass() {
-    position = vector3(0,0,0);
+    position = vector3(0.15,0,0);
     rotation = vector3(0,0,0);
 }
 
