@@ -175,6 +175,7 @@
     <ClCompile Include="TextureClass.cpp" />
     <ClCompile Include="TextureObject.cpp" />
     <ClCompile Include="TextureShader.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="useful_stuff.cpp" />
     <ClCompile Include="WindowInitialSetting.cpp" />
   </ItemGroup>
@@ -194,6 +195,7 @@
     <ClInclude Include="TextureClass.h" />
     <ClInclude Include="TextureObject.h" />
     <ClInclude Include="TextureShader.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="useful_stuff.h" />
   </ItemGroup>
   <ItemGroup>

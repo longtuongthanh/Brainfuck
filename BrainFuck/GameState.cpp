@@ -24,6 +24,8 @@ LONG GameState::Initialize(ID3D11Device* device, ID3D11DeviceContext* context, S
         return 1;
     }
 
+    frameTimer.Initalize();
+
     //NewTextureObject(TEXTURE_FILE);
 	NewTextString();
     map = new HexagonMap(0.15, 0.2, 0.01);
@@ -39,6 +41,9 @@ LONG GameState::Frame()
         if (i->Frame()) {
             cerr << "warning: animation failed\n";
         }
+    frameTimer.Mark();
+    float time = frameTimer.GetTimeSpan();
+
     return 0;
 }
 
@@ -51,10 +56,10 @@ LONG GameState::Release()
 LONG GameState::Draw()
 {
     // Game object render
-    for (auto i : texObject)
-        if (i->Render(context, shaderLib->worldMatrix,
-                                shaderLib->viewMatrix,
-                                shaderLib->projectionMatrix)) {
+    for (auto i : objects)
+        if (i->Render(pContext, pShaderLib->worldMatrix,
+                                pShaderLib->viewMatrix,
+                                pShaderLib->projectionMatrix)) {
             cerr << "warning: loading object failed\n";
             return 1;
         }
@@ -90,7 +95,7 @@ TextString * GameState::NewTextString(TextString* target)
 		cerr << "Out of memory";
 		return NULL;
 	}
-	if (target->Initialize(device, 100, textureLib, shaderLib->GetFontShader())) {
+	if (target->Initialize(pDevice, 100, textureLib, pShaderLib->GetFontShader())) {
 		DESTROY(target);
 		return NULL;
 	}

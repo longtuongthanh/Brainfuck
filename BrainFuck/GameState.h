@@ -9,6 +9,7 @@
 #include "TextureClass.h"
 #include "TextString.h"
 #include "HexagonMap.h"
+#include "Timer.h"
 
 class GameState
 {
@@ -30,6 +31,8 @@ class GameState
         ShaderLibrary* pShaderLib;
         ID3D11Device* pDevice;
         ID3D11DeviceContext* pContext;
+        HexagonMap* map;
+        Timer frameTimer;
 };
 
 #endif // GAMESTATE_H

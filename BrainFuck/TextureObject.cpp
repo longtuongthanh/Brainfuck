@@ -79,6 +79,7 @@ RESULT TextureObject::Render(ID3D11DeviceContext* deviceContext,
                                      D3DXMATRIX viewMatrix,
                                      D3DXMATRIX projectionMatrix)
 {
+
     D3D11_MAPPED_SUBRESOURCE mappedVertices;
     COMCALL(deviceContext->Map(vertexBuf, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedVertices));
     memcpy(mappedVertices.pData, pointArray, sizeof(VertexType) * pointCount);
