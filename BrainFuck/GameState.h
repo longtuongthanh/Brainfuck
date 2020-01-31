@@ -7,12 +7,14 @@
 #include "TextureObject.h"
 #include "ShaderLibrary.h"
 #include "TextureClass.h"
+#include "TextString.h"
 
 class GameState
 {
     public:
         virtual RESULT Frame();
         TextureObject* NewTextureObject(const CHAR* filename, TextureObject* target = NULL);
+		TextString* NewTextString(TextString* target = NULL);
         // documentary moved to cpp file
     public:
         GameState();
@@ -21,7 +23,7 @@ class GameState
         RESULT Release();
         RESULT Draw();
     protected:
-        std::unordered_set<TextureObject*> texObject;
+        std::unordered_set<GraphicObject*> objects;
     private:
         TextureClass* textureLib;
         ShaderLibrary* shaderLib;
