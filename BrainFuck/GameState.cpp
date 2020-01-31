@@ -51,7 +51,7 @@ LONG GameState::Release()
 LONG GameState::Draw()
 {
     // Game object render
-    for (auto i : objects)
+    for (auto i : texObject)
         if (i->Render(context, shaderLib->worldMatrix,
                                 shaderLib->viewMatrix,
                                 shaderLib->projectionMatrix)) {
