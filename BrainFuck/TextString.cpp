@@ -129,9 +129,9 @@ RESULT TextString::Render(ID3D11DeviceContext* deviceContext,
 }
 RESULT TextString::InitializeData()
 {
-	string = "Hello text! No alpha support yet. No new line support.";
-	size = 0.08f;
-	position = Point(-0.5, -0.5);
+	string = "Hello text! No new line support.";
+	size = 0.1f;
+	position = Point(-0.5, 0);
 	return 0;
 }
 RESULT TextString::Frame()
