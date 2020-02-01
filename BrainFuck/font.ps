@@ -15,8 +15,7 @@ float4 PShader(PixelInput input) : SV_TARGET
 {
     float4 textureColor = shaderTexture.Sample(SampleType, input.coord);
 	
-	if (textureColor.r == 0)
-		return float4(0,0,0,0);
-	else 
-		return input.color * textureColor;
+	input.color.a *= textureColor.r;
+
+	return input.color;
 }

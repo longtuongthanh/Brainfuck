@@ -69,15 +69,43 @@ RESULT TextString::Render(ID3D11DeviceContext* deviceContext,
 {
 	D3D11_MAPPED_SUBRESOURCE mappedVertices;
 	COMCALL(deviceContext->Map(vertexBuf, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedVertices));
-	VertexType* array = (VertexType*)mappedVertices.pData;
+	BLOCKCALL(LoadRenderData(mappedVertices.pData), "Cannot load render data");
+	deviceContext->Unmap(vertexBuf, 0);
+
+	unsigned int stride = sizeof(VertexType);
+	unsigned int offset = 0;
+
+	deviceContext->IASetVertexBuffers(0, 1, &vertexBuf, &stride, &offset);
+	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	// Shader render
+	BLOCKCALL(shader->Render(deviceContext, pointCount, worldMatrix, viewMatrix, projectionMatrix, texture),
+		"warning: shader render failed\n")
+		// else cerr << "shader on\n";
+
+		return 0;
+}
+RESULT TextString::InitializeData()
+{
+	string = "Hello text! No new line support.";
+	size = 0.125f;
+	position = Point(-0.5, 0);
+	return 0;
+}
+RESULT TextString::Frame()
+{
+	return 0;
+}
+RESULT TextString::LoadRenderData(void* pData)
+{
+	VertexType* array = (VertexType*)pData;
 
 	int length = string.length();
+	pointCount = length * 6;
 	if (length > maxLength) {
-		deviceContext->Unmap(vertexBuf, 0);
 		cerr << "length exceed maximum allowed: " << maxLength;
 		return 1;
 	}
-	int pointCount = length * 6;
 	float curx = position.x;
 	for (int i = 0; i < length; i++)
 	{
@@ -86,9 +114,9 @@ RESULT TextString::Render(ID3D11DeviceContext* deviceContext,
 		float height = FontSetting::height(size);
 		std::pair<float, float> xRange = FontSetting::Measurement(letter);
 		array[i * 6].position = D3DXVECTOR2(curx, position.y);
-		array[i * 6 + 1].position = D3DXVECTOR2(curx, 
+		array[i * 6 + 1].position = D3DXVECTOR2(curx,
 			position.y + height);
-		array[i * 6 + 2].position = D3DXVECTOR2(curx + width, 
+		array[i * 6 + 2].position = D3DXVECTOR2(curx + width,
 			position.y + height);
 		array[i * 6 + 3].position = D3DXVECTOR2(curx, position.y);
 		array[i * 6 + 4].position = D3DXVECTOR2(curx + width,
@@ -112,30 +140,6 @@ RESULT TextString::Render(ID3D11DeviceContext* deviceContext,
 		curx += width;
 	}
 
-	deviceContext->Unmap(vertexBuf, 0);
-
-	unsigned int stride = sizeof(VertexType);
-	unsigned int offset = 0;
-
-	deviceContext->IASetVertexBuffers(0, 1, &vertexBuf, &stride, &offset);
-	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	// Shader render
-	BLOCKCALL(shader->Render(deviceContext, pointCount, worldMatrix, viewMatrix, projectionMatrix, texture),
-		"warning: shader render failed\n")
-		// else cerr << "shader on\n";
-
-		return 0;
-}
-RESULT TextString::InitializeData()
-{
-	string = "Hello text! No alpha support yet. No new line support.";
-	size = 0.08f;
-	position = Point(-0.5, -0.5);
-	return 0;
-}
-RESULT TextString::Frame()
-{
 	return 0;
 }
 ID3D11ShaderResourceView* TextString::GetTexture() {

@@ -8,13 +8,14 @@
 #include "ShaderLibrary.h"
 #include "TextureClass.h"
 #include "TextString.h"
+#include "CameraClass.h"
 #include "HexagonMap.h"
 #include "Timer.h"
 
-class GameState
+class GameState final : private NonCopyable
 {
     public:
-        virtual RESULT Frame();
+        RESULT Frame();
         TextureObject* NewTextureObject(const CHAR* filename, TextureObject* target = NULL);
 		TextString* NewTextString(TextString* target = NULL);
         // documentary moved to cpp file
@@ -33,6 +34,7 @@ class GameState
         ID3D11DeviceContext* pContext;
         HexagonMap* map;
         Timer frameTimer;
+        CameraClass* camera;
 };
 
 #endif // GAMESTATE_H

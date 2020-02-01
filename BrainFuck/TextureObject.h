@@ -30,6 +30,7 @@ class TextureObject : public GraphicObject
 
         virtual RESULT InitializeData();
         virtual RESULT Frame();
+		virtual RESULT LoadRenderData(void*);
 
         int GetPointCount();
         ID3D11ShaderResourceView* GetTexture();

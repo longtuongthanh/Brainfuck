@@ -82,7 +82,7 @@ RESULT TextureObject::Render(ID3D11DeviceContext* deviceContext,
 
     D3D11_MAPPED_SUBRESOURCE mappedVertices;
     COMCALL(deviceContext->Map(vertexBuf, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedVertices));
-    memcpy(mappedVertices.pData, pointArray, sizeof(VertexType) * pointCount);
+	BLOCKCALL(LoadRenderData(mappedVertices.pData), "cannot load data to render");
     deviceContext->Unmap(vertexBuf, 0);
 
     unsigned int stride = sizeof(VertexType);
@@ -107,6 +107,11 @@ RESULT TextureObject::InitializeData()
 RESULT TextureObject::Frame()
 {
     return 0;
+}
+RESULT TextureObject::LoadRenderData(void * pData)
+{
+	memcpy(pData, pointArray, sizeof(VertexType) * pointCount);
+	return 0;
 }
 int TextureObject::GetPointCount() {
     return pointCount;}

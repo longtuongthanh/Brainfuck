@@ -38,7 +38,7 @@ struct D3Dcontroller_setting
     float screenNear;
 };
 
-class D3Dcontroller
+class D3Dcontroller final : NonCopyable
 {
     public:
         D3Dcontroller();

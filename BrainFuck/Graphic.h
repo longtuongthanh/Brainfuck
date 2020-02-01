@@ -39,7 +39,6 @@ class Graphic : private NonCopyable
     protected:
     private:
         D3Dcontroller* controller;
-        CameraClass* camera;
         ShaderLibrary* shaderLib;
 
         int width, height;

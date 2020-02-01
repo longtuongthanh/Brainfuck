@@ -6,7 +6,7 @@
 #include "Graphic.h"
 #include "GameState.h"
 
-class Main : private NonCopyable
+class Main final : private NonCopyable
 {
     public:
         Main();

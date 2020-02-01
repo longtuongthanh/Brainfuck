@@ -19,13 +19,15 @@ LONG GameState::Initialize(ID3D11Device* device, ID3D11DeviceContext* context, S
     this->pDevice = device;
     this->pShaderLib = shaderLib;
     BLOCKALLOC(TextureClass, textureLib);
-    if (textureLib->Initialize(device)) {
-        cerr << "failed to setup TextureClass\n";
-        return 1;
-    }
+    BLOCKCALL(textureLib->Initialize(device), 
+		"failed to setup TextureClass\n");
 
     frameTimer.Initalize();
    
+	BLOCKALLOC(CameraClass, camera);
+	BLOCKCALL(camera->Initialize(), 
+		"cannot init camera.");
+    //NewTextureObject(TEXTURE_FILE);
 	NewTextString();
     map = new HexagonMap(0.15, 0.2, 0.01);
     map->Initialize(pDevice, textureLib, pShaderLib);
@@ -66,6 +68,9 @@ LONG GameState::Draw()
     map->Render(pContext, pShaderLib->worldMatrix,
                             pShaderLib->viewMatrix,
                             pShaderLib->projectionMatrix);
+
+	BLOCKCALL(camera->Render(), "Cannot switch perspective.");
+
     return 0;
 }
 
