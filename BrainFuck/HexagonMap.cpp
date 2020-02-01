@@ -19,11 +19,38 @@ HexagonMap::~HexagonMap()
 
 HexagonMap& HexagonMap::operator=(const HexagonMap& map)
 {
-    TextureObject::operator=(map);
     this->tileWidth = map.tileWidth;
     this->tileHeight = map.tileHeight;
     this->padding = map.padding;
     return *this;
+}
+
+HRESULT HexagonMap::Frame()
+{
+    return 0;
+}
+
+HRESULT HexagonMap::Render(ID3D11DeviceContext* deviceContext, 
+                            D3DXMATRIX worldMatrix,
+                            D3DXMATRIX viewMatrix,
+                            D3DXMATRIX projectionMatrix)
+{
+    for(auto tile : map)
+    {
+        tile->Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
+    }
+    return 0;
+}
+
+RESULT HexagonMap::Initialize(ID3D11Device* pDevice, TextureClass* textureLib, ShaderLibrary* pShaderLib)
+{
+    this->pDevice = pDevice;
+    this->textureLib = textureLib;
+    this->pShaderLib = pShaderLib;
+
+    InitializeData();
+
+    return RESULT();
 }
 
 RESULT HexagonMap::InitializeData()
@@ -34,19 +61,11 @@ RESULT HexagonMap::InitializeData()
     yCenter = 0.0f;
     zCenter = 10.0f;
 
-    for (int i = -10; i < 10; i++)
+    for (int i = -20; i < 20; i++)
     {
-        for (int j = -10; j < 10; j++)
+        for (int j = -20; j < 20; j++)
         {
-            if (j % 2 == 0)
-            {
-                AddHexagon(xCenter + i * tileWidth + tileWidth / 2, yCenter + 1.5 * j * tileHeight / 2, zCenter, tileWidth, tileHeight);
-            }
-            else
-            {
-                AddHexagon(xCenter + i * tileWidth, yCenter + 1.5 * j * tileHeight / 2, zCenter, tileWidth, tileHeight);
-            }
-
+            NewHexagonTile(i, j, tileWidth, tileHeight, padding);
         }
     }
     return 0;
@@ -54,6 +73,7 @@ RESULT HexagonMap::InitializeData()
 
 RESULT HexagonMap::AddHexagon(FLOAT xCenter, FLOAT yCenter, FLOAT zCenter, FLOAT width, FLOAT height)
 {
+    /*
     width -= 0.01;
     height -= 0.01;
     VertexType* newPointArray;
@@ -105,4 +125,24 @@ RESULT HexagonMap::AddHexagon(FLOAT xCenter, FLOAT yCenter, FLOAT zCenter, FLOAT
     pointArray = newPointArray;
 
     return 0;
+    */
+
+    return 0;
+}
+
+HexagonTile* HexagonMap::NewHexagonTile(INT xCoord, INT yCoord, FLOAT tileWidth, FLOAT tileHeight, FLOAT padding)
+{
+    HexagonTile* newTile;
+    if (yCoord % 2 == 0)
+    {
+        newTile = new HexagonTile(Point(xCoord * tileWidth + tileWidth / 2, 1.5 * yCoord * tileHeight / 2), tileWidth - padding, tileHeight - padding);
+    }
+    else
+    {
+        newTile = new HexagonTile(Point(xCoord * tileWidth, 1.5 * yCoord * tileHeight / 2), tileWidth - padding, tileHeight - padding);
+    }
+
+    newTile->Initialize(pDevice, TEXTURE_FILE, textureLib, pShaderLib->GetTextureShader());
+    map.push_back(newTile);
+    return newTile;
 }

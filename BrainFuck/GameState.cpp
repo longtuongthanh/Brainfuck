@@ -25,11 +25,10 @@ LONG GameState::Initialize(ID3D11Device* device, ID3D11DeviceContext* context, S
     }
 
     frameTimer.Initalize();
-
-    //NewTextureObject(TEXTURE_FILE);
+   
 	NewTextString();
     map = new HexagonMap(0.15, 0.2, 0.01);
-    NewTextureObject(TEXTURE_FILE, map);
+    map->Initialize(pDevice, textureLib, pShaderLib);
     // else cerr << "object load success\n";
     return 0;
 }
@@ -64,7 +63,9 @@ LONG GameState::Draw()
             return 1;
         }
     // else cerr << "object on\n";
-
+    map->Render(pContext, pShaderLib->worldMatrix,
+                            pShaderLib->viewMatrix,
+                            pShaderLib->projectionMatrix);
     return 0;
 }
 

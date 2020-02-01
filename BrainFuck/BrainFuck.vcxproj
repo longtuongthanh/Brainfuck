@@ -168,6 +168,7 @@
     <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="HexagonMap.cpp" />
     <ClCompile Include="GraphicObject.cpp" />
+    <ClCompile Include="HexagonTile.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ShaderLibrary.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="HexagonMap.h" />
     <ClInclude Include="GraphicObject.h" />
+    <ClInclude Include="HexagonTile.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="ShaderLibrary.h" />
