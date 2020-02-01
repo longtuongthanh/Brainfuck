@@ -29,14 +29,6 @@ class Input final : private NonCopyable
 		Point mouse;
 		int mouseFlag;
 		/*
-			0x0001: LButton down
-			0x0002: RButton down
-			0x0004: SHIFT down.	WARNING: UPDATE IRREGULAR
-			0x0008: CTRL down	WARNING: UPDATE IRREGULAR
-			0x0010: MButton down
-			0x0020: XButton1 down
-			0x0040: XButton2 down
-			2 other bit similar but mark whether it has just changed
 		*/
         RESULT exitCode;
 };

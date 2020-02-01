@@ -201,6 +201,7 @@
     <ClInclude Include="useful_stuff.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cpp.hint" />
     <None Include="font.PS" />
     <None Include="font.VS" />
     <None Include="texture.PS" />

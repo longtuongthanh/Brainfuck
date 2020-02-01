@@ -155,6 +155,7 @@
     <None Include="texture.VS" />
     <None Include="font.PS" />
     <None Include="font.VS" />
+    <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="texture.dds" />

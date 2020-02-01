@@ -25,8 +25,75 @@ HexagonMap& HexagonMap::operator=(const HexagonMap& map)
     return *this;
 }
 
-HRESULT HexagonMap::Frame()
+HRESULT HexagonMap::Frame(CameraClass* camera)
 {
+    // if camera move outside of all tile, then create new one 
+    if (camera->position.x + 1 > max_X * tileWidth)
+    {
+        int numberOfNewTile = (camera->position.x + 1 - max_X * tileWidth) / tileWidth + 1;
+        for (int y = min_Y; y <= max_Y; y++)
+        {
+            for (int x = max_X + 1; x <= max_X + numberOfNewTile; x++)
+            {
+                NewHexagonTile(x, y, tileWidth, tileHeight, padding);
+            }
+        }
+        max_X += numberOfNewTile;
+    }
+
+    if (camera->position.y + 1 > 3 * max_Y * tileHeight / 4)
+    {
+        int numberOfNewTile = (camera->position.y + 1 - 3 * max_Y * tileHeight / 4) / tileHeight + 1;
+        for (int x = min_X; x <= max_X; x++)
+        {
+            for (int y = max_Y + 1; y <= max_Y + numberOfNewTile; y++)
+            {
+                NewHexagonTile(x, y, tileWidth, tileHeight, padding);
+            }
+        }
+        max_Y += numberOfNewTile;
+    }
+
+    if (camera->position.x - 1 < min_X * tileWidth)
+    {
+        int numberOfNewTile = -((camera->position.x - 1 - min_X * tileWidth) / tileWidth - 1);
+        for (int y = min_Y; y <= max_Y; y++)
+        {
+            for (int x = min_X - numberOfNewTile; x < min_X; x++)
+            {
+                NewHexagonTile(x, y, tileWidth, tileHeight, padding);
+            }
+        }
+        min_X -= numberOfNewTile;
+    }
+
+    if (camera->position.y - 1 < 3 * min_Y * tileHeight / 4)
+    {
+        int numberOfNewTile = -((camera->position.y - 1 - 3 * min_Y * tileHeight / 4) / tileHeight - 1);
+        for (int x = min_X; x <= max_X; x++)
+        {
+            for (int y = min_Y - numberOfNewTile; y < min_Y; y++)
+            {
+                NewHexagonTile(x, y, tileWidth, tileHeight, padding);
+            }
+        }
+        min_Y -= numberOfNewTile;
+    }
+
+    /*           DO NOT USE THIS FOR REAL GAMEPLAY         */
+    // Just check if there is any dupplicated tile at one position
+    // Use for debug only, it burns FPS real fast
+
+    //for (int i = 0; i < map.size(); i++)
+    //{
+    //    for (int j = i + 1; j < map.size(); j++)
+    //    {
+    //        if (map[i]->GetPosition() == map[j]->GetPosition())
+    //        {
+    //            return 1;
+    //        }
+    //    }
+    //}
     return 0;
 }
 
@@ -61,9 +128,12 @@ RESULT HexagonMap::InitializeData()
     yCenter = 0.0f;
     zCenter = 10.0f;
 
-    for (int i = -20; i < 20; i++)
+    max_X = max_Y = 10;
+    min_X = min_Y = -10;
+
+    for (int i = -10; i <= 10; i++)
     {
-        for (int j = -20; j < 20; j++)
+        for (int j = -10; j <= 10; j++)
         {
             NewHexagonTile(i, j, tileWidth, tileHeight, padding);
         }
@@ -135,11 +205,11 @@ HexagonTile* HexagonMap::NewHexagonTile(INT xCoord, INT yCoord, FLOAT tileWidth,
     HexagonTile* newTile;
     if (yCoord % 2 == 0)
     {
-        newTile = new HexagonTile(Point(xCoord * tileWidth + tileWidth / 2, 1.5 * yCoord * tileHeight / 2), tileWidth - padding, tileHeight - padding);
+        newTile = new HexagonTile(Point(xCoord * tileWidth + tileWidth / 2, 3 * yCoord * tileHeight / 4), tileWidth - padding, tileHeight - padding);
     }
     else
     {
-        newTile = new HexagonTile(Point(xCoord * tileWidth, 1.5 * yCoord * tileHeight / 2), tileWidth - padding, tileHeight - padding);
+        newTile = new HexagonTile(Point(xCoord * tileWidth, 3 * yCoord * tileHeight / 4), tileWidth - padding, tileHeight - padding);
     }
 
     newTile->Initialize(pDevice, TEXTURE_FILE, textureLib, pShaderLib->GetTextureShader());

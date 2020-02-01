@@ -59,3 +59,8 @@ Point Point::operator+(const Point& p) const
 {
     return Point(x+p.x, y+p.y);
 }
+
+bool Point::operator==(const Point& right)
+{
+	return this->x == right.x && this->y == right.y;
+}

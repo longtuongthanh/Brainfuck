@@ -15,7 +15,7 @@ class ShaderLibrary
 
         TextureShader* GetTextureShader();
 		FontShader* GetFontShader();
-        D3DXMATRIX worldMatrix, projectionMatrix, viewMatrix;
+        D3DXMATRIX worldMatrix, projectionMatrix;
     protected:
 
     private:

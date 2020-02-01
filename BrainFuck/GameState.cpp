@@ -28,23 +28,50 @@ LONG GameState::Initialize(ID3D11Device* device, ID3D11DeviceContext* context, S
 	BLOCKCALL(camera->Initialize(), 
 		"cannot init camera.");
     //NewTextureObject(TEXTURE_FILE);
-	NewTextString();
+	
     map = new HexagonMap(0.15, 0.2, 0.01);
     map->Initialize(pDevice, textureLib, pShaderLib);
     // else cerr << "object load success\n";
+    debugText = new TextString();
+    debugText->Initialize(pDevice, 100, textureLib, pShaderLib->GetFontShader());
     return 0;
 }
 
-LONG GameState::Frame()
+LONG GameState::Frame(Input* input)
 /** Animations, calculations, etc goes here.*/
 {
+    frameTimer.Mark();
+    float time = frameTimer.GetTimeSpan();
     for (auto i : objects)
         if (i->Frame()) {
             cerr << "warning: animation failed\n";
         }
-    frameTimer.Mark();
-    float time = frameTimer.GetTimeSpan();
-
+    if (input->keyboard(VK_LEFT) == KEY_STATE_DOWN || input->keyboard(VK_LEFT) == KEY_STATE_ON_DOWN)
+    {
+        camera->position.x -= time;
+    }
+    if (input->keyboard(VK_RIGHT) == KEY_STATE_DOWN || input->keyboard(VK_RIGHT) == KEY_STATE_ON_DOWN)
+    {
+        camera->position.x += time;
+    }
+    if (input->keyboard(VK_UP) == KEY_STATE_DOWN || input->keyboard(VK_UP) == KEY_STATE_ON_DOWN)
+    {
+        camera->position.y += time;
+    }
+    if (input->keyboard(VK_DOWN) == KEY_STATE_DOWN || input->keyboard(VK_DOWN) == KEY_STATE_ON_DOWN)
+    {
+        camera->position.y -= time;
+    }
+    if (map->Frame(camera) == 1)
+    {
+        debugText->InputString("error " + std::to_string(camera->position.x) + "," + std::to_string(camera->position.y));
+    }
+    else
+    {
+        debugText->InputString("keep going " + std::to_string(camera->position.x) + "," + std::to_string(camera->position.y));
+    }
+    //debugText->InputString(std::to_string(camera->position.x));
+    debugText->ChangePosition(Point(camera->position.x, camera->position.y));
     return 0;
 }
 
@@ -57,17 +84,21 @@ LONG GameState::Release()
 LONG GameState::Draw()
 {
     // Game object render
+    map->Render(pContext, pShaderLib->worldMatrix,
+        camera->viewMatrix,
+        pShaderLib->projectionMatrix);
+
     for (auto i : objects)
         if (i->Render(pContext, pShaderLib->worldMatrix,
-                                pShaderLib->viewMatrix,
+                                camera->viewMatrix,
                                 pShaderLib->projectionMatrix)) {
             cerr << "warning: loading object failed\n";
             return 1;
         }
+
+    debugText->Render(pContext, pShaderLib->worldMatrix, camera->viewMatrix, pShaderLib->projectionMatrix);
     // else cerr << "object on\n";
-    map->Render(pContext, pShaderLib->worldMatrix,
-                            pShaderLib->viewMatrix,
-                            pShaderLib->projectionMatrix);
+    
 
 	BLOCKCALL(camera->Render(), "Cannot switch perspective.");
 

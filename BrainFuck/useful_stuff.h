@@ -80,6 +80,7 @@ struct Point
     Point operator * (double k) const;
     Point operator - (const Point& p) const;
     Point operator + (const Point& p) const;
+    bool operator == (const Point& right);
     Point(double a=0, double b=0): x(a), y(b){}
 	Point(const Point& p):x(p.x), y(p.y) {}
 };

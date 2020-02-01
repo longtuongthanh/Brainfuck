@@ -11,11 +11,12 @@
 #include "CameraClass.h"
 #include "HexagonMap.h"
 #include "Timer.h"
+#include "Input.h"
 
 class GameState final : private NonCopyable
 {
     public:
-        RESULT Frame();
+        RESULT Frame(Input*);
         TextureObject* NewTextureObject(const CHAR* filename, TextureObject* target = NULL);
 		TextString* NewTextString(TextString* target = NULL);
         // documentary moved to cpp file
@@ -35,6 +36,7 @@ class GameState final : private NonCopyable
         HexagonMap* map;
         Timer frameTimer;
         CameraClass* camera;
+        TextString* debugText;
 };
 
 #endif // GAMESTATE_H

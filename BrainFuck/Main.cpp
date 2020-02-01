@@ -115,7 +115,7 @@ RESULT Main::Run()
 
 RESULT Main::frame()
 {
-    if (gameState->Frame()) {
+    if (gameState->Frame(input)) {
         cerr << "FRAME CALCULATION FAILED";
         return 1;
     }

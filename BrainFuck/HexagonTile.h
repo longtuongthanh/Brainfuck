@@ -21,6 +21,7 @@ public:
 	HexagonTile(Point position, FLOAT width, FLOAT height);
 	HexagonTile(const HexagonTile&);
 	~HexagonTile();
+	Point GetPosition();
 
 protected:
 	RESULT InitializeData(); // We can use this to initialize data storage or behavior

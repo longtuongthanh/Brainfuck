@@ -33,6 +33,11 @@ HexagonTile::~HexagonTile()
 {
 }
 
+Point HexagonTile::GetPosition()
+{
+	return position;
+}
+
 RESULT HexagonTile::InitializeData()
 {
 	BLOCKALLOC(VertexType[6], pointArray);
