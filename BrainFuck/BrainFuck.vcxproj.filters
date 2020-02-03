@@ -149,6 +149,9 @@
     <ClInclude Include="HexagonTile.h">
       <Filter>Header Files\Object</Filter>
     </ClInclude>
+    <ClInclude Include="SoundClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="texture.PS" />

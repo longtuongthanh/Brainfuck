@@ -193,6 +193,7 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="ShaderLibrary.h" />
+    <ClInclude Include="SoundClass.h" />
     <ClInclude Include="TextString.h" />
     <ClInclude Include="TextureClass.h" />
     <ClInclude Include="TextureObject.h" />

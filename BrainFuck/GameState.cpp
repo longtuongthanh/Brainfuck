@@ -46,6 +46,8 @@ LONG GameState::Frame(Input* input)
         if (i->Frame()) {
             cerr << "warning: animation failed\n";
         }
+    debugText->ChangePosition(Point(camera->position.x, camera->position.y));
+
     if (input->keyboard(VK_LEFT) == KEY_STATE_DOWN || input->keyboard(VK_LEFT) == KEY_STATE_ON_DOWN)
     {
         camera->position.x -= time;
@@ -71,7 +73,6 @@ LONG GameState::Frame(Input* input)
         debugText->InputString("keep going " + std::to_string(camera->position.x) + "," + std::to_string(camera->position.y));
     }
     //debugText->InputString(std::to_string(camera->position.x));
-    debugText->ChangePosition(Point(camera->position.x, camera->position.y));
     return 0;
 }
 

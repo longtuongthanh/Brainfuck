@@ -31,11 +31,13 @@ HRESULT HexagonMap::Frame(CameraClass* camera)
     if (camera->position.x + 1 > max_X * tileWidth)
     {
         int numberOfNewTile = (camera->position.x + 1 - max_X * tileWidth) / tileWidth + 1;
-        for (int y = min_Y; y <= max_Y; y++)
+        for (int x = max_X + 1; x <= max_X + numberOfNewTile; x++)
         {
-            for (int x = max_X + 1; x <= max_X + numberOfNewTile; x++)
+            map.insert(map.end(), std::vector<HexagonTile*>());
+            for (int y = min_Y; y <= max_Y; y++)
             {
-                NewHexagonTile(x, y, tileWidth, tileHeight, padding);
+                HexagonTile* newTile = NewHexagonTile(x, y, tileWidth, tileHeight, padding);
+                map.back().push_back(newTile);
             }
         }
         max_X += numberOfNewTile;
@@ -48,7 +50,8 @@ HRESULT HexagonMap::Frame(CameraClass* camera)
         {
             for (int y = max_Y + 1; y <= max_Y + numberOfNewTile; y++)
             {
-                NewHexagonTile(x, y, tileWidth, tileHeight, padding);
+                HexagonTile* newTile = NewHexagonTile(x, y, tileWidth, tileHeight, padding);
+                map[x-min_X].push_back(newTile);
             }
         }
         max_Y += numberOfNewTile;
@@ -57,11 +60,13 @@ HRESULT HexagonMap::Frame(CameraClass* camera)
     if (camera->position.x - 1 < min_X * tileWidth)
     {
         int numberOfNewTile = -((camera->position.x - 1 - min_X * tileWidth) / tileWidth - 1);
-        for (int y = min_Y; y <= max_Y; y++)
+        for (int x = min_X - 1; x >= min_X - numberOfNewTile; x--)
         {
-            for (int x = min_X - numberOfNewTile; x < min_X; x++)
+            map.insert(map.begin(), std::vector<HexagonTile*>());
+            for (int y = min_Y; y <= max_Y; y++)
             {
-                NewHexagonTile(x, y, tileWidth, tileHeight, padding);
+                HexagonTile* newTile = NewHexagonTile(x, y, tileWidth, tileHeight, padding);
+                map.front().push_back(newTile);
             }
         }
         min_X -= numberOfNewTile;
@@ -72,28 +77,38 @@ HRESULT HexagonMap::Frame(CameraClass* camera)
         int numberOfNewTile = -((camera->position.y - 1 - 3 * min_Y * tileHeight / 4) / tileHeight - 1);
         for (int x = min_X; x <= max_X; x++)
         {
-            for (int y = min_Y - numberOfNewTile; y < min_Y; y++)
+            for (int y = min_Y - 1; y >= min_Y - numberOfNewTile; y--)
             {
-                NewHexagonTile(x, y, tileWidth, tileHeight, padding);
+                HexagonTile* newTile = NewHexagonTile(x, y, tileWidth, tileHeight, padding);
+                map[x-min_X].push_back(newTile);
             }
         }
         min_Y -= numberOfNewTile;
     }
 
     /*           DO NOT USE THIS FOR REAL GAMEPLAY         */
-    // Just check if there is any dupplicated tile at one position
+    // This code check if there is any dupplicated tile at one position
     // Use for debug only, it burns FPS real fast
+    /*
+    for (auto vector : map)
+    {
+        for (auto tile : vector)
+        {
+            for (auto vector2 : map)
+            {
+                for (auto tile2 : vector2)
+                {
+                    if (tile != tile2 && tile->GetPosition() == tile2->GetPosition())
+                    {
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    */
+    /*    END OF CHECK   */
 
-    //for (int i = 0; i < map.size(); i++)
-    //{
-    //    for (int j = i + 1; j < map.size(); j++)
-    //    {
-    //        if (map[i]->GetPosition() == map[j]->GetPosition())
-    //        {
-    //            return 1;
-    //        }
-    //    }
-    //}
     return 0;
 }
 
@@ -102,9 +117,12 @@ HRESULT HexagonMap::Render(ID3D11DeviceContext* deviceContext,
                             D3DXMATRIX viewMatrix,
                             D3DXMATRIX projectionMatrix)
 {
-    for(auto tile : map)
+    for(auto vector : map)
     {
-        tile->Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
+        for (auto tile : vector)
+        {
+            tile->Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
+        }
     }
     return 0;
 }
@@ -131,11 +149,14 @@ RESULT HexagonMap::InitializeData()
     max_X = max_Y = 10;
     min_X = min_Y = -10;
 
-    for (int i = -10; i <= 10; i++)
+    for (int i = min_X; i <= max_X; i++)
     {
-        for (int j = -10; j <= 10; j++)
+        map.push_back(std::vector<HexagonTile*>());
+        for (int j = min_Y; j <= max_X; j++)
         {
-            NewHexagonTile(i, j, tileWidth, tileHeight, padding);
+            // this is a test, in real game we will load data from file
+            HexagonTile* newTile = NewHexagonTile(i, j, tileWidth, tileHeight, padding);
+            map.back().push_back(newTile);
         }
     }
     return 0;
@@ -200,7 +221,7 @@ RESULT HexagonMap::AddHexagon(FLOAT xCenter, FLOAT yCenter, FLOAT zCenter, FLOAT
     return 0;
 }
 
-HexagonTile* HexagonMap::NewHexagonTile(INT xCoord, INT yCoord, FLOAT tileWidth, FLOAT tileHeight, FLOAT padding)
+HexagonTile* &HexagonMap::NewHexagonTile(INT xCoord, INT yCoord, FLOAT tileWidth, FLOAT tileHeight, FLOAT padding)
 {
     HexagonTile* newTile;
     if (yCoord % 2 == 0)
@@ -213,6 +234,6 @@ HexagonTile* HexagonMap::NewHexagonTile(INT xCoord, INT yCoord, FLOAT tileWidth,
     }
 
     newTile->Initialize(pDevice, TEXTURE_FILE, textureLib, pShaderLib->GetTextureShader());
-    map.push_back(newTile);
+    //map.push_back(newTile);
     return newTile;
 }
