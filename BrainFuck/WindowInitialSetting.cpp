@@ -19,17 +19,24 @@ void Main::InitializeWindow(int& screenWidth, int& screenHeight)
 
 		posX = posY = 0;}
 	else{
-		screenWidth  = 800;
-		screenHeight = 600;
+		RECT screensize = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+		AdjustWindowRectEx(&screensize, 
+							WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX, 
+							FALSE, 
+							WS_EX_APPWINDOW);
+
+		screenWidth  = screensize.right - screensize.left;
+		screenHeight = screensize.bottom - screensize.top;
 
 		posX = (GetSystemMetrics(SM_CXSCREEN) - screenWidth)  / 2;
 		posY = (GetSystemMetrics(SM_CYSCREEN) - screenHeight) / 2;
+
 	}
 
 	hwnd = CreateWindowEx(WS_EX_APPWINDOW,
                           applicationName,
                           applicationName,
-                          WS_OVERLAPPEDWINDOW,//WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP,
+						  WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX, //WS_OVERLAPPEDWINDOW,//WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP,
                           posX,
                           posY,
                           screenWidth,
@@ -42,6 +49,11 @@ void Main::InitializeWindow(int& screenWidth, int& screenHeight)
 	ShowWindow(hwnd, SW_SHOW);
 	SetForegroundWindow(hwnd);
 	SetFocus(hwnd);
+
+	if (!FULLSCREEN) {
+		screenWidth = SCREEN_WIDTH;
+		screenHeight = SCREEN_HEIGHT;
+	}
 
 	//ShowCursor(false);
 }

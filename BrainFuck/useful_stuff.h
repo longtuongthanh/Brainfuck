@@ -41,7 +41,7 @@
 #define BLOCKCALL(command, errorString) if (command) {cerr << errorString; return 1;}
 
 /** Mark as error checking. Will be defined as nothing in final code*/
-#define ERRORCHECK(stuff) stuff
+#define DEBUG(stuff) stuff
 
 struct DXGI_RATIONAL;
 typedef DXGI_RATIONAL RefreshRate;
@@ -64,11 +64,9 @@ class NonCopyable
 class Invokable
 {
 public:
-    Invokable(FUNCTION(void, func, void*));
-    ~Invokable();
-    void Invoke(void*);
-private:
-    FUNCTION(void, func, void*);
+	Invokable() {};
+	virtual ~Invokable() {};
+	virtual void Invoke(void* param) {};
 };
 
 struct Point

@@ -88,7 +88,7 @@ RESULT TextString::Render(ID3D11DeviceContext* deviceContext,
 RESULT TextString::InitializeData()
 {
 	string = "Hello text! No new line support.";
-	size = 0.125f;
+	size = 0.15f;
 	position = Point(1, 0);
 	return 0;
 }

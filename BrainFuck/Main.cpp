@@ -47,24 +47,17 @@ RESULT Main::Initialize()
     RegisterWindow();
     InitializeWindow(screenWidth, screenHeight);
 
-    if (!(input = new Input)) {
-        cerr << "Out of memory";
-        return 1;}
-    if (input->Initialize()) {
-        cerr << "*** Input ***\n";
-        return 1;}
+	BLOCKALLOC(Input, input);
+	BLOCKCALL(input->Initialize(),
+		"*** Input ***\n");
 
-    if (!(graphic = new Graphic)) {
-        cerr << "Out of memory\n";
-        return 1;}
-    if (graphic->Initialize(screenWidth, screenHeight, hwnd)) {
-        cerr << "*** Graphic ***\n";
-        return 1;}
+	BLOCKALLOC(Graphic, graphic);
+	BLOCKCALL(graphic->Initialize(screenWidth, screenHeight, hwnd),
+		"*** Graphic ***\n");
 
     BLOCKALLOC(GameState, gameState);
-    if (gameState->Initialize(graphic->GetDevice(), graphic->GetDeviceContext(), graphic->GetShaderLibrary())) {
-        cerr << "*** GameState ***\n";
-        return 1;}
+	BLOCKCALL(gameState->Initialize(graphic->GetDevice(), graphic->GetDeviceContext(), graphic->GetShaderLibrary(), input),
+		"*** GameState ***\n");
 
     return 0;
 }

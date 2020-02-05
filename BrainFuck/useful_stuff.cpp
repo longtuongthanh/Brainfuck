@@ -20,21 +20,6 @@ NonCopyable& NonCopyable::operator=(const NonCopyable&)
 	return *this;
 }
 
-Invokable::Invokable(FUNCTION(void, func, void*))
-{
-    this->func = func;
-}
-
-Invokable::~Invokable()
-{
-}
-
-void Invokable::Invoke(void* param)
-{
-    func(param);
-}
-
-
 double Point::length()
 {
     return sqrt(x*x + y*y);

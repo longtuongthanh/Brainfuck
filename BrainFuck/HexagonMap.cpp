@@ -25,12 +25,12 @@ HexagonMap& HexagonMap::operator=(const HexagonMap& map)
     return *this;
 }
 
-HRESULT HexagonMap::Frame(CameraClass* camera)
+HRESULT HexagonMap::Frame(const Point& cameraPos)
 {
     // if camera move outside of all tile, then create new one 
-    if (camera->position.x + 1 > max_X * tileWidth)
+    if (cameraPos.x + 1 > max_X * tileWidth)
     {
-        int numberOfNewTile = (camera->position.x + 1 - max_X * tileWidth) / tileWidth + 1;
+        int numberOfNewTile = (cameraPos.x + 1 - max_X * tileWidth) / tileWidth + 1;
         for (int x = max_X + 1; x <= max_X + numberOfNewTile; x++)
         {
             map.insert(map.end(), std::vector<HexagonTile*>());
@@ -43,9 +43,9 @@ HRESULT HexagonMap::Frame(CameraClass* camera)
         max_X += numberOfNewTile;
     }
 
-    if (camera->position.y + 1 > 3 * max_Y * tileHeight / 4)
+    if (cameraPos.y + 1 > 3 * max_Y * tileHeight / 4)
     {
-        int numberOfNewTile = (camera->position.y + 1 - 3 * max_Y * tileHeight / 4) / tileHeight + 1;
+        int numberOfNewTile = (cameraPos.y + 1 - 3 * max_Y * tileHeight / 4) / tileHeight + 1;
         for (int x = min_X; x <= max_X; x++)
         {
             for (int y = max_Y + 1; y <= max_Y + numberOfNewTile; y++)
@@ -57,9 +57,9 @@ HRESULT HexagonMap::Frame(CameraClass* camera)
         max_Y += numberOfNewTile;
     }
 
-    if (camera->position.x - 1 < min_X * tileWidth)
+    if (cameraPos.x - 1 < min_X * tileWidth)
     {
-        int numberOfNewTile = -((camera->position.x - 1 - min_X * tileWidth) / tileWidth - 1);
+        int numberOfNewTile = -((cameraPos.x - 1 - min_X * tileWidth) / tileWidth - 1);
         for (int x = min_X - 1; x >= min_X - numberOfNewTile; x--)
         {
             map.insert(map.begin(), std::vector<HexagonTile*>());
@@ -72,9 +72,9 @@ HRESULT HexagonMap::Frame(CameraClass* camera)
         min_X -= numberOfNewTile;
     }
 
-    if (camera->position.y - 1 < 3 * min_Y * tileHeight / 4)
+    if (cameraPos.y - 1 < 3 * min_Y * tileHeight / 4)
     {
-        int numberOfNewTile = -((camera->position.y - 1 - 3 * min_Y * tileHeight / 4) / tileHeight - 1);
+        int numberOfNewTile = -((cameraPos.y - 1 - 3 * min_Y * tileHeight / 4) / tileHeight - 1);
         for (int x = min_X; x <= max_X; x++)
         {
             for (int y = min_Y - 1; y >= min_Y - numberOfNewTile; y--)
@@ -106,7 +106,7 @@ HRESULT HexagonMap::Frame(CameraClass* camera)
             }
         }
     }
-    */
+    // */
     /*    END OF CHECK   */
 
     return 0;
@@ -221,10 +221,10 @@ RESULT HexagonMap::AddHexagon(FLOAT xCenter, FLOAT yCenter, FLOAT zCenter, FLOAT
     return 0;
 }
 
-HexagonTile* &HexagonMap::NewHexagonTile(INT xCoord, INT yCoord, FLOAT tileWidth, FLOAT tileHeight, FLOAT padding)
+HexagonTile* HexagonMap::NewHexagonTile(INT xCoord, INT yCoord, FLOAT tileWidth, FLOAT tileHeight, FLOAT padding)
 {
     HexagonTile* newTile;
-    if (yCoord % 2 == 0)
+    if (yCoord % 2 != 0)
     {
         newTile = new HexagonTile(Point(xCoord * tileWidth + tileWidth / 2, 3 * yCoord * tileHeight / 4), tileWidth - padding, tileHeight - padding);
     }
