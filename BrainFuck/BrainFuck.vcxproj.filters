@@ -93,6 +93,9 @@
     <ClCompile Include="HexagonTile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SoundClass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameState.h">
@@ -168,5 +171,10 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="char_size.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="gwyn.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
 </Project>

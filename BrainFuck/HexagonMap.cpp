@@ -224,7 +224,7 @@ RESULT HexagonMap::AddHexagon(FLOAT xCenter, FLOAT yCenter, FLOAT zCenter, FLOAT
 HexagonTile* &HexagonMap::NewHexagonTile(INT xCoord, INT yCoord, FLOAT tileWidth, FLOAT tileHeight, FLOAT padding)
 {
     HexagonTile* newTile;
-    if (yCoord % 2 == 0)
+    if (yCoord % 2 != 0)
     {
         newTile = new HexagonTile(Point(xCoord * tileWidth + tileWidth / 2, 3 * yCoord * tileHeight / 4), tileWidth - padding, tileHeight - padding);
     }

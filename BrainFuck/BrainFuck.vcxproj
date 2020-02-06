@@ -172,6 +172,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ShaderLibrary.cpp" />
+    <ClCompile Include="SoundClass.cpp" />
     <ClCompile Include="TextString.cpp" />
     <ClCompile Include="TextureClass.cpp" />
     <ClCompile Include="TextureObject.cpp" />
@@ -214,6 +215,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="char_size.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="gwyn.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

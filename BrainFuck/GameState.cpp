@@ -34,6 +34,8 @@ LONG GameState::Initialize(ID3D11Device* device, ID3D11DeviceContext* context, S
     // else cerr << "object load success\n";
     debugText = new TextString();
     debugText->Initialize(pDevice, 100, textureLib, pShaderLib->GetFontShader());
+    sound = new SoundClass();
+    
     return 0;
 }
 
@@ -50,6 +52,8 @@ LONG GameState::Frame(Input* input)
 
     if (input->keyboard(VK_LEFT) == KEY_STATE_DOWN || input->keyboard(VK_LEFT) == KEY_STATE_ON_DOWN)
     {
+        sound->LoadWaveFile("gwyn.wav");
+        sound->PlayWaveFile();
         camera->position.x -= time;
     }
     if (input->keyboard(VK_RIGHT) == KEY_STATE_DOWN || input->keyboard(VK_RIGHT) == KEY_STATE_ON_DOWN)

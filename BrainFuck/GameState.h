@@ -12,6 +12,7 @@
 #include "HexagonMap.h"
 #include "Timer.h"
 #include "Input.h"
+#include "SoundClass.h"
 
 class GameState final : private NonCopyable
 {
@@ -37,6 +38,7 @@ class GameState final : private NonCopyable
         Timer frameTimer;
         CameraClass* camera;
         TextString* debugText;
+        SoundClass* sound;
 };
 
 #endif // GAMESTATE_H
