@@ -37,9 +37,14 @@ RESULT Input::keyboard(char x)
     return opcode[x];
 }
 
-Point Input::Mouse()
+Point Input::MouseToScreen()
 {
-	return mouse;
+	return Point(mouse.x / SCREEN_WIDTH * 2 - 1, 1 - mouse.y / SCREEN_HEIGHT * 2);
+}
+
+Point Input::MouseToField()
+{
+	return Point(mouse.x / SCREEN_WIDTH * 2 - 1, (SCREEN_HEIGHT - mouse.y * 2) / SCREEN_WIDTH);
 }
 
 int Input::MouseFlag()
@@ -58,20 +63,21 @@ RESULT Input::keydown(WPARAM wparam, LPARAM)
     switch (wparam)
     {
     case VK_ESCAPE:
-        exitCode = CODE_KILL;
+        //exitCode = CODE_KILL;
+		PostQuitMessage(0);
         break;
     default:
         break;
     }
 
-    cerr << char(wparam);
+    DEBUG(cerr << char(wparam));
     return 0;
 }
 
 RESULT Input::keyup(WPARAM wparam, LPARAM)
 {
     opcode[wparam] = KEY_STATE_ON_UP;
-    cerr << char(254);
+    DEBUG(cerr << char(254));
     return 0;
 }
 
@@ -80,7 +86,7 @@ RESULT Input::mousechange(WPARAM wparam, LPARAM lparam)
     mouse.x = GET_X_LPARAM(lparam);
     mouse.y = GET_Y_LPARAM(lparam);
 
-	if (mouseFlag != wparam)
+	if ((mouseFlag & 0x00ff) != wparam)
 	{
 		mouseFlag = wparam | (((mouseFlag ^ wparam) & 0x00ff) << 8);
 	}

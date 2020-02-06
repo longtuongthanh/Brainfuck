@@ -4,7 +4,6 @@
 #include "HexagonTile.h"
 #include <vector>
 #include "ShaderLibrary.h"
-#include "CameraClass.h"
 
 static const CHAR* HEXAGON_TEXTURE_FILE = "texture.dds";
 
@@ -16,7 +15,7 @@ public:
 	~HexagonMap();
 
 	HexagonMap& operator=(const HexagonMap &);
-	HRESULT Frame(CameraClass* camera);
+	HRESULT Frame(const Point&);
 
 	HRESULT Render(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX, D3DXMATRIX);
 
@@ -26,7 +25,7 @@ protected:
 	RESULT InitializeData();
 	RESULT AddHexagon(FLOAT xCenter, FLOAT yCenter, FLOAT zCenter, FLOAT tileWidth, FLOAT tileHeight);
 
-	HexagonTile* &NewHexagonTile(INT xCoord, INT yCoord, FLOAT tileWidth, FLOAT tileHeight, FLOAT padding);
+	HexagonTile* NewHexagonTile(INT xCoord, INT yCoord, FLOAT tileWidth, FLOAT tileHeight, FLOAT padding);
 
 private:
 	FLOAT tileWidth, tileHeight; // width and height of hexagon

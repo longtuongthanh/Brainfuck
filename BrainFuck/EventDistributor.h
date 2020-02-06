@@ -22,11 +22,12 @@ public:
 	/** Try not to use this. Removes all pointers with same address 
 		by iterating through all of them (UNIMPLEMENTED)*/
 	RESULT Remove(Invokable*);
-	/** Prevents subscribtion and start allowing events to happen.*/
+	/** Prevents subscribtion and start allowing events to happen each Frame().*/
 	RESULT Lock();
 
 	RESULT SubscribeOnKeyDown(char, Invokable*);
 	RESULT SubscribeWhileKeyDown(char, Invokable*);
+	// Note: Function pointer is only for static / global functions.
 	RESULT SubscribeMouseClick(FUNCTION(void*, check, Point), Invokable*);
 private:
 	/** Invokable will be passed a pointer containing the character.*/

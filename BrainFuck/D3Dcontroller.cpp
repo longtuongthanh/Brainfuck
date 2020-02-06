@@ -39,7 +39,8 @@ RESULT D3Dcontroller::Initialize(D3Dcontroller_setting& setting) {
 		"Failed to create raster state\n");
 	BLOCKCALL(CreateMatrix(setting.screenWidth, setting.screenHeight, setting.screenNear, setting.screenDepth), 
 		"Failed to create world matrix\n");
-	BLOCKCALL(CreateBlendState(), "Failed to create blend state\n");
+	BLOCKCALL(CreateBlendState(), 
+		"Failed to create blend state\n");
     return 0;
 }
 RESULT D3Dcontroller::Release() {
@@ -294,6 +295,7 @@ RESULT D3Dcontroller::CreateMatrix(int screenWidth,
     D3DXMatrixPerspectiveFovLH(&projectionMatrix, viewArc, screenRatio, screenNear, screenDepth);
     D3DXMatrixIdentity(&worldMatrix);
     D3DXMatrixOrthoLH(&orthoMatrix, 2, 2, screenNear, screenDepth);
+	D3DXMatrixOrthoLH(&flatMatrix, 2, 2 * float(screenHeight) / screenWidth, screenNear, screenDepth);
 	/*
 	for (int i = 0; i < 16; i++) {
 		cerr << projectionMatrix[i];

@@ -22,7 +22,6 @@ HexagonTile::HexagonTile(Point position, FLOAT width, FLOAT height)
 	this->position = position;
 	this->width = width;
 	this->height = height;
-	InitializeData();
 }
 
 HexagonTile::HexagonTile(const HexagonTile&)

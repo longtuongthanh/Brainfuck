@@ -6,6 +6,10 @@
 #include "Graphic.h"
 #include "GameState.h"
 
+//static const int SCREEN_WIDTH = 800;
+//static const int SCREEN_HEIGHT = 600;
+// screen width & height moved to Input
+
 class Main final : private NonCopyable
 {
     public:

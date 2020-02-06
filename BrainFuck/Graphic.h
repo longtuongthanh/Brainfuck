@@ -31,7 +31,10 @@ class Graphic : private NonCopyable
         RESULT DrawSetup3D();
 		/** 2D Drawing for UI elements. Scale according to screen size (stretch to fit).
 			(-1, -1) is bottom left, (1, 1) is top right.*/
-        RESULT DrawSetup2D();
+        RESULT DrawSetupUI();
+		/** 2D Drawing for game elements. Scale according to screen width (keep aspect ratio)
+			The width of the screen is -1 to 1.*/
+		RESULT DrawSetup2D();
 
         inline ID3D11Device* GetDevice() {return controller->GetDevice();}
         inline ID3D11DeviceContext* GetDeviceContext() {return controller->GetDeviceContext();}

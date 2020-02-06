@@ -62,7 +62,7 @@ RESULT Graphic::DrawSetup3D()
     return 0;
 }
 
-RESULT Graphic::DrawSetup2D()
+RESULT Graphic::DrawSetupUI()
 {
 	shaderLib->worldMatrix = controller->worldMatrix;
 	shaderLib->projectionMatrix = controller->orthoMatrix;
@@ -76,6 +76,22 @@ RESULT Graphic::DrawSetup2D()
     // else cerr << "clear complete\n";
 
     return 0;
+}
+
+RESULT Graphic::DrawSetup2D()
+{
+	shaderLib->worldMatrix = controller->worldMatrix;
+	shaderLib->projectionMatrix = controller->flatMatrix;
+
+	controller->TurnZBufferOff();
+
+	if (controller->draw()) {
+		cerr << "warning: cannot clear screen\n";
+		return 1;
+	}
+	// else cerr << "clear complete\n";
+
+	return 0;
 }
 
 RESULT Graphic::Release()

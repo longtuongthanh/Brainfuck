@@ -21,14 +21,17 @@ RESULT EventDistributor::Initialize(Input* input)
 
 RESULT EventDistributor::Frame()
 {
-	for (char i = 0; i < 256; i++) {
+	if (!locked) return 1;
+	char i = 0;
+	for (int j = 0; j < 255; j++) {
+		i = j;
 		switch (pInput->keyboard(i))
 		{
-		case 3:
+		case KEY_STATE_ON_DOWN:
 			for (auto command : onKeyDown[i])
 				command->Invoke(&i);
 			// no break;
-		case 1:
+		case KEY_STATE_DOWN:
 			for (auto command : whileKeyDown[i])
 				command->Invoke(&i);
 			break;
@@ -39,7 +42,7 @@ RESULT EventDistributor::Frame()
 	if (pInput->MouseFlag() & 0x0100) {
 		for (int i = 0; i < mouseClickCondition.size(); i++)
 		{
-			void* result = mouseClickCondition[i](pInput->Mouse());
+			void* result = mouseClickCondition[i](pInput->MouseToScreen());
 			if (result != NULL)
 				onMouseClick[i]->Invoke(result);
 		}
@@ -61,12 +64,13 @@ RESULT EventDistributor::Lock()
 	}
 	mouseClickCondition.shrink_to_fit();
 	onMouseClick.shrink_to_fit();
-	ERRORCHECK(
+	DEBUG(
 	if (mouseClickCondition.size() != onMouseClick.size()) {
 		cerr << "EventDistributor Error: wrong array size.";
 		return 1;
 	}
 	);
+	// end DEBUG
 	locked = true;
 	return 0;
 }
