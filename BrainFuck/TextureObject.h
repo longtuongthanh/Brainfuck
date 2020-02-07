@@ -12,12 +12,12 @@ static const CHAR* TEXTURE_FILE = "texture.dds";
 
 class TextureObject : public GraphicObject
 {
-	private:
-		struct VertexType
-		{
-			D3DXVECTOR3 position;
-			D3DXVECTOR2 texture;
-		};
+    public:
+        struct VertexType
+        {
+            D3DXVECTOR3 position;
+            D3DXVECTOR2 texture;
+        };
     public:
         TextureObject();
         TextureObject(const TextureObject&);
@@ -46,10 +46,11 @@ class TextureObject : public GraphicObject
         VertexType* pointArray;
 
         ID3D11ShaderResourceView* texture;
+        
     private:
         ID3D11Buffer *vertexBuf;
 
-        ID3D11Device* device;
+        ID3D11Device* pDevice;
         CHAR* imageSrc;
         TextureShader* shader;
         //RefreshRate refreshRate;

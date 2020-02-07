@@ -40,6 +40,9 @@
 /** Call the command. If it fails, return 1*/
 #define BLOCKCALL(command, errorString) if (command) {cerr << errorString; return 1;}
 
+/** Mark as error checking. Will be defined as nothing in final code*/
+#define DEBUG(stuff) stuff
+
 struct DXGI_RATIONAL;
 typedef DXGI_RATIONAL RefreshRate;
 
@@ -61,12 +64,9 @@ class NonCopyable
 class Invokable
 {
 public:
-    Invokable(FUNCTION(void, func, void*), void* param);
-    ~Invokable();
-    void Invoke();
-private:
-    FUNCTION(void, func, void*);
-    void* param;
+	Invokable() {};
+	virtual ~Invokable() {};
+	virtual void Invoke(void* param) {};
 };
 
 struct Point
@@ -78,7 +78,9 @@ struct Point
     Point operator * (double k) const;
     Point operator - (const Point& p) const;
     Point operator + (const Point& p) const;
+    bool operator == (const Point& right);
     Point(double a=0, double b=0): x(a), y(b){}
+	Point(const Point& p):x(p.x), y(p.y) {}
 };
 
 #define CODE_KILL 2

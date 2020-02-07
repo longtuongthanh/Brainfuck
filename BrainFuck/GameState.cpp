@@ -2,7 +2,7 @@
 
 GameState::GameState()
 {
-    shaderLib = 0;
+    pShaderLib = 0;
     textureLib = 0;
 }
 
@@ -11,54 +11,129 @@ GameState::~GameState()
     DESTROY(textureLib);
     for (auto i : objects)
         DESTROY(i);
+	DESTROY(camera);
+	DESTROY(inputEvents);
+	delete invokable1;
+	delete map;
 }
 
-LONG GameState::Initialize(ID3D11Device* device, ID3D11DeviceContext* context, ShaderLibrary* shaderLib)
+Point GameState::GetCoord(Point point)
 {
-    this->context = context;
-    this->device = device;
-    this->shaderLib = shaderLib;
+	int y = round(point.y * 4 / HEXAGON_SIZE / 3);
+	int x = round(point.x * 2 / HEXAGON_SIZE / sqrt(3));
+	int x2 = round(point.x * 2 / HEXAGON_SIZE / sqrt(3) - 0.5);
+	if (y % 2 != 0)
+		std::swap(x, x2);
+	if ((point - GetLocation(x, y)).length() < HEXAGON_SIZE / 4 * sqrt(3))
+		return Point(x, y);
 
+	int y2 = floor(point.y * 4 / HEXAGON_SIZE / 3);
+	if (y2 == y)
+		y2++;
+	if ((point - GetLocation(x, y)).length() < (point - GetLocation(x2, y2)).length())
+		return Point(x, y);
+	else 
+		return Point(x2, y2);
+}
+
+Point GameState::GetLocation(int x, int y)
+{
+	if (y % 2 == 0)
+		return Point(x * HEXAGON_SIZE * sqrt(3) / 2, (double)y * HEXAGON_SIZE * 3 / 4);
+	else
+		return Point((x + 0.5) * HEXAGON_SIZE * sqrt(3) / 2, (double)y * HEXAGON_SIZE * 3 / 4);
+}
+
+RESULT GameState::Initialize(ID3D11Device* device,
+						   ID3D11DeviceContext* context,
+						   ShaderLibrary* shaderLib,
+						   Input* input)
+{
+    this->pContext = context;
+    this->pDevice = device;
+    this->pShaderLib = shaderLib;
     BLOCKALLOC(TextureClass, textureLib);
     BLOCKCALL(textureLib->Initialize(device), 
 		"failed to setup TextureClass\n");
 
+    frameTimer.Initalize();
+   
 	BLOCKALLOC(CameraClass, camera);
 	BLOCKCALL(camera->Initialize(), 
 		"cannot init camera.");
-    //NewTextureObject(TEXTURE_FILE);
-	NewTextString();
 
+	BLOCKALLOC(EventDistributor, inputEvents);
+	BLOCKCALL(inputEvents->Initialize(input),
+		"cannot init input event system");
+
+	BLOCKALLOC(InvokableMoveCameraWithArrowKey(camera, &frameTimer), invokable1);
+	inputEvents->SubscribeWhileKeyDown(VK_DOWN, invokable1);
+	inputEvents->SubscribeWhileKeyDown(VK_UP, invokable1);
+	inputEvents->SubscribeWhileKeyDown(VK_LEFT, invokable1);
+	inputEvents->SubscribeWhileKeyDown(VK_RIGHT, invokable1);
+
+	inputEvents->Lock();
+
+    //NewTextureObject(TEXTURE_FILE);
+    map = new HexagonMap(HEXAGON_SIZE * sqrt(3) / 2, HEXAGON_SIZE, HEXAGON_PADDING);
+    map->Initialize(pDevice, textureLib, pShaderLib);
+    // else cerr << "object load success\n";
+    debugText = new TextString();
+    debugText->Initialize(pDevice, 100, textureLib, pShaderLib->GetFontShader());
     return 0;
 }
 
-LONG GameState::Frame()
+RESULT GameState::Frame(Input* input)
 /** Animations, calculations, etc goes here.*/
 {
+	Point cameraPos = Point(camera->position.x, camera->position.y);
+    frameTimer.Mark();
     for (auto i : objects)
         if (i->Frame()) {
             cerr << "warning: animation failed\n";
         }
+    debugText->ChangePosition(cameraPos);
+
+	inputEvents->Frame();
+	
+	Point x = GetCoord(input->MouseToField() + cameraPos);
+
+    if (map->Frame(cameraPos) == 1)
+    {
+        debugText->InputString("error " + std::to_string((int)x.x) + "," + std::to_string((int)x.y));
+    }
+    else
+    {
+        debugText->InputString("keep going " + std::to_string((int)x.x) + "," + std::to_string((int)x.y));
+    }
+    //debugText->InputString(std::to_string(camera->position.x));
     return 0;
 }
 
-LONG GameState::Release()
+RESULT GameState::Release()
 {
     delete this;
     return 0;
 }
 
-LONG GameState::Draw()
+RESULT GameState::Draw()
 {
     // Game object render
+    map->Render(pContext, pShaderLib->worldMatrix,
+        camera->viewMatrix,
+        pShaderLib->projectionMatrix);
+
     for (auto i : objects)
-        if (i->Render(context, shaderLib->worldMatrix,
+        if (i->Render(pContext, pShaderLib->worldMatrix,
                                 camera->viewMatrix,
-                                shaderLib->projectionMatrix)) {
+                                pShaderLib->projectionMatrix)) {
             cerr << "warning: loading object failed\n";
             return 1;
         }
+
+    debugText->Render(pContext, pShaderLib->worldMatrix, camera->viewMatrix, pShaderLib->projectionMatrix);
     // else cerr << "object on\n";
+    
 
 	BLOCKCALL(camera->Render(), "Cannot switch perspective.");
 
@@ -76,7 +151,7 @@ TextureObject* GameState::NewTextureObject(const CHAR* filename, TextureObject* 
         cerr << "Out of memory";
         return NULL;
     }
-    if (target->Initialize(device, filename, textureLib, shaderLib->GetTextureShader())) {
+    if (target->Initialize(pDevice, filename, textureLib, pShaderLib->GetTextureShader())) {
         DESTROY(target);
         return NULL;
     }
@@ -92,10 +167,33 @@ TextString * GameState::NewTextString(TextString* target)
 		cerr << "Out of memory";
 		return NULL;
 	}
-	if (target->Initialize(device, 100, textureLib, shaderLib->GetFontShader())) {
+	if (target->Initialize(pDevice, 100, textureLib, pShaderLib->GetFontShader())) {
 		DESTROY(target);
 		return NULL;
 	}
 	objects.insert(target);
 	return target;
+}
+
+void InvokableMoveCameraWithArrowKey::Invoke(void* param)
+{
+	char* arg = (char*)param;
+	float time = timer->GetTimeSpan();
+	switch (*arg)
+	{
+	case VK_UP:
+		camera->position.y += time;
+		break;
+	case VK_DOWN:
+		camera->position.y -= time;
+		break;
+	case VK_LEFT:
+		camera->position.x -= time;
+		break;
+	case VK_RIGHT:
+		camera->position.x += time;
+		break;
+	default:
+		break;
+	}
 }

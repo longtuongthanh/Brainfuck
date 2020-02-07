@@ -88,8 +88,8 @@ RESULT TextString::Render(ID3D11DeviceContext* deviceContext,
 RESULT TextString::InitializeData()
 {
 	string = "Hello text! No new line support.";
-	size = 0.125f;
-	position = Point(-0.5, 0);
+	size = 0.15f;
+	position = Point(1, 0);
 	return 0;
 }
 RESULT TextString::Frame()
@@ -140,6 +140,16 @@ RESULT TextString::LoadRenderData(void* pData)
 		curx += width;
 	}
 
+	return 0;
+}
+RESULT TextString::InputString(std::string input)
+{
+	string = input;
+	return 0;
+}
+RESULT TextString::ChangePosition(Point newPosition)
+{
+	position = newPosition;
 	return 0;
 }
 ID3D11ShaderResourceView* TextString::GetTexture() {

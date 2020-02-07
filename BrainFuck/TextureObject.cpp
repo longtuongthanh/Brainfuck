@@ -2,7 +2,7 @@
 
 TextureObject::TextureObject() {
     vertexBuf = 0;
-    device = 0;
+    pDevice = 0;
     pointArray = 0;
     texture = 0;
     shader = 0;
@@ -22,7 +22,7 @@ TextureObject::TextureObject(const TextureObject& object) {
     pointArray = new VertexType[pointCount];
     memcpy(pointArray, object.pointArray, sizeof(VertexType) * pointCount);
 
-    Setup(object.device);
+    Setup(object.pDevice);
 }
 TextureObject& TextureObject::operator = (const TextureObject& object) {
     DESTROY(vertexBuf);
@@ -34,14 +34,14 @@ TextureObject& TextureObject::operator = (const TextureObject& object) {
     pointArray = new VertexType[pointCount];
     memcpy(pointArray, object.pointArray, sizeof(VertexType) * pointCount);
 
-    Setup(object.device);
+    Setup(object.pDevice);
     texture = object.texture;
     shader = object.shader;
     return *this;
 }
 RESULT TextureObject::Setup(ID3D11Device* device)
 {
-    this->device = device;
+    this->pDevice = device;
 
     D3D11_BUFFER_DESC vertexBufDesc;
     D3D11_SUBRESOURCE_DATA vertexData;
@@ -60,6 +60,7 @@ RESULT TextureObject::Setup(ID3D11Device* device)
     COMCALL(device->CreateBuffer(&vertexBufDesc, &vertexData, &vertexBuf));
     return 0;
 }
+
 RESULT TextureObject::Initialize(ID3D11Device* device, const CHAR* textureFile, TextureClass* texture, TextureShader* shader)
 {
     //refreshRate = rate;
@@ -78,6 +79,7 @@ RESULT TextureObject::Render(ID3D11DeviceContext* deviceContext,
                                      D3DXMATRIX viewMatrix,
                                      D3DXMATRIX projectionMatrix)
 {
+
     D3D11_MAPPED_SUBRESOURCE mappedVertices;
     COMCALL(deviceContext->Map(vertexBuf, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedVertices));
 	BLOCKCALL(LoadRenderData(mappedVertices.pData), "cannot load data to render");
@@ -98,17 +100,8 @@ RESULT TextureObject::Render(ID3D11DeviceContext* deviceContext,
 }
 RESULT TextureObject::InitializeData()
 {
-    pointCount = 3;
+    pointCount = 0;
 
-    BLOCKALLOC(VertexType[pointCount], pointArray);
-
-    (*this)[0].position = D3DXVECTOR3(-1.0f, -1.0f, 2.0f);   // Bottom left
-    (*this)[1].position = D3DXVECTOR3(1.0f, -1.0f, 2.0f);    // Bottom right
-    (*this)[2].position = D3DXVECTOR3(0.0f, 1.0f, 2.0f);     // Top middle
-
-    (*this)[0].texture = D3DXVECTOR2(0.0f, 1.0f);
-    (*this)[1].texture = D3DXVECTOR2(1.0f, 1.0f);
-    (*this)[2].texture = D3DXVECTOR2(0.5f, 0.0f);
     return 0;
 }
 RESULT TextureObject::Frame()

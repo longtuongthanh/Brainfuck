@@ -11,7 +11,13 @@ LRESULT Main::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)
 			return input->keyup(wparam, lparam);
 
         case WM_MOUSEMOVE:
-            return input->mousemove(wparam, lparam);
+		case WM_LBUTTONUP:
+		case WM_LBUTTONDOWN:
+		case WM_MBUTTONUP:
+		case WM_MBUTTONDOWN:
+		case WM_RBUTTONUP:
+		case WM_RBUTTONDOWN:
+			return input->mousechange(wparam, lparam);
 
 		case WM_DESTROY:{
 			PostQuitMessage(0);
@@ -41,24 +47,17 @@ RESULT Main::Initialize()
     RegisterWindow();
     InitializeWindow(screenWidth, screenHeight);
 
-    if (!(input = new Input)) {
-        cerr << "Out of memory";
-        return 1;}
-    if (input->Initialize()) {
-        cerr << "*** Input ***\n";
-        return 1;}
+	BLOCKALLOC(Input, input);
+	BLOCKCALL(input->Initialize(),
+		"*** Input ***\n");
 
-    if (!(graphic = new Graphic)) {
-        cerr << "Out of memory\n";
-        return 1;}
-    if (graphic->Initialize(screenWidth, screenHeight, hwnd)) {
-        cerr << "*** Graphic ***\n";
-        return 1;}
+	BLOCKALLOC(Graphic, graphic);
+	BLOCKCALL(graphic->Initialize(screenWidth, screenHeight, hwnd),
+		"*** Graphic ***\n");
 
     BLOCKALLOC(GameState, gameState);
-    if (gameState->Initialize(graphic->GetDevice(), graphic->GetDeviceContext(), graphic->GetShaderLibrary())) {
-        cerr << "*** GameState ***\n";
-        return 1;}
+	BLOCKCALL(gameState->Initialize(graphic->GetDevice(), graphic->GetDeviceContext(), graphic->GetShaderLibrary(), input),
+		"*** GameState ***\n");
 
     return 0;
 }
@@ -97,6 +96,7 @@ RESULT Main::Run()
 			DispatchMessage(&msg);
             if(msg.message == WM_QUIT)
                 break;
+
 		}
 		else
 			if (frame())
@@ -108,7 +108,7 @@ RESULT Main::Run()
 
 RESULT Main::frame()
 {
-    if (gameState->Frame()) {
+    if (gameState->Frame(input)) {
         cerr << "FRAME CALCULATION FAILED";
         return 1;
     }
@@ -125,5 +125,7 @@ RESULT Main::frame()
         return 1;
     }
     // else cerr << "FRAME COMPLETE\n";
+
+	BLOCKCALL(input->frame(), "CANNOT CLEAR INPUT");
     return 0;
 }

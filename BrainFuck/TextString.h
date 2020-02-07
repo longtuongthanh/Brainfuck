@@ -34,6 +34,9 @@ public:
 	virtual RESULT Frame();
 	virtual RESULT LoadRenderData(void*);
 
+	RESULT InputString(std::string input);
+	RESULT ChangePosition(Point newPosition);
+
 	ID3D11ShaderResourceView* GetTexture();
 protected:
 	RESULT Setup(ID3D11Device*);

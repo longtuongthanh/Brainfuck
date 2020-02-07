@@ -61,6 +61,7 @@ class D3Dcontroller final : NonCopyable
         D3DXMATRIX projectionMatrix;
         D3DXMATRIX worldMatrix;
         D3DXMATRIX orthoMatrix;
+		D3DXMATRIX flatMatrix;
         int videoCardMemory;
         char videoCardDescription[128];
     protected:

@@ -81,6 +81,18 @@
     <ClCompile Include="GraphicObject.cpp">
       <Filter>Source Files\Object</Filter>
     </ClCompile>
+    <ClCompile Include="HexagonMap.cpp">
+      <Filter>Source Files\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="EventDistributor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HexagonTile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameState.h">
@@ -125,12 +137,28 @@
     <ClInclude Include="GraphicObject.h">
       <Filter>Header Files\Object</Filter>
     </ClInclude>
+    <ClInclude Include="HexagonMap.h">
+      <Filter>Header Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="EventDistributor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HexagonTile.h">
+      <Filter>Header Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="texture.PS" />
     <None Include="texture.VS" />
     <None Include="font.PS" />
     <None Include="font.VS" />
+    <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="texture.dds" />
