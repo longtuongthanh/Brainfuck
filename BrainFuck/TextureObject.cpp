@@ -61,7 +61,7 @@ RESULT TextureObject::Setup(ID3D11Device* device)
     return 0;
 }
 
-RESULT TextureObject::Initialize(ID3D11Device* device, const CHAR* textureFile, TextureClass* texture, TextureShader* shader)
+RESULT TextureObject::Initialize(ID3D11Device* device, const CHAR* textureFile, TextureLibrary* texture, TextureShader* shader)
 {
     //refreshRate = rate;
     this->shader = shader;

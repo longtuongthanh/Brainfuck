@@ -24,7 +24,7 @@ class TextureObject : public GraphicObject
         virtual TextureObject& operator = (const TextureObject&);
         virtual ~TextureObject();
 
-        RESULT Initialize(ID3D11Device*, const CHAR*, TextureClass*, TextureShader*);
+        RESULT Initialize(ID3D11Device*, const CHAR*, TextureLibrary*, TextureShader*);
         virtual RESULT Release();
         RESULT Render(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX, D3DXMATRIX);
 
