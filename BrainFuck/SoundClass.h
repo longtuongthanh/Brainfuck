@@ -11,30 +11,41 @@
 #include <dsound.h>
 #include <stdio.h>
 #include <xaudio2.h>
+#include "useful_stuff.h"
 
-class SoundClass
+class Sound
 {
 public:
-	SoundClass();
-	SoundClass(const SoundClass&);
-	~SoundClass();
+	Sound();
+	Sound(const Sound&);
+	~Sound();
 
-	HRESULT Initialize();
-	HRESULT Shutdown();
-	HRESULT LoadWaveFile(const char*);
-	HRESULT PlayWaveFile();
+	float GetVolume() { return volume; }
+	
+	RESULT Initialize();
+	RESULT Shutdown();
+	
+	/*
+		Load wav file to temp buffer, only play that buffer when PlayWaveBuffer is call
+	*/
+	RESULT LoadWaveFile(const char*);
+	RESULT PlayWaveFile();
+
+	RESULT SetVolumm(float volume);
 
 private:
-	HRESULT InitializeDirectSound();
-	HRESULT ShutdownDirectSound();
+	RESULT InitializeDirectSound();
+	RESULT ShutdownDirectSound();
 
-	HRESULT ShutdownWaveFile(IDirectSoundBuffer8**);
+	RESULT ShutdownWaveFile(IDirectSoundBuffer8**);
 private:
 	IXAudio2* pXAudio2;
 	IXAudio2MasteringVoice* pMasterVoice;
 	IXAudio2SourceVoice* pSourceVoice;
-	IXAudio2SourceVoice* pOldSourceVoice;
 	WAVEFORMATEXTENSIBLE wfx;
-	XAUDIO2_BUFFER buffer;
-	int count;
+	XAUDIO2_BUFFER mainBuffer;
+	XAUDIO2_BUFFER tempBuffer;
+
+private:
+	float volume;
 };

@@ -9,9 +9,9 @@
 #define fourccXWMA 'AMWX'
 #define fourccDPDS 'sdpd'
 #endif
-HRESULT FindChunk(HANDLE hFile, DWORD fourcc, DWORD& dwChunkSize, DWORD& dwChunkDataPosition)
+RESULT FindChunk(HANDLE hFile, DWORD fourcc, DWORD& dwChunkSize, DWORD& dwChunkDataPosition)
 {
-	HRESULT hr = S_OK;
+	RESULT hr = S_OK;
 	if (INVALID_SET_FILE_POINTER == SetFilePointer(hFile, 0, NULL, FILE_BEGIN))
 		return HRESULT_FROM_WIN32(GetLastError());
 
@@ -63,9 +63,9 @@ HRESULT FindChunk(HANDLE hFile, DWORD fourcc, DWORD& dwChunkSize, DWORD& dwChunk
 
 }
 
-HRESULT ReadChunkData(HANDLE hFile, void* buffer, DWORD buffersize, DWORD bufferoffset)
+RESULT ReadChunkData(HANDLE hFile, void* buffer, DWORD buffersize, DWORD bufferoffset)
 {
-	HRESULT hr = S_OK;
+	RESULT hr = S_OK;
 	if (INVALID_SET_FILE_POINTER == SetFilePointer(hFile, bufferoffset, NULL, FILE_BEGIN))
 		return HRESULT_FROM_WIN32(GetLastError());
 	DWORD dwRead;
@@ -74,23 +74,28 @@ HRESULT ReadChunkData(HANDLE hFile, void* buffer, DWORD buffersize, DWORD buffer
 	return hr;
 }
 
-SoundClass::SoundClass()
+Sound::Sound()
 {
 	pXAudio2 = nullptr;
 	pMasterVoice = nullptr;
-	pSourceVoice = pOldSourceVoice = nullptr;
+	pSourceVoice = nullptr;
+	volume = 1;
 	Initialize();
 }
 
-SoundClass::SoundClass(const SoundClass&)
+Sound::Sound(const Sound&)
 {
 }
 
-SoundClass::~SoundClass()
+Sound::~Sound()
 {
+	if (pXAudio2)
+	{
+		pXAudio2->Release();
+	}
 }
 
-HRESULT SoundClass::Initialize()
+RESULT Sound::Initialize()
 {
 	if (FAILED(XAudio2Create(&pXAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR)))
 	{
@@ -102,30 +107,29 @@ HRESULT SoundClass::Initialize()
 	}
 
 	wfx = { 0 };
-	buffer = { 0 };
-
-	count = 0;
+	mainBuffer = { 0 };
+	tempBuffer = { 0 };
 
 	return 0;
 }
 
-HRESULT SoundClass::Shutdown()
+RESULT Sound::Shutdown()
 {
 	return 0;
 }
 
-HRESULT SoundClass::InitializeDirectSound()
+RESULT Sound::InitializeDirectSound()
 {
 
 	return false;
 }
 
-HRESULT SoundClass::ShutdownDirectSound()
+RESULT Sound::ShutdownDirectSound()
 {
 	return 0;
 }
 
-HRESULT SoundClass::LoadWaveFile(const char* strFileName)
+RESULT Sound::LoadWaveFile(const char* strFileName)
 {
 	HANDLE hFile = CreateFile(
 		strFileName,
@@ -158,32 +162,76 @@ HRESULT SoundClass::LoadWaveFile(const char* strFileName)
 	BYTE* pDataBuffer = new BYTE[dwChunkSize];
 	ReadChunkData(hFile, pDataBuffer, dwChunkSize, dwChunkPosition);
 
-	buffer.AudioBytes = dwChunkSize;  //buffer containing audio data
-	buffer.pAudioData = pDataBuffer;  //size of the audio buffer in bytes
-	buffer.Flags = XAUDIO2_END_OF_STREAM; // tell the source voice not to expect any data after this buffer
+	if (tempBuffer.pAudioData)
+	{
+		delete[] tempBuffer.pAudioData;
+		tempBuffer.pAudioData = nullptr;
+	}
 
-	if (FAILED(pXAudio2->CreateSourceVoice(&pSourceVoice, (WAVEFORMATEX*)&wfx))) return 1;
+	tempBuffer.AudioBytes = dwChunkSize;  //buffer containing audio data
+	tempBuffer.pAudioData = pDataBuffer;  //size of the audio buffer in bytes
+	tempBuffer.Flags = XAUDIO2_END_OF_STREAM; // tell the source voice not to expect any data after this buffer
 
-	if (FAILED(pSourceVoice->SubmitSourceBuffer(&buffer)))
-		return 1;
+	if (!pSourceVoice)
+	{
+		if (FAILED(pXAudio2->CreateSourceVoice(&pSourceVoice, (WAVEFORMATEX*)&wfx))) return 1;
+	}
+
+	
 }
 
-HRESULT SoundClass::ShutdownWaveFile(IDirectSoundBuffer8**)
+RESULT Sound::ShutdownWaveFile(IDirectSoundBuffer8**)
 {
 	return 0;
 }
 
-HRESULT SoundClass::PlayWaveFile()
+RESULT Sound::PlayWaveFile()
 {
-	if (pOldSourceVoice != nullptr)
-	{
-		pOldSourceVoice->Stop();
-	}
-	if (pSourceVoice == nullptr)
+	if (!tempBuffer.pAudioData || !pSourceVoice)
 	{
 		return 1;
 	}
+	if (pSourceVoice)
+	{
+		pSourceVoice->Stop();
+		pSourceVoice->FlushSourceBuffers();
+		delete[] mainBuffer.pAudioData;
+		mainBuffer.pAudioData = nullptr;
+	}
+	
+	mainBuffer.AudioBytes = tempBuffer.AudioBytes;
+	mainBuffer.pAudioData = tempBuffer.pAudioData;
+	tempBuffer.Flags = XAUDIO2_END_OF_STREAM;
+
+	tempBuffer.pAudioData = nullptr;
+
+	if (FAILED(pSourceVoice->SubmitSourceBuffer(&mainBuffer)))
+		return 1;
+
 	pSourceVoice->Start();
-	pOldSourceVoice = pSourceVoice;
-	return false;
+	tempBuffer.Flags = XAUDIO2_END_OF_STREAM; // tell the source voice not to expect any data after this buffer
+
+	return 0;
+}
+
+RESULT Sound::SetVolumm(float volume)
+{
+	this->volume = volume;
+	if (this->volume < 0)
+	{
+		this->volume = 0;
+	}
+	if (this->volume > 1)
+	{
+		this->volume = 1;
+	}
+	if (pSourceVoice)
+	{
+		pSourceVoice->SetVolume(this->volume);
+	}
+	else
+	{
+		return 1;
+	}
+	return 0;
 }

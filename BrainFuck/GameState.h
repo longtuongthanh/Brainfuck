@@ -46,7 +46,7 @@ class GameState final : private NonCopyable
         Timer frameTimer;
         CameraClass* camera;
         TextString* debugText;
-        SoundClass* sound;
+        Sound* sound;
 		EventDistributor* inputEvents;
 		InvokableMoveCameraWithArrowKey* invokable1;
 

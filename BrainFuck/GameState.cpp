@@ -80,16 +80,20 @@ RESULT GameState::Initialize(ID3D11Device* device,
     // else cerr << "object load success\n";
     debugText = new TextString();
     debugText->Initialize(pDevice, 100, textureLib, pShaderLib->GetFontShader());
-    sound = new SoundClass();
-    
+    sound = new Sound();
+    sound->LoadWaveFile("gwyn.wav");
+    sound->PlayWaveFile();
     return 0;
 }
 
 RESULT GameState::Frame(Input* input)
 /** Animations, calculations, etc goes here.*/
 {
+
 	Point cameraPos = Point(camera->position.x, camera->position.y);
     frameTimer.Mark();
+
+    float time = frameTimer.GetTimeSpan();
     for (auto i : objects)
         if (i->Frame()) {
             cerr << "warning: animation failed\n";
@@ -102,21 +106,22 @@ RESULT GameState::Frame(Input* input)
 
     if (input->keyboard(VK_LEFT) == KEY_STATE_DOWN || input->keyboard(VK_LEFT) == KEY_STATE_ON_DOWN)
     {
-        camera->position.x -= time;
+        sound->LoadWaveFile("gwyn.wav");
+        sound->PlayWaveFile();
     }
-    if (input->keyboard(VK_RIGHT) == KEY_STATE_DOWN || input->keyboard(VK_RIGHT) == KEY_STATE_ON_DOWN)
-    {
-        camera->position.x += time;
-    }
-    if (input->keyboard(VK_UP) == KEY_STATE_DOWN || input->keyboard(VK_UP) == KEY_STATE_ON_DOWN)
-    {
-        camera->position.y += time;
-    }
-    if (input->keyboard(VK_DOWN) == KEY_STATE_DOWN || input->keyboard(VK_DOWN) == KEY_STATE_ON_DOWN)
-    {
-        camera->position.y -= time;
-    }
-    if (map->Frame(camera) == 1)
+    //if (input->keyboard(VK_RIGHT) == KEY_STATE_DOWN || input->keyboard(VK_RIGHT) == KEY_STATE_ON_DOWN)
+    //{
+    //    camera->position.x += time;
+    //}
+    //if (input->keyboard(VK_UP) == KEY_STATE_DOWN || input->keyboard(VK_UP) == KEY_STATE_ON_DOWN)
+    //{
+    //    camera->position.y += time;
+    //}
+    //if (input->keyboard(VK_DOWN) == KEY_STATE_DOWN || input->keyboard(VK_DOWN) == KEY_STATE_ON_DOWN)
+    //{
+    //    camera->position.y -= time;
+    //}
+    if (map->Frame(Point(camera->position.x, camera->position.y)) == 1)
     {
         debugText->InputString("error " + std::to_string((int)x.x) + "," + std::to_string((int)x.y));
     }
