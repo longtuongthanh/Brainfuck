@@ -6,22 +6,12 @@ HexagonMap::HexagonMap()
 
 }
 
-HexagonMap::HexagonMap(FLOAT Width, FLOAT Height, FLOAT pad)
-{
-    this->tileWidth = Width;
-    this->tileHeight = Height;
-    this->padding = pad;
-}
-
 HexagonMap::~HexagonMap()
 {
 }
 
 HexagonMap& HexagonMap::operator=(const HexagonMap& map)
 {
-    this->tileWidth = map.tileWidth;
-    this->tileHeight = map.tileHeight;
-    this->padding = map.padding;
     return *this;
 }
 
@@ -55,11 +45,12 @@ HRESULT HexagonMap::Frame(const Point& cameraPos)
 
 	// TODO: Stays until add Fustrum Culling
 	// current largest source of lag
-	//*
+	/*
 	for (auto row : map.value)
 		for (auto tile : row.value)
 			if (tile != NULL) 
 				tile->Frame();
+	map.value[0].value[0]->FramePrototype();
 	// */
 
     return 0;
@@ -80,8 +71,7 @@ HRESULT HexagonMap::Render(Point cameraPos,
 			{
 				HexagonTile*& tile = map[i + cameraTile.x][j + cameraTile.y];
 				if (tile == NULL)
-					tile = NewHexagonTile(i + cameraTile.x, j + cameraTile.y, 
-										  tileWidth, tileHeight, padding);
+					tile = NewHexagonTile(i + cameraTile.x, j + cameraTile.y);
 				tile->Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
 			}
 		}
@@ -117,7 +107,7 @@ RESULT HexagonMap::InitializeData()
 			if (i - j >= min_X && i - j <= max_X)
 			{				
             // this is a test, in real game we will load data from file
-				HexagonTile* newTile = NewHexagonTile(i, j, tileWidth, tileHeight, padding);
+				HexagonTile* newTile = NewHexagonTile(i, j);
 				map[i][j] = newTile;
 			}
     return 0;
@@ -182,22 +172,22 @@ RESULT HexagonMap::AddHexagon(FLOAT xCenter, FLOAT yCenter, FLOAT zCenter, FLOAT
     return 0;
 }
 
-HexagonTile* HexagonMap::NewHexagonTile(INT xCoord, INT yCoord, FLOAT tileWidth, FLOAT tileHeight, FLOAT padding)
+HexagonTile* HexagonMap::NewHexagonTile(INT xCoord, INT yCoord)
 {
-    HexagonTile* newTile = new HexagonTile(Point((xCoord - yCoord / 2.0) * tileWidth, 3 * yCoord * tileHeight / 4), tileWidth - padding, tileHeight - padding);
+    HexagonTile* newTile = new HexagonTile(Point((xCoord - yCoord / 2.0) * HEXAGON_SIZE * sqrt(3) / 2, 3 * yCoord * HEXAGON_SIZE / 4));
 
-    newTile->Initialize(pDevice, TEXTURE_FILE, textureLib, pShaderLib->GetTextureShader());
+    newTile->Initialize(pDevice, textureLib, pShaderLib->GetTextureShader());
     //map.push_back(newTile);
     return newTile;
 }
 
 Point HexagonMap::GetCoord(Point fieldCoord)
 {
-	return Point(round((fieldCoord.x) / tileWidth + fieldCoord.y * 2 / tileHeight / 3), 
-				 round(fieldCoord.y * 4 / tileHeight / 3));
+	return Point(round((fieldCoord.x) / HEXAGON_SIZE / sqrt(3) * 2 + fieldCoord.y * 2 / HEXAGON_SIZE / 3), 
+				 round(fieldCoord.y * 4 / HEXAGON_SIZE / 3));
 }
 
 Point HexagonMap::GetLocation(int x, int y)
 {
-	return Point((x - y / 2.0) * tileWidth, 3 * y * tileHeight / 4);
+	return Point((x - y / 2.0) * HEXAGON_SIZE * sqrt(3) / 2, 3 * y * HEXAGON_SIZE / 4);
 }

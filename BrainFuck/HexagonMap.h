@@ -6,7 +6,6 @@
 #include <deque>
 #include "ShaderLibrary.h"
 
-static const CHAR* HEXAGON_TEXTURE_FILE = "texture.dds";
 template <typename T>
 class mydeque {
 	int offset;
@@ -29,15 +28,18 @@ public:
 		}
 		return value[x - offset];
 	}
+	void pop_front() {
+		offset++;
+		value.pop_front();
+	}
+	void pop_back() { value.pop_back(); }
 	void cutoff_front(int front) {
-		while (front - offset < 0) {
-			offset++;
-			value.pop_front();
-		}
+		while (front - offset < 0)
+			pop_front();
 	}
 	void cutoff_back(int back) {
 		while (back - offset >= value.size())
-			value.pop_back();
+			pop_back();
 	}
 	mydeque(int offset = 0) : 
 		offset(offset) {}
@@ -48,7 +50,6 @@ class HexagonMap
 {
 public:
 	HexagonMap();
-	HexagonMap(FLOAT tileWidth, FLOAT tileHeight, FLOAT padding);
 	~HexagonMap();
 
 	HexagonMap& operator=(const HexagonMap &);
@@ -66,12 +67,9 @@ protected:
 	RESULT InitializeData();
 	RESULT AddHexagon(FLOAT xCenter, FLOAT yCenter, FLOAT zCenter, FLOAT tileWidth, FLOAT tileHeight);
 
-	HexagonTile* NewHexagonTile(INT xCoord, INT yCoord, FLOAT tileWidth, FLOAT tileHeight, FLOAT padding);
+	HexagonTile* NewHexagonTile(INT xCoord, INT yCoord);
 
 private:
-	FLOAT tileWidth, tileHeight; // width and height of hexagon
-	FLOAT padding; // space between 2 hexagons
-
 	int max_X, max_Y, min_X, min_Y; // this show the max and min coord of tile
 
 	std::string textureFile;

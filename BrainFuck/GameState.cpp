@@ -48,7 +48,7 @@ RESULT GameState::Initialize(ID3D11Device* device,
 	inputEvents->Lock();
 
     //NewTextureObject(TEXTURE_FILE);
-    map = new HexagonMap(HEXAGON_SIZE * sqrt(3) / 2, HEXAGON_SIZE, HEXAGON_PADDING);
+    map = new HexagonMap();
     map->Initialize(pDevice, textureLib, pShaderLib);
     // else cerr << "object load success\n";
     debugText = new TextString();

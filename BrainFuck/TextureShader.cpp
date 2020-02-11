@@ -147,6 +147,16 @@ RESULT TextureShader::LoadDrawData(ID3D11DeviceContext* deviceContext,
     // Transpose matrix, required for DX11
     //D3DXMATRIX matrix = worldMatrix * viewMatrix * projectionMatrix;
 
+	/*
+	for (int i = 0; i < 16; i++) {
+		cerr << viewMatrix[i];
+		if (i % 4 == 3)
+			cerr << '\n';
+		else
+			cerr << ' ';
+	}
+	cerr << "-------------\n";
+	//*/
     COMCALL(deviceContext->Map(matrixBuf, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
 
     pdata = (MatrixBufferType*)mappedResource.pData;

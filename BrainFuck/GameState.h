@@ -14,10 +14,7 @@
 #include "Input.h"
 #include "EventDistributor.h"
 
-/** Height of hexagon.
-	Width of hexagon is sqrt(3) / 2 * SIZE //*/
-static const double HEXAGON_SIZE = 0.15;
-static const double HEXAGON_PADDING = 0.01;
+// Hexagon size moved to HexagonTile.h
 
 class InvokableMoveCameraWithArrowKey;
 

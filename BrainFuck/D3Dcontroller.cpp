@@ -304,7 +304,7 @@ RESULT D3Dcontroller::CreateMatrix(int screenWidth,
 		else
 			cerr << ' ';
 	}
-	cerr << "-------------";
+	cerr << "-------------\n";
 
 	for (int i = 0; i < 16; i++) {
 		cerr << orthoMatrix[i];
@@ -313,7 +313,7 @@ RESULT D3Dcontroller::CreateMatrix(int screenWidth,
 		else
 			cerr << ' ';
 	}
-	cerr << "-------------";
+	cerr << "-------------\n";
 
 	for (int i = 0; i < 16; i++) {
 		cerr << worldMatrix[i];

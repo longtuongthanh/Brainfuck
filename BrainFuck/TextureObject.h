@@ -46,7 +46,8 @@ class TextureObject : public GraphicObject
         VertexType* pointArray;
 
         ID3D11ShaderResourceView* texture;
-        
+
+		bool dataChanged;
     private:
         ID3D11Buffer *vertexBuf;
 

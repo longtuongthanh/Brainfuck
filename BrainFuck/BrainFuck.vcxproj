@@ -170,6 +170,7 @@
     <ClCompile Include="GraphicObject.cpp" />
     <ClCompile Include="HexagonTile.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="ItemLibrary.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ShaderLibrary.cpp" />
     <ClCompile Include="TextString.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="GraphicObject.h" />
     <ClInclude Include="HexagonTile.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="ItemLibrary.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="ShaderLibrary.h" />
     <ClInclude Include="SoundClass.h" />
