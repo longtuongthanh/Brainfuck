@@ -106,17 +106,17 @@ RESULT GameState::Frame(Input* input)
 
     if (input->keyboard(VK_LEFT) == KEY_STATE_DOWN || input->keyboard(VK_LEFT) == KEY_STATE_ON_DOWN)
     {
-        sound->LoadWaveFile("gwyn.wav");
+        //sound->LoadWaveFile("gwyn.wav");
         sound->PlayWaveFile();
     }
-    //if (input->keyboard(VK_RIGHT) == KEY_STATE_DOWN || input->keyboard(VK_RIGHT) == KEY_STATE_ON_DOWN)
-    //{
-    //    camera->position.x += time;
-    //}
-    //if (input->keyboard(VK_UP) == KEY_STATE_DOWN || input->keyboard(VK_UP) == KEY_STATE_ON_DOWN)
-    //{
-    //    camera->position.y += time;
-    //}
+    if (input->keyboard(VK_RIGHT) == KEY_STATE_DOWN || input->keyboard(VK_RIGHT) == KEY_STATE_ON_DOWN)
+    {
+        sound->Pause();
+    }
+    if (input->keyboard(VK_UP) == KEY_STATE_DOWN || input->keyboard(VK_UP) == KEY_STATE_ON_DOWN)
+    {
+        sound->Resume();
+    }
     //if (input->keyboard(VK_DOWN) == KEY_STATE_DOWN || input->keyboard(VK_DOWN) == KEY_STATE_ON_DOWN)
     //{
     //    camera->position.y -= time;

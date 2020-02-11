@@ -187,10 +187,28 @@ RESULT Sound::ShutdownWaveFile(IDirectSoundBuffer8**)
 
 RESULT Sound::PlayWaveFile()
 {
-	if (!tempBuffer.pAudioData || !pSourceVoice)
+	if (!pSourceVoice)
 	{
+		// if source voice is not created, we cannot play any sound
 		return 1;
 	}
+
+	if (!tempBuffer.pAudioData)
+	{
+		if (!mainBuffer.pAudioData)
+		{
+			// if both temporary buffer and main buffer are empty, we cannot play sound
+			return 1;
+		}
+		else
+		{
+			// if temporary buffer is empty but the main buffer not, play sound on main buffer
+			pSourceVoice->Start();
+			return 0;
+		}
+	}
+
+	// if new wav file has been loaded into temporary buffer, replace main buffer with temporary buffer
 	if (pSourceVoice)
 	{
 		pSourceVoice->Stop();
@@ -211,6 +229,18 @@ RESULT Sound::PlayWaveFile()
 	pSourceVoice->Start();
 	tempBuffer.Flags = XAUDIO2_END_OF_STREAM; // tell the source voice not to expect any data after this buffer
 
+	return 0;
+}
+
+RESULT Sound::Pause()
+{
+	pSourceVoice->Stop();
+	return 0;
+}
+
+RESULT Sound::Resume()
+{
+	pSourceVoice->Start();
 	return 0;
 }
 

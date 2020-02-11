@@ -30,6 +30,8 @@ public:
 	*/
 	RESULT LoadWaveFile(const char*);
 	RESULT PlayWaveFile();
+	RESULT Pause();
+	RESULT Resume();
 
 	RESULT SetVolumm(float volume);
 
