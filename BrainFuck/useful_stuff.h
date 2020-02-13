@@ -114,7 +114,9 @@ private:
 
 private:
     bool beingHold = false;
+    bool clickable = false;
     Point prevPos;
+
 };
 
 #define CODE_KILL 2

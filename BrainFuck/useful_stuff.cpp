@@ -139,6 +139,8 @@ bool isInside(std::vector<Point>& polygon, Point p)
 
 void DragAndDrop::UpdateDragAndDrop(Point& pos, std::vector<Point> hitBox, Input& input, Point camPos)
 {
+    bool mouseInside = isInside(hitBox, input.MouseToScreen() + camPos);
+
     if (beingHold)
     {
         if (input.MouseFlag() & 0x0001)
@@ -150,10 +152,17 @@ void DragAndDrop::UpdateDragAndDrop(Point& pos, std::vector<Point> hitBox, Input
             beingHold = false;
         }
     }
-    else if(input.MouseFlag() & 0x0001 && isInside(hitBox, input.MouseToScreen() + camPos))
+    else if(input.MouseFlag() & 0x0001 & clickable)
     {
-        isInside(hitBox, input.MouseToScreen() + camPos);
         beingHold = true;
+    }
+    else if (!(input.MouseFlag() & 0x0001) & mouseInside)
+    {
+        clickable = true;
+    }
+    else
+    {
+        clickable = false;
     }
     prevPos = input.MouseToScreen() + camPos;
 }
