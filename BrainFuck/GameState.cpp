@@ -82,7 +82,10 @@ RESULT GameState::Initialize(ID3D11Device* device,
     debugText->Initialize(pDevice, 100, textureLib, pShaderLib->GetFontShader());
     sound = new Sound();
     sound->LoadWaveFile("gwyn.wav");
-    sound->PlayWaveFile();
+    //sound->PlayWaveFile();
+
+    testWorldMatrix = new TestDragable();
+    testWorldMatrix->Initialize(pDevice, TEXTURE_FILE, textureLib, pShaderLib->GetTextureShader());
     return 0;
 }
 
@@ -102,34 +105,33 @@ RESULT GameState::Frame(Input* input)
 
 	inputEvents->Frame();
 	
-	Point x = GetCoord(input->MouseToField() + cameraPos);
-
+	//Point x = GetCoord(input->MouseToField() + cameraPos);
+    Point x = input->MouseToScreen() + cameraPos;
     if (input->keyboard(VK_LEFT) == KEY_STATE_DOWN || input->keyboard(VK_LEFT) == KEY_STATE_ON_DOWN)
     {
-        //sound->LoadWaveFile("gwyn.wav");
-        sound->PlayWaveFile();
+        //camera->position.x -= frameTimer.GetTimeSpan();
     }
     if (input->keyboard(VK_RIGHT) == KEY_STATE_DOWN || input->keyboard(VK_RIGHT) == KEY_STATE_ON_DOWN)
     {
-        sound->Pause();
+        //camera->position.x += frameTimer.GetTimeSpan();
     }
     if (input->keyboard(VK_UP) == KEY_STATE_DOWN || input->keyboard(VK_UP) == KEY_STATE_ON_DOWN)
     {
-        sound->Resume();
+        //camera->position.y += frameTimer.GetTimeSpan();
     }
-    //if (input->keyboard(VK_DOWN) == KEY_STATE_DOWN || input->keyboard(VK_DOWN) == KEY_STATE_ON_DOWN)
-    //{
-    //    camera->position.y -= time;
-    //}
+    if (input->keyboard(VK_DOWN) == KEY_STATE_DOWN || input->keyboard(VK_DOWN) == KEY_STATE_ON_DOWN)
+    {
+        //camera->position.y -= frameTimer.GetTimeSpan();
+    }
     if (map->Frame(Point(camera->position.x, camera->position.y)) == 1)
     {
-        debugText->InputString("error " + std::to_string((int)x.x) + "," + std::to_string((int)x.y));
+        debugText->InputString("error " + std::to_string((float)x.x) + "," + std::to_string((float)x.y));
     }
     else
     {
-        debugText->InputString("keep going " + std::to_string((int)x.x) + "," + std::to_string((int)x.y));
+        debugText->InputString("" + std::to_string((float)x.x) + "," + std::to_string((float)x.y));
     }
-    //debugText->InputString(std::to_string(camera->position.x));
+    testWorldMatrix->Frame(*input, cameraPos);
     return 0;
 }
 
@@ -154,9 +156,11 @@ RESULT GameState::Draw()
             return 1;
         }
 
-    debugText->Render(pContext, pShaderLib->worldMatrix, camera->viewMatrix, pShaderLib->projectionMatrix);
     // else cerr << "object on\n";
+    testWorldMatrix->MakeWorldMatrix();
+    testWorldMatrix->Render(pContext, *testWorldMatrix->pMatWorld, camera->viewMatrix, pShaderLib->projectionMatrix);
     
+    debugText->Render(pContext, pShaderLib->worldMatrix, camera->viewMatrix, pShaderLib->projectionMatrix);
 
 	BLOCKCALL(camera->Render(), "Cannot switch perspective.");
 

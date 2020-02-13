@@ -14,6 +14,7 @@
 #include "Input.h"
 #include "SoundClass.h"
 #include "EventDistributor.h"
+#include "TestWorldMatrix.h"
 
 /** Height of hexagon.
 	Width of hexagon is sqrt(3) / 2 * SIZE //*/
@@ -49,6 +50,7 @@ class GameState final : private NonCopyable
         Sound* sound;
 		EventDistributor* inputEvents;
 		InvokableMoveCameraWithArrowKey* invokable1;
+        TestDragable* testWorldMatrix;
 
 		/** Get the coordinate of the hexagon that contains this point.*/
 		static Point GetCoord(Point x);
