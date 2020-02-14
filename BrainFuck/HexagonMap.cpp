@@ -3,11 +3,12 @@
 
 HexagonMap::HexagonMap()
 {
-
+	itemLib = 0;
 }
 
 HexagonMap::~HexagonMap()
 {
+	DESTROY(itemLib);
 }
 
 HexagonMap& HexagonMap::operator=(const HexagonMap& map)
@@ -69,24 +70,40 @@ HRESULT HexagonMap::Render(Point cameraPos,
 			Point pos = GetLocation(i, j);
 			if (pos.x > -1.2 && pos.x < 1.2 && pos.y > -1.2 && pos.y < 1.2)
 			{
-				HexagonTile*& tile = map[i + cameraTile.x][j + cameraTile.y];
-				if (tile == NULL)
-					tile = NewHexagonTile(i + cameraTile.x, j + cameraTile.y);
+				int trgx = i + cameraTile.x;
+				int trgy = j + cameraTile.y;
+				HexagonTileBase*& tile = map[trgx][trgy];
+				if (tile == NULL) {
+					if (trgx % 10 == 0 && trgy % 10 == 0)
+						tile = new TileDetermination(GetLocation(trgx, trgy));
+					else
+						tile = new HexagonTile(GetLocation(trgx, trgy));
+					tile->Initialize(pDevice, pTextureLib, pShaderLib->GetTextureShader(), itemLib);
+				}
 				tile->Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
 			}
 		}
     return 0;
 }
 
-RESULT HexagonMap::Initialize(ID3D11Device* pDevice, TextureLibrary* textureLib, ShaderLibrary* pShaderLib)
+RESULT HexagonMap::Initialize(ID3D11Device* device, TextureLibrary* textureLib, ShaderLibrary* shaderLib)
 {
-    this->pDevice = pDevice;
-    this->textureLib = textureLib;
-    this->pShaderLib = pShaderLib;
+    this->pDevice = device;
+    this->pTextureLib = textureLib;
+    this->pShaderLib = shaderLib;
+
+	BLOCKALLOC(ItemLibrary, itemLib);
+	BLOCKCALL(itemLib->Initialize(device, textureLib, shaderLib->GetTextureShader()), "Cannot initialize item library");
 
     InitializeData();
 
-    return RESULT();
+    return 0;
+}
+
+RESULT HexagonMap::Release()
+{
+	delete this;
+	return 0;
 }
 
 RESULT HexagonMap::InitializeData()
@@ -107,7 +124,12 @@ RESULT HexagonMap::InitializeData()
 			if (i - j >= min_X && i - j <= max_X)
 			{				
             // this is a test, in real game we will load data from file
-				HexagonTile* newTile = NewHexagonTile(i, j);
+				HexagonTileBase* newTile;
+				if (i % 10 == 0 && j % 10 == 0)
+					newTile = new TileDetermination(GetLocation(i, j));
+				else
+					newTile = new HexagonTile(GetLocation(i, j));
+				newTile->Initialize(pDevice, pTextureLib, pShaderLib->GetTextureShader(), itemLib);
 				map[i][j] = newTile;
 			}
     return 0;
@@ -170,15 +192,6 @@ RESULT HexagonMap::AddHexagon(FLOAT xCenter, FLOAT yCenter, FLOAT zCenter, FLOAT
     */
 
     return 0;
-}
-
-HexagonTile* HexagonMap::NewHexagonTile(INT xCoord, INT yCoord)
-{
-    HexagonTile* newTile = new HexagonTile(Point((xCoord - yCoord / 2.0) * HEXAGON_SIZE * sqrt(3) / 2, 3 * yCoord * HEXAGON_SIZE / 4));
-
-    newTile->Initialize(pDevice, textureLib, pShaderLib->GetTextureShader());
-    //map.push_back(newTile);
-    return newTile;
 }
 
 Point HexagonMap::GetCoord(Point fieldCoord)

@@ -1,11 +1,11 @@
 #pragma once
 
 #include "TextureObject.h"
+#include "TileStorage.h"
+#include "game_constants.h"
 
 /** Height of hexagon.
 	Width of hexagon is sqrt(3) / 2 * SIZE //*/
-static const double HEXAGON_SIZE = 0.15;
-static const double HEXAGON_PADDING = 0.01;
 
 //singleton for rendering
 // Its called Flyweight, not prototype... but I like the name prototype better.
@@ -25,47 +25,16 @@ class HexagonTileAnimatedPrototype : public HexagonTilePrototype {
 protected:
 };
 
-class TileStorage
-{
+class HexagonTileBase {
 public:
-	TileStorage();
-	TileStorage(const TileStorage& x);
-	~TileStorage();
-
-private:
-	// store some information here
-	int typeID[6];
-	int amount[6];
-	int types;
-	/*
-		There are a max of 6 types in 1 tile.
-		Location based on number of types:
-		1:
-			X
-		0		0
-		0		0
-			0
-		2:
-			X
-		0		0
-		0		0
-			X
-		3:
-			0
-		X		X
-		0		0
-			X
-		4:
-			0
-		X		X
-		X		X
-			0
-		5:
-			0
-		X		X
-		X		X
-			X
-	*/
+	HexagonTileBase() {}
+	virtual Point GetPosition() = 0;
+	virtual RESULT Frame() = 0;
+	virtual RESULT Release() = 0;
+	virtual RESULT Initialize(ID3D11Device*, TextureLibrary*, TextureShader*, ItemLibrary*) = 0;
+	virtual RESULT FramePrototype() = 0;
+	virtual RESULT Render(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatrix,
+		D3DXMATRIX viewMatrix, D3DXMATRIX projectionMatrix) = 0;
 };
 
 // Templated base class
@@ -74,29 +43,39 @@ private:
 // C++ disallows static virtual functions/members
 // template class need to be in header.
 template <int id>
-class HexagonTileBase {
+class HexagonTileMiddle : public HexagonTileBase{
 public:
-	HexagonTileBase(){}
-	HexagonTileBase(Point position) : position(position){}
-	HexagonTileBase(const HexagonTileBase& x) : position(x.position), storage(x.storage){}
+	HexagonTileMiddle(){}
+	HexagonTileMiddle(Point position) : position(position){}
+	HexagonTileMiddle(const HexagonTileMiddle& x) : position(x.position), storage(x.storage){}
 	Point GetPosition() { return position; }
 
 	virtual RESULT Frame() { return 0; }
+
 	/** ONLY CALL THIS ONCE*/
 	virtual RESULT Release() = 0;
 	/** ONLY CALL THIS ONCE*/
-	virtual RESULT Initialize(ID3D11Device*, TextureLibrary*, TextureShader*) = 0;
+	virtual RESULT Initialize(ID3D11Device*, TextureLibrary*, TextureShader*, ItemLibrary* itemLib) {
+		BLOCKCALL(storage.Initialize(itemLib), "cannot initialize tile storage");
+		return 0;
+	}
 	/** ONLY CALL THIS ONCE PER FRAME*/
-	static RESULT FramePrototype() { return prototype->Frame(); }
+	RESULT FramePrototype() { return prototype->Frame(); }
 	RESULT Render(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatrix, 
 				  D3DXMATRIX viewMatrix, D3DXMATRIX projectionMatrix) {
-		return prototype->Render(deviceContext, WorldMatrix(worldMatrix), viewMatrix, projectionMatrix);
+		WorldMatrix(worldMatrix);
+		BLOCKCALL(prototype->Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix),
+			"cannot render prototype of tile");
+		BLOCKCALL(storage.Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix), 
+			"cannot render storage.");
+		return 0;
 	}
 
-	D3DXMATRIX WorldMatrix(D3DXMATRIX worldMatrixOriginal)
+	void WorldMatrix(D3DXMATRIX& worldMatrixOriginal)
 	{
-		D3DXMatrixTranslation(&worldMatrixOriginal, position.x, position.y, 0);
-		return worldMatrixOriginal;
+		D3DXMATRIX newMatrix;
+		D3DXMatrixTranslation(&newMatrix, position.x, position.y, 0);
+		worldMatrixOriginal *= newMatrix;
 	}
 
 protected:
@@ -105,13 +84,13 @@ protected:
 	// Maybe we could add Behavior class that handle some behaviors for the brain-cell
 	static HexagonTilePrototype* prototype;
 };
-template<int id> HexagonTilePrototype* HexagonTileBase<id>::prototype(0);
+template<int id> HexagonTilePrototype* HexagonTileMiddle<id>::prototype(0);
 
 static const CHAR* HEXAGON_TEXTURE_FILE = "texture.dds";
-class HexagonTile : public HexagonTileBase<0> {
+class HexagonTile : public HexagonTileMiddle<0> {
 public:
 	HexagonTile();
 	HexagonTile(Point position);
 	RESULT Release();
-	RESULT Initialize(ID3D11Device*, TextureLibrary*, TextureShader*);
+	RESULT Initialize(ID3D11Device*, TextureLibrary*, TextureShader*, ItemLibrary*);
 };

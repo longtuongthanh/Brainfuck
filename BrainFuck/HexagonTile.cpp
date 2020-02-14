@@ -6,34 +6,26 @@ RESULT HexagonTilePrototype::InitializeData()
 	float width = HEXAGON_SIZE * sqrt(3) / 2 - HEXAGON_PADDING;
 	BLOCKALLOC(VertexType[6], pointArray);
 
-	D3DXVECTOR3 newVerx[6];
-	newVerx[0] = D3DXVECTOR3(0, height / 2, 1);
-	newVerx[1] = D3DXVECTOR3(width / 2, height / 4, 1);
-	newVerx[2] = D3DXVECTOR3(-width / 2, height / 4, 1);
-	newVerx[3] = D3DXVECTOR3(width / 2, -height / 4, 1);
-	newVerx[4] = D3DXVECTOR3(-width / 2, -height / 4, 1);
-	newVerx[5] = D3DXVECTOR3(0, -height / 2, 1);
+	pointArray[0].position = D3DXVECTOR3(0, height / 2, 1);
+	pointArray[1].position = D3DXVECTOR3(width / 2, height / 4, 1);
+	pointArray[2].position = D3DXVECTOR3(-width / 2, height / 4, 1);
+	pointArray[3].position = D3DXVECTOR3(width / 2, -height / 4, 1);
+	pointArray[4].position = D3DXVECTOR3(-width / 2, -height / 4, 1);
+	pointArray[5].position = D3DXVECTOR3(0, -height / 2, 1);
 
-	for (int i = 0; i < 6; i++)
-	{
-		pointArray[i].position = newVerx[i];
-	}
+	pointArray[0].texture = D3DXVECTOR2(0.5, 0);
+	pointArray[1].texture = D3DXVECTOR2(1, 0.25);
+	pointArray[2].texture = D3DXVECTOR2(0, 0.25);
+	pointArray[3].texture = D3DXVECTOR2(1, 0.75);
+	pointArray[4].texture = D3DXVECTOR2(0, 0.75);
+	pointArray[5].texture = D3DXVECTOR2(0.5, 1);
+
 	pointCount = 6;
 	return 0;
 }
 
-
-TileStorage::TileStorage(const TileStorage & x) {
-	for (int i = 0; i < 6; i++) {
-		typeID[i] = x.typeID[i];
-		amount[i] = x.amount[i];
-	}
-}
-
-TileStorage::TileStorage() {}
-TileStorage::~TileStorage() {}
 HexagonTile::HexagonTile() {}
-HexagonTile::HexagonTile(Point position) : HexagonTileBase(position) {}
+HexagonTile::HexagonTile(Point position) : HexagonTileMiddle(position) {}
 
 RESULT HexagonTile::Release()
 {
@@ -41,8 +33,9 @@ RESULT HexagonTile::Release()
 	return 0;
 }
 
-RESULT HexagonTile::Initialize(ID3D11Device* device, TextureLibrary* textureLib, TextureShader* texShader)
+RESULT HexagonTile::Initialize(ID3D11Device* device, TextureLibrary* textureLib, TextureShader* texShader, ItemLibrary* itemLib)
 {
+	__super::Initialize(device, textureLib, texShader, itemLib);
 	DEBUG(if (prototype) return 1;)
 	BLOCKALLOC(HexagonTilePrototype, prototype);
 	BLOCKCALL(prototype->Initialize(device, HEXAGON_TEXTURE_FILE, textureLib, texShader),

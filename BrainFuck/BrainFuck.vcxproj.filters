@@ -37,6 +37,12 @@
     <Filter Include="Source Files\Library">
       <UniqueIdentifier>{19711f9f-178f-40c8-9162-52b528ef1553}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Object\Tiles">
+      <UniqueIdentifier>{66a5e8d1-b436-473e-8fcf-ba28af1ecbcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Object\Tiles">
+      <UniqueIdentifier>{54ab073c-1ff5-4f6a-9ce1-c96c0bb28694}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BrainFuck.cpp">
@@ -102,6 +108,12 @@
     <ClCompile Include="TextureClass.cpp">
       <Filter>Source Files\Library</Filter>
     </ClCompile>
+    <ClCompile Include="TileDetermination.cpp">
+      <Filter>Source Files\Object\Tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="TileStorage.cpp">
+      <Filter>Source Files\Object\Tiles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameState.h">
@@ -163,6 +175,15 @@
     </ClInclude>
     <ClInclude Include="TextureClass.h">
       <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="TileDetermination.h">
+      <Filter>Header Files\Object\Tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="TileStorage.h">
+      <Filter>Header Files\Object\Tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="game_constants.h">
+      <Filter>Header Files\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

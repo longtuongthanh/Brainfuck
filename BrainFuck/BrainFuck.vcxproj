@@ -177,6 +177,8 @@
     <ClCompile Include="TextureClass.cpp" />
     <ClCompile Include="TextureObject.cpp" />
     <ClCompile Include="TextureShader.cpp" />
+    <ClCompile Include="TileDetermination.cpp" />
+    <ClCompile Include="TileStorage.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="useful_stuff.cpp" />
     <ClCompile Include="WindowInitialSetting.cpp" />
@@ -187,6 +189,7 @@
     <ClInclude Include="FontShader.h" />
     <ClInclude Include="EventDistributor.h" />
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="game_constants.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="HexagonMap.h" />
     <ClInclude Include="GraphicObject.h" />
@@ -200,6 +203,8 @@
     <ClInclude Include="TextureClass.h" />
     <ClInclude Include="TextureObject.h" />
     <ClInclude Include="TextureShader.h" />
+    <ClInclude Include="TileDetermination.h" />
+    <ClInclude Include="TileStorage.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="useful_stuff.h" />
   </ItemGroup>

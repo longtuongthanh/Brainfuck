@@ -346,7 +346,7 @@ RESULT D3Dcontroller::CreateBlendState()
 
 	float blendFactor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 
-	BLOCKCALL(device->CreateBlendState(&blendDesc, &blendState), "");
+	BLOCKCALL(device->CreateBlendState(&blendDesc, &blendState), "cannot create blend state");
 	deviceContext->OMSetBlendState(blendState, blendFactor, 0xffffffff);
 	return 0;
 }

@@ -14,7 +14,7 @@ GameState::~GameState()
 	DESTROY(camera);
 	DESTROY(inputEvents);
 	delete invokable1;
-	delete map;
+	DESTROY(map);
 }
 
 RESULT GameState::Initialize(ID3D11Device* device,
@@ -48,8 +48,8 @@ RESULT GameState::Initialize(ID3D11Device* device,
 	inputEvents->Lock();
 
     //NewTextureObject(TEXTURE_FILE);
-    map = new HexagonMap();
-    map->Initialize(pDevice, textureLib, pShaderLib);
+    BLOCKALLOC(HexagonMap, map);
+    BLOCKCALL(map->Initialize(pDevice, textureLib, pShaderLib),"cannot initialize map");
     // else cerr << "object load success\n";
     debugText = new TextString();
     debugText->Initialize(pDevice, 100, textureLib, pShaderLib->GetFontShader());

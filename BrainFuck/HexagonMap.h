@@ -5,6 +5,9 @@
 #include <vector>
 #include <deque>
 #include "ShaderLibrary.h"
+#include "ItemLibrary.h"
+
+#include "TileDetermination.h"
 
 template <typename T>
 class mydeque {
@@ -58,6 +61,7 @@ public:
 	HRESULT Render(Point, ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX, D3DXMATRIX);
 
 	RESULT Initialize(ID3D11Device*, TextureLibrary*, ShaderLibrary*);
+	RESULT Release();
 
 	/** Get the coordinate of the hexagon that contains this point.*/
 	Point GetCoord(Point);
@@ -67,17 +71,15 @@ protected:
 	RESULT InitializeData();
 	RESULT AddHexagon(FLOAT xCenter, FLOAT yCenter, FLOAT zCenter, FLOAT tileWidth, FLOAT tileHeight);
 
-	HexagonTile* NewHexagonTile(INT xCoord, INT yCoord);
-
 private:
 	int max_X, max_Y, min_X, min_Y; // this show the max and min coord of tile
 
 	std::string textureFile;
 
-	mydeque<mydeque<HexagonTile*>> map;
+	mydeque<mydeque<HexagonTileBase*>> map;
 
-	TextureLibrary* textureLib;
+	TextureLibrary* pTextureLib;
 	ShaderLibrary* pShaderLib;
 	ID3D11Device* pDevice;
-
+	ItemLibrary* itemLib;
 };

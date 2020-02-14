@@ -2,8 +2,7 @@
 #include "useful_stuff.h"
 #include "TextureObject.h"
 #include <vector>
-
-static const int NO_OF_DIF_ITEM = 10;
+#include "game_constants.h"
 
 class Item : public TextureObject {
 	//static const char* name;
@@ -19,9 +18,24 @@ public:
 	virtual const char* Name() = 0;
 	// {return name;}
 
-	// Should call TextureObject::operator =
+	// Should call TextureObject::operator =(*this, other)
 	virtual Item& operator = (const Item&) = 0;
 	virtual RESULT Frame() = 0;
+	virtual RESULT FrameBehaviour();
+	RESULT InitializeData() final;
+	RESULT Render(ID3D11DeviceContext*, int, D3DXMATRIX, D3DXMATRIX, D3DXMATRIX);
+
+	D3DXMATRIX WorldMatrix(const D3DXMATRIX&, int);
+	/*
+	Hexagon side considered 1.
+	Postype:
+		1
+	2		6
+		0
+	3		5
+		4
+	*/
+	static Point Offset(int postype);
 };
 
 class ItemLibrary : NonCopyable
@@ -40,3 +54,11 @@ public:
 	Item* GetPrototype(int id);
 };
 
+static const char* ITEM_WILL_FILE = "will.dds";
+class ItemWill final : public Item {
+	int id();
+	const char* Name();
+
+	Item& operator = (const Item&);
+	RESULT Frame();
+};
