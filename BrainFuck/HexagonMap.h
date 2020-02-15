@@ -3,41 +3,83 @@
 #include "useful_stuff.h"
 #include "HexagonTile.h"
 #include <vector>
+#include <deque>
 #include "ShaderLibrary.h"
+#include "ItemLibrary.h"
 
-static const CHAR* HEXAGON_TEXTURE_FILE = "texture.dds";
+#include "TileDetermination.h"
+
+template <typename T>
+class mydeque {
+	int offset;
+public:
+	std::deque<T> value;
+	T& operator[](int x) {
+		while (x - offset < 0)
+		{
+			if (value.size() == 0)
+				offset = x;
+			else
+				offset--;
+			value.push_front(T());
+		}
+		while (x - offset >= value.size())
+		{
+			if (value.size() == 0)
+				offset = x;
+			value.push_back(T());
+		}
+		return value[x - offset];
+	}
+	void pop_front() {
+		offset++;
+		value.pop_front();
+	}
+	void pop_back() { value.pop_back(); }
+	void cutoff_front(int front) {
+		while (front - offset < 0)
+			pop_front();
+	}
+	void cutoff_back(int back) {
+		while (back - offset >= value.size())
+			pop_back();
+	}
+	mydeque(int offset = 0) : 
+		offset(offset) {}
+	~mydeque() {}
+};
 
 class HexagonMap
 {
 public:
 	HexagonMap();
-	HexagonMap(FLOAT tileWidth, FLOAT tileHeight, FLOAT padding);
 	~HexagonMap();
 
 	HexagonMap& operator=(const HexagonMap &);
 	HRESULT Frame(const Point&);
 
-	HRESULT Render(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX, D3DXMATRIX);
+	HRESULT Render(Point, ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX, D3DXMATRIX);
 
-	RESULT Initialize(ID3D11Device*, TextureClass*, ShaderLibrary*);
+	RESULT Initialize(ID3D11Device*, TextureLibrary*, ShaderLibrary*);
+	RESULT Release();
 
+	/** Get the coordinate of the hexagon that contains this point.*/
+	Point GetCoord(Point);
+	/** Return the center of the hexagon at that coordinate*/
+	Point GetLocation(int x, int y);
 protected:
 	RESULT InitializeData();
 	RESULT AddHexagon(FLOAT xCenter, FLOAT yCenter, FLOAT zCenter, FLOAT tileWidth, FLOAT tileHeight);
 
-	HexagonTile* NewHexagonTile(INT xCoord, INT yCoord, FLOAT tileWidth, FLOAT tileHeight, FLOAT padding);
-
 private:
-	FLOAT tileWidth, tileHeight; // width and height of hexagon
-	FLOAT padding; // space between 2 hexagons
-
 	int max_X, max_Y, min_X, min_Y; // this show the max and min coord of tile
 
 	std::string textureFile;
 
-	std::vector<std::vector<HexagonTile*>> map;
+	mydeque<mydeque<HexagonTileBase*>> map;
 
-	TextureClass* textureLib;
+	TextureLibrary* pTextureLib;
 	ShaderLibrary* pShaderLib;
 	ID3D11Device* pDevice;
+	ItemLibrary* itemLib;
 };

@@ -7,11 +7,11 @@
 #include <D3D11.h>
 #include <D3DX11tex.h>
 
-class TextureClass : NonCopyable
+class TextureLibrary : NonCopyable
 {
     public:
-        TextureClass();
-        ~TextureClass();
+        TextureLibrary();
+        ~TextureLibrary();
 
         RESULT Initialize(ID3D11Device*);
         RESULT Release();

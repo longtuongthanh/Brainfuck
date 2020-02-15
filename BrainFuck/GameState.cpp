@@ -14,34 +14,7 @@ GameState::~GameState()
 	DESTROY(camera);
 	DESTROY(inputEvents);
 	delete invokable1;
-	delete map;
-}
-
-Point GameState::GetCoord(Point point)
-{
-	int y = round(point.y * 4 / HEXAGON_SIZE / 3);
-	int x = round(point.x * 2 / HEXAGON_SIZE / sqrt(3));
-	int x2 = round(point.x * 2 / HEXAGON_SIZE / sqrt(3) - 0.5);
-	if (y % 2 != 0)
-		std::swap(x, x2);
-	if ((point - GetLocation(x, y)).length() < HEXAGON_SIZE / 4 * sqrt(3))
-		return Point(x, y);
-
-	int y2 = floor(point.y * 4 / HEXAGON_SIZE / 3);
-	if (y2 == y)
-		y2++;
-	if ((point - GetLocation(x, y)).length() < (point - GetLocation(x2, y2)).length())
-		return Point(x, y);
-	else 
-		return Point(x2, y2);
-}
-
-Point GameState::GetLocation(int x, int y)
-{
-	if (y % 2 == 0)
-		return Point(x * HEXAGON_SIZE * sqrt(3) / 2, (double)y * HEXAGON_SIZE * 3 / 4);
-	else
-		return Point((x + 0.5) * HEXAGON_SIZE * sqrt(3) / 2, (double)y * HEXAGON_SIZE * 3 / 4);
+	DESTROY(map);
 }
 
 RESULT GameState::Initialize(ID3D11Device* device,
@@ -52,9 +25,9 @@ RESULT GameState::Initialize(ID3D11Device* device,
     this->pContext = context;
     this->pDevice = device;
     this->pShaderLib = shaderLib;
-    BLOCKALLOC(TextureClass, textureLib);
+    BLOCKALLOC(TextureLibrary, textureLib);
     BLOCKCALL(textureLib->Initialize(device), 
-		"failed to setup TextureClass\n");
+		"failed to setup TextureLibrary\n");
 
     frameTimer.Initalize();
    
@@ -75,8 +48,8 @@ RESULT GameState::Initialize(ID3D11Device* device,
 	inputEvents->Lock();
 
     //NewTextureObject(TEXTURE_FILE);
-    map = new HexagonMap(HEXAGON_SIZE * sqrt(3) / 2, HEXAGON_SIZE, HEXAGON_PADDING);
-    map->Initialize(pDevice, textureLib, pShaderLib);
+    BLOCKALLOC(HexagonMap, map);
+    BLOCKCALL(map->Initialize(pDevice, textureLib, pShaderLib),"cannot initialize map");
     // else cerr << "object load success\n";
     debugText = new TextString();
     debugText->Initialize(pDevice, 100, textureLib, pShaderLib->GetFontShader());
@@ -92,8 +65,7 @@ RESULT GameState::Initialize(ID3D11Device* device,
 RESULT GameState::Frame(Input* input)
 /** Animations, calculations, etc goes here.*/
 {
-
-	Point cameraPos = Point(camera->position.x, camera->position.y);
+	cameraPos = Point(camera->position.x, camera->position.y);
     frameTimer.Mark();
 
     float time = frameTimer.GetTimeSpan();
@@ -105,6 +77,9 @@ RESULT GameState::Frame(Input* input)
 
 	inputEvents->Frame();
 	
+	Point mouseTileCenter = map->GetCoord(input->MouseToField() + cameraPos);
+
+    if (map->Frame(cameraPos) == 1)
 	//Point x = GetCoord(input->MouseToField() + cameraPos);
     Point x = input->MouseToScreen() + cameraPos;
     if (input->keyboard(VK_LEFT) == KEY_STATE_DOWN || input->keyboard(VK_LEFT) == KEY_STATE_ON_DOWN)
@@ -125,11 +100,11 @@ RESULT GameState::Frame(Input* input)
     }
     if (map->Frame(Point(camera->position.x, camera->position.y)) == 1)
     {
-        debugText->InputString("error " + std::to_string((float)x.x) + "," + std::to_string((float)x.y));
+        debugText->InputString("error " + std::to_string((int)mouseTileCenter.x) + "," + std::to_string((int)mouseTileCenter.y));
     }
     else
     {
-        debugText->InputString("" + std::to_string((float)x.x) + "," + std::to_string((float)x.y));
+        debugText->InputString("keep going " + std::to_string((int)mouseTileCenter.x) + "," + std::to_string((int)mouseTileCenter.y));
     }
     testWorldMatrix->Frame(*input, cameraPos);
     return 0;
@@ -144,7 +119,7 @@ RESULT GameState::Release()
 RESULT GameState::Draw()
 {
     // Game object render
-    map->Render(pContext, pShaderLib->worldMatrix,
+    map->Render(cameraPos, pContext, pShaderLib->worldMatrix,
         camera->viewMatrix,
         pShaderLib->projectionMatrix);
 

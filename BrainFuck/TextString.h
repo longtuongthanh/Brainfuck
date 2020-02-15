@@ -26,7 +26,7 @@ public:
 	virtual TextString& operator = (const TextString&);
 	virtual ~TextString();
 
-	RESULT Initialize(ID3D11Device*, int, TextureClass*, FontShader*);
+	RESULT Initialize(ID3D11Device*, int, TextureLibrary*, FontShader*);
 	virtual RESULT Release();
 	RESULT Render(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX, D3DXMATRIX);
 

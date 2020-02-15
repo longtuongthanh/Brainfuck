@@ -47,7 +47,7 @@ RESULT TextString::Setup(ID3D11Device* device)
 	return 0;
 }
 RESULT TextString::Initialize(ID3D11Device* device, int maxLength,
-							  TextureClass* texture, FontShader* shader)
+							  TextureLibrary* texture, FontShader* shader)
 {
 	//refreshRate = rate;
 	this->shader = shader;

@@ -1,11 +1,11 @@
 #include "TextureClass.h"
 
-TextureClass::TextureClass()
+TextureLibrary::TextureLibrary()
 {
     pDevice = 0;
 }
 
-TextureClass::~TextureClass()
+TextureLibrary::~TextureLibrary()
 {
     for (std::map<const CHAR*, ID3D11ShaderResourceView*>::iterator i = texture.begin(); i != texture.end(); ++i){
         DESTROY(i->second);
@@ -13,19 +13,19 @@ TextureClass::~TextureClass()
     // DO NOT DESTROY DEVICE
 }
 
-RESULT TextureClass::Initialize(ID3D11Device* device)
+RESULT TextureLibrary::Initialize(ID3D11Device* device)
 {
     this->pDevice = device;
     return 0;
 }
 
-RESULT TextureClass::Release()
+RESULT TextureLibrary::Release()
 {
     delete this;
     return 0;
 }
 
-ID3D11ShaderResourceView* TextureClass::GetTexture(const CHAR* filename)
+ID3D11ShaderResourceView* TextureLibrary::GetTexture(const CHAR* filename)
 {
     std::map<const CHAR*, ID3D11ShaderResourceView*>::iterator trg = texture.find(filename);
     if (trg == texture.end()){

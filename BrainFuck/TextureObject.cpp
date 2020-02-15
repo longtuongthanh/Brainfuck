@@ -6,6 +6,7 @@ TextureObject::TextureObject() {
     pointArray = 0;
     texture = 0;
     shader = 0;
+	//dataChanged = true;
 }
 TextureObject::~TextureObject() {
     DESTROY(vertexBuf);
@@ -61,7 +62,7 @@ RESULT TextureObject::Setup(ID3D11Device* device)
     return 0;
 }
 
-RESULT TextureObject::Initialize(ID3D11Device* device, const CHAR* textureFile, TextureClass* texture, TextureShader* shader)
+RESULT TextureObject::Initialize(ID3D11Device* device, const CHAR* textureFile, TextureLibrary* texture, TextureShader* shader)
 {
     //refreshRate = rate;
     this->shader = shader;
@@ -79,11 +80,12 @@ RESULT TextureObject::Render(ID3D11DeviceContext* deviceContext,
                                      D3DXMATRIX viewMatrix,
                                      D3DXMATRIX projectionMatrix)
 {
-
-    D3D11_MAPPED_SUBRESOURCE mappedVertices;
-    COMCALL(deviceContext->Map(vertexBuf, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedVertices));
-	BLOCKCALL(LoadRenderData(mappedVertices.pData), "cannot load data to render");
-    deviceContext->Unmap(vertexBuf, 0);
+	if (dataChanged) {
+		D3D11_MAPPED_SUBRESOURCE mappedVertices;
+		COMCALL(deviceContext->Map(vertexBuf, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedVertices));
+		BLOCKCALL(LoadRenderData(mappedVertices.pData), "cannot load data to render");
+		deviceContext->Unmap(vertexBuf, 0);
+	}
 
     unsigned int stride = sizeof(VertexType);
     unsigned int offset = 0;
@@ -92,10 +94,11 @@ RESULT TextureObject::Render(ID3D11DeviceContext* deviceContext,
     deviceContext->IASetPrimitiveTopology(topology());
 
     // Shader render
-    BLOCKCALL(shader->Render(deviceContext, pointCount, worldMatrix, viewMatrix, projectionMatrix, texture),
-         "warning: shader render failed\n")
-    // else cerr << "shader on\n";
+	BLOCKCALL(shader->Render(deviceContext, pointCount, worldMatrix, viewMatrix, projectionMatrix, texture),
+		"warning: shader render failed\n")
+		// else cerr << "shader on\n";
 
+	dataChanged = false;
     return 0;
 }
 RESULT TextureObject::InitializeData()

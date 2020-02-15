@@ -10,7 +10,7 @@ ShaderLibrary::~ShaderLibrary()
     DESTROY(texShader);
 }
 
-LONG ShaderLibrary::Initialize(ID3D11Device* device, HWND hwnd)
+RESULT ShaderLibrary::Initialize(ID3D11Device* device, HWND hwnd)
 {
     BLOCKALLOC(TextureShader, texShader);
     BLOCKCALL(texShader->Initialize(device, hwnd),"failed to load texture shader\n");
@@ -20,7 +20,7 @@ LONG ShaderLibrary::Initialize(ID3D11Device* device, HWND hwnd)
     return 0;
 }
 
-LONG ShaderLibrary::Release()
+RESULT ShaderLibrary::Release()
 {
     delete this;
     return 0;
