@@ -39,7 +39,7 @@ class GameState final : private NonCopyable
     protected:
         std::unordered_set<GraphicObject*> objects;
     private:
-        TextureClass* textureLib;
+        TextureLibrary* textureLib;
         ShaderLibrary* pShaderLib;
         ID3D11Device* pDevice;
         ID3D11DeviceContext* pContext;
@@ -52,10 +52,9 @@ class GameState final : private NonCopyable
 		InvokableMoveCameraWithArrowKey* invokable1;
         TestDragable* testWorldMatrix;
 
-		/** Get the coordinate of the hexagon that contains this point.*/
-		static Point GetCoord(Point x);
-		/** Return the center of the hexagon at that coordinate*/
-		static Point GetLocation(int x, int y);
+		// GetCoord, GetLocation moved to HexagonMap
+
+		Point cameraPos;
 };
 
 class InvokableMoveCameraWithArrowKey : public Invokable {

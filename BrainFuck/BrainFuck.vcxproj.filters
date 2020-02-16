@@ -92,6 +92,8 @@
     </ClCompile>
     <ClCompile Include="SoundClass.cpp">
       <Filter>Source Files</Filter>
+    <ClCompile Include="HexagonTile.cpp">
+      <Filter>Source Files\Object</Filter>
     </ClCompile>
     <ClCompile Include="HexagonTile.cpp">
       <Filter>Source Files\Object</Filter>
@@ -120,9 +122,6 @@
       <Filter>Header Files\Graphic</Filter>
     </ClInclude>
     <ClInclude Include="TextureShader.h">
-      <Filter>Header Files\Graphic</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureClass.h">
       <Filter>Header Files\Graphic</Filter>
     </ClInclude>
     <ClInclude Include="CameraClass.h">
@@ -160,6 +159,8 @@
     </ClInclude>
     <ClInclude Include="TestWorldMatrix.h">
       <Filter>Header Files\Object</Filter>
+    <ClInclude Include="TextureClass.h">
+      <Filter>Header Files\Graphic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
