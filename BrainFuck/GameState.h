@@ -12,7 +12,9 @@
 #include "HexagonMap.h"
 #include "Timer.h"
 #include "Input.h"
+#include "SoundClass.h"
 #include "EventDistributor.h"
+#include "TestWorldMatrix.h"
 
 // Hexagon size moved to HexagonTile.h
 
@@ -42,8 +44,10 @@ class GameState final : private NonCopyable
         Timer frameTimer;
         CameraClass* camera;
         TextString* debugText;
+        Sound* sound;
 		EventDistributor* inputEvents;
 		InvokableMoveCameraWithArrowKey* invokable1;
+        TestDragable* testWorldMatrix;
 
 		// GetCoord, GetLocation moved to HexagonMap
 
