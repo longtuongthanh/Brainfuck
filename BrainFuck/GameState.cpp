@@ -106,6 +106,7 @@ RESULT GameState::Frame(Input* input)
     {
         debugText->InputString("keep going " + std::to_string((int)mouseTileCenter.x) + "," + std::to_string((int)mouseTileCenter.y));
     }
+
     testWorldMatrix->Frame(*input, cameraPos);
     return 0;
 }

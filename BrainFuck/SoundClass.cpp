@@ -113,22 +113,6 @@ RESULT Sound::Initialize()
 	return 0;
 }
 
-RESULT Sound::Shutdown()
-{
-	return 0;
-}
-
-RESULT Sound::InitializeDirectSound()
-{
-
-	return false;
-}
-
-RESULT Sound::ShutdownDirectSound()
-{
-	return 0;
-}
-
 RESULT Sound::LoadWaveFile(const char* strFileName)
 {
 	HANDLE hFile = CreateFile(

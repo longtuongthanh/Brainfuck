@@ -105,20 +105,6 @@ bool doIntersect(Point p1, Point q1, Point p2, Point q2);
 // Returns true if the point p lies inside the polygon[] with n vertices 
 bool isInside(std::vector<Point>& polygon, Point p);
 
-class DragAndDrop
-{
-public:
-    void UpdateDragAndDrop(Point& pos,std::vector<Point> hitBox, class Input& input, Point camPos);
-
-private:
-
-private:
-    bool beingHold = false;
-    bool clickable = false;
-    Point prevPos;
-
-};
-
 #define CODE_KILL 2
 #define CODE_ERROR 1
 

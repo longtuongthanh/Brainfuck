@@ -1,5 +1,4 @@
 #include "useful_stuff.h"
-#include "Input.h"
 
 NonCopyable::NonCopyable()
 {
@@ -135,34 +134,4 @@ bool isInside(std::vector<Point>& polygon, Point p)
 
     // Return true if count is odd, false otherwise 
     return count & 1;  // Same as (count%2 == 1) 
-}
-
-void DragAndDrop::UpdateDragAndDrop(Point& pos, std::vector<Point> hitBox, Input& input, Point camPos)
-{
-    bool mouseInside = isInside(hitBox, input.MouseToScreen() + camPos);
-
-    if (beingHold)
-    {
-        if (input.MouseFlag() & 0x0001)
-        {
-            pos += input.MouseToScreen() + camPos - prevPos;
-        }
-        else
-        {
-            beingHold = false;
-        }
-    }
-    else if(input.MouseFlag() & 0x0001 & clickable)
-    {
-        beingHold = true;
-    }
-    else if (!(input.MouseFlag() & 0x0001) & mouseInside)
-    {
-        clickable = true;
-    }
-    else
-    {
-        clickable = false;
-    }
-    prevPos = input.MouseToScreen() + camPos;
 }

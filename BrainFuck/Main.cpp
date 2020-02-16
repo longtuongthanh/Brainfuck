@@ -113,7 +113,7 @@ RESULT Main::frame()
         return 1;
     }
 
-    if (graphic->DrawSetupUI()) return 1;
+    if (graphic->DrawSetup2D()) return 1;
 
     if (gameState->Draw()) {
         cerr << "OBJECT DRAW FAILED";
