@@ -90,7 +90,15 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SoundClass.cpp">
+      <Filter>Source Files</Filter>
     <ClCompile Include="HexagonTile.cpp">
+      <Filter>Source Files\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="HexagonTile.cpp">
+      <Filter>Source Files\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="TestWorldMatrix.cpp">
       <Filter>Source Files\Object</Filter>
     </ClCompile>
   </ItemGroup>
@@ -149,6 +157,8 @@
     <ClInclude Include="SoundClass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TestWorldMatrix.h">
+      <Filter>Header Files\Object</Filter>
     <ClInclude Include="TextureClass.h">
       <Filter>Header Files\Graphic</Filter>
     </ClInclude>
@@ -168,5 +178,10 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="char_size.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="gwyn.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
 </Project>
