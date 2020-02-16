@@ -46,7 +46,7 @@ class D3Dcontroller final : NonCopyable
         RESULT Initialize(D3Dcontroller_setting&);
         RESULT Release();
 
-        RESULT draw(float red = 0.0f, float green = 0.2f, float blue = 0.4f, float alpha = 1.0f);
+        RESULT draw(float red = 0.0f, float green = 0.2f, float blue = 0.4f, float alpha = 0.0f);
         RESULT display();
 
         void TurnZBufferOn();

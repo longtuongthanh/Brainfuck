@@ -170,6 +170,7 @@
     <ClCompile Include="GraphicObject.cpp" />
     <ClCompile Include="HexagonTile.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="ItemLibrary.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ShaderLibrary.cpp" />
     <ClCompile Include="SoundClass.cpp" />
@@ -178,6 +179,8 @@
     <ClCompile Include="TextureClass.cpp" />
     <ClCompile Include="TextureObject.cpp" />
     <ClCompile Include="TextureShader.cpp" />
+    <ClCompile Include="TileDetermination.cpp" />
+    <ClCompile Include="TileStorage.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="useful_stuff.cpp" />
     <ClCompile Include="WindowInitialSetting.cpp" />
@@ -188,11 +191,13 @@
     <ClInclude Include="FontShader.h" />
     <ClInclude Include="EventDistributor.h" />
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="game_constants.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="HexagonMap.h" />
     <ClInclude Include="GraphicObject.h" />
     <ClInclude Include="HexagonTile.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="ItemLibrary.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="ShaderLibrary.h" />
     <ClInclude Include="SoundClass.h" />
@@ -201,6 +206,8 @@
     <ClInclude Include="TextureClass.h" />
     <ClInclude Include="TextureObject.h" />
     <ClInclude Include="TextureShader.h" />
+    <ClInclude Include="TileDetermination.h" />
+    <ClInclude Include="TileStorage.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="useful_stuff.h" />
   </ItemGroup>

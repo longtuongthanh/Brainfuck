@@ -34,8 +34,9 @@ class TextureObject : public GraphicObject
 
         int GetPointCount();
         ID3D11ShaderResourceView* GetTexture();
+
+		/** Denoted counterclockwise */
         inline VertexType& operator[](int x)
-        /** Denoted counterclockwise */
         {return pointArray[ (x*2 < pointCount) ? x*2 : (pointCount - x)*2 - 1];}
     protected:
         RESULT Setup(ID3D11Device*);
@@ -46,7 +47,8 @@ class TextureObject : public GraphicObject
         VertexType* pointArray;
 
         ID3D11ShaderResourceView* texture;
-        
+
+		bool dataChanged;
     private:
         ID3D11Buffer *vertexBuf;
 

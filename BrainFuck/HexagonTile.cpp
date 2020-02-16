@@ -1,58 +1,44 @@
 #include "HexagonTile.h"
 
-HexagonTile::Storage::Storage()
+RESULT HexagonTilePrototype::InitializeData()
 {
-}
-
-HexagonTile::Storage::Storage(const Storage&)
-{
-}
-
-HexagonTile::Storage::~Storage()
-{
-}
-
-HexagonTile::HexagonTile()
-{
-	position = Point(0, 0);
-}
-
-HexagonTile::HexagonTile(Point position, FLOAT width, FLOAT height)
-{
-	this->position = position;
-	this->width = width;
-	this->height = height;
-}
-
-HexagonTile::HexagonTile(const HexagonTile&)
-{
-}
-
-HexagonTile::~HexagonTile()
-{
-}
-
-Point HexagonTile::GetPosition()
-{
-	return position;
-}
-
-RESULT HexagonTile::InitializeData()
-{
+	float height = HEXAGON_SIZE - HEXAGON_PADDING;
+	float width = HEXAGON_SIZE * sqrt(3) / 2 - HEXAGON_PADDING;
 	BLOCKALLOC(VertexType[6], pointArray);
 
-	D3DXVECTOR3 newVerx[6];
-	newVerx[0] = D3DXVECTOR3(position.x + 0, position.y + height / 2, 1);
-	newVerx[1] = D3DXVECTOR3(position.x + width / 2, position.y + height / 4, 1);
-	newVerx[2] = D3DXVECTOR3(position.x - width / 2, position.y + height / 4, 1);
-	newVerx[3] = D3DXVECTOR3(position.x + width / 2, position.y - height / 4, 1);
-	newVerx[4] = D3DXVECTOR3(position.x - width / 2, position.y - height / 4, 1);
-	newVerx[5] = D3DXVECTOR3(position.x + 0, position.y - height / 2, 1);
+	pointArray[0].position = D3DXVECTOR3(0, height / 2, 1);
+	pointArray[1].position = D3DXVECTOR3(width / 2, height / 4, 1);
+	pointArray[2].position = D3DXVECTOR3(-width / 2, height / 4, 1);
+	pointArray[3].position = D3DXVECTOR3(width / 2, -height / 4, 1);
+	pointArray[4].position = D3DXVECTOR3(-width / 2, -height / 4, 1);
+	pointArray[5].position = D3DXVECTOR3(0, -height / 2, 1);
 
-	for (int i = 0; i < 6; i++)
-	{
-		pointArray[i].position = newVerx[i];
-	}
+	pointArray[0].texture = D3DXVECTOR2(0.5, 0);
+	pointArray[1].texture = D3DXVECTOR2(1, 0.25);
+	pointArray[2].texture = D3DXVECTOR2(0, 0.25);
+	pointArray[3].texture = D3DXVECTOR2(1, 0.75);
+	pointArray[4].texture = D3DXVECTOR2(0, 0.75);
+	pointArray[5].texture = D3DXVECTOR2(0.5, 1);
+
 	pointCount = 6;
-	return RESULT();
+	return 0;
+}
+
+HexagonTile::HexagonTile() {}
+HexagonTile::HexagonTile(Point position) : HexagonTileMiddle(position) {}
+
+RESULT HexagonTile::Release()
+{
+	DESTROY(prototype);
+	return 0;
+}
+
+RESULT HexagonTile::Initialize(ID3D11Device* device, TextureLibrary* textureLib, TextureShader* texShader, ItemLibrary* itemLib)
+{
+	__super::Initialize(device, textureLib, texShader, itemLib);
+	DEBUG(if (prototype) return 1;)
+	BLOCKALLOC(HexagonTilePrototype, prototype);
+	BLOCKCALL(prototype->Initialize(device, HEXAGON_TEXTURE_FILE, textureLib, texShader),
+		"Cannot initiate prototype HexagonTile");
+	return 0;
 }

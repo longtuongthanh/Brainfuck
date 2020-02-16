@@ -45,7 +45,6 @@ class Graphic : private NonCopyable
         ShaderLibrary* shaderLib;
 
         int width, height;
-        float color[4];
 };
 
 #endif // GRAPHIC_H

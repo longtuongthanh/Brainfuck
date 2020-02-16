@@ -31,6 +31,18 @@
     <Filter Include="Header Files\Object">
       <UniqueIdentifier>{d2f7af2c-cca1-413e-b452-0f665cc7ae13}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Library">
+      <UniqueIdentifier>{9a503b2a-6cab-4fca-8038-df67413f7fc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Library">
+      <UniqueIdentifier>{19711f9f-178f-40c8-9162-52b528ef1553}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Tiles">
+      <UniqueIdentifier>{66a5e8d1-b436-473e-8fcf-ba28af1ecbcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Object\Tiles">
+      <UniqueIdentifier>{54ab073c-1ff5-4f6a-9ce1-c96c0bb28694}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BrainFuck.cpp">
@@ -54,13 +66,7 @@
     <ClCompile Include="D3Dcontroller.cpp">
       <Filter>Source Files\Graphic</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderLibrary.cpp">
-      <Filter>Source Files\Graphic</Filter>
-    </ClCompile>
     <ClCompile Include="TextureShader.cpp">
-      <Filter>Source Files\Graphic</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureClass.cpp">
       <Filter>Source Files\Graphic</Filter>
     </ClCompile>
     <ClCompile Include="Graphic.cpp">
@@ -95,6 +101,20 @@
     <ClCompile Include="HexagonTile.cpp">
       <Filter>Source Files\Object</Filter>
     </ClCompile>
+    <ClCompile Include="ItemLibrary.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderLibrary.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureClass.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="TileDetermination.cpp">
+      <Filter>Source Files\Object\Tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="TileStorage.cpp">
+      <Filter>Source Files\Object\Tiles</Filter>
     <ClCompile Include="HexagonTile.cpp">
       <Filter>Source Files\Object</Filter>
     </ClCompile>
@@ -136,9 +156,6 @@
     <ClInclude Include="TextString.h">
       <Filter>Header Files\Object</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderLibrary.h">
-      <Filter>Header Files\Graphic</Filter>
-    </ClInclude>
     <ClInclude Include="GraphicObject.h">
       <Filter>Header Files\Object</Filter>
     </ClInclude>
@@ -157,10 +174,25 @@
     <ClInclude Include="SoundClass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ShaderLibrary.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemLibrary.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
     <ClInclude Include="TestWorldMatrix.h">
       <Filter>Header Files\Object</Filter>
     <ClInclude Include="TextureClass.h">
-      <Filter>Header Files\Graphic</Filter>
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="TileDetermination.h">
+      <Filter>Header Files\Object\Tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="TileStorage.h">
+      <Filter>Header Files\Object\Tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="game_constants.h">
+      <Filter>Header Files\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
