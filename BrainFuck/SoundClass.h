@@ -23,7 +23,7 @@ public:
 	float GetVolume() { return volume; }
 	
 	RESULT Initialize();
-	RESULT Shutdown();
+	RESULT Release();
 	
 	/*
 		Load wav file to temp buffer, only play that buffer when PlayWaveBuffer is call

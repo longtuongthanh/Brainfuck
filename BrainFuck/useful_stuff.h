@@ -89,6 +89,7 @@ struct Point
 
 // Given three colinear points p, q, r, the function checks if 
 // point q lies on line segment 'pr' 
+// OR it should, but it returns whether p is in the rectangle made by q & r instead.
 bool onSegment(Point p, Point q, Point r);
 
 // To find orientation of ordered triplet (p, q, r). 
@@ -105,6 +106,7 @@ bool doIntersect(Point p1, Point q1, Point p2, Point q2);
 // Returns true if the point p lies inside the polygon[] with n vertices 
 bool isInside(std::vector<Point>& polygon, Point p);
 
+// TODO: move this. Thanh moved already so only need copy-paste.
 class DragAndDrop
 {
 public:

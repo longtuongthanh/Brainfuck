@@ -35,6 +35,7 @@ class Graphic : private NonCopyable
 		/** 2D Drawing for game elements. Scale according to screen width (keep aspect ratio)
 			The width of the screen is -1 to 1.*/
 		RESULT DrawSetup2D();
+		RESULT ClearScreen();
 
         inline ID3D11Device* GetDevice() {return controller->GetDevice();}
         inline ID3D11DeviceContext* GetDeviceContext() {return controller->GetDeviceContext();}

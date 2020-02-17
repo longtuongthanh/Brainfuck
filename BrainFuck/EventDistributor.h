@@ -1,7 +1,8 @@
 #pragma once
 
 #undef __in
-#include <vector>
+#include <set>
+#include <map>
 #include "useful_stuff.h"
 #include "Input.h"
 
@@ -22,24 +23,23 @@ public:
 	/** Try not to use this. Removes all pointers with same address 
 		by iterating through all of them (UNIMPLEMENTED)*/
 	RESULT Remove(Invokable*);
-	/** Prevents subscribtion and start allowing events to happen each Frame().*/
-	RESULT Lock();
 
 	RESULT SubscribeOnKeyDown(char, Invokable*);
 	RESULT SubscribeWhileKeyDown(char, Invokable*);
+	RESULT UnsubscribeOnKeyDown(char, Invokable*);
+	RESULT UnsubscribeWhileKeyDown(char, Invokable*);
 	// Note: Function pointer is only for static / global functions.
 	RESULT SubscribeMouseClick(FUNCTION(void*, check, Point), Invokable*);
+	RESULT UnsubscribeMouseClick(Invokable*);
 private:
 	/** Invokable will be passed a pointer containing the character.*/
-	std::vector<Invokable*> onKeyDown[256];
-	std::vector<Invokable*> whileKeyDown[256];
+	std::set<Invokable*> onKeyDown[256];
+	std::set<Invokable*> whileKeyDown[256];
 	/** The corresponding onMouseClick Invokable will be called 
 		with parameter returned by mouseClickCondition. Return null
 		if you dont want onMouseClick to be called.*/
-	std::vector<FUNCTION(void*, , Point)> mouseClickCondition;
-	std::vector<Invokable*> onMouseClick;
+	std::map<Invokable*, FUNCTION(void*, , Point)> onMouseClick;
 	
 	Input* pInput;
-	bool locked;
 };
 

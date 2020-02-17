@@ -33,6 +33,7 @@ class GameState final : private NonCopyable
         RESULT Initialize(ID3D11Device*, ID3D11DeviceContext*, ShaderLibrary*, Input*);
         RESULT Release();
         RESULT Draw();
+		RESULT DrawUI();
     protected:
         std::unordered_set<GraphicObject*> objects;
     private:

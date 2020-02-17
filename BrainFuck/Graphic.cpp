@@ -69,12 +69,6 @@ RESULT Graphic::DrawSetupUI()
 
 	controller->TurnZBufferOff();
 
-    if (controller->draw()) {
-        cerr << "warning: cannot clear screen\n";
-        return 1;
-    }
-    // else cerr << "clear complete\n";
-
     return 0;
 }
 
@@ -85,12 +79,16 @@ RESULT Graphic::DrawSetup2D()
 
 	controller->TurnZBufferOff();
 
+	return 0;
+}
+
+RESULT Graphic::ClearScreen()
+{
 	if (controller->draw()) {
 		cerr << "warning: cannot clear screen\n";
 		return 1;
 	}
 	// else cerr << "clear complete\n";
-
 	return 0;
 }
 

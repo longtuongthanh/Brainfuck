@@ -143,7 +143,7 @@ void DragAndDrop::UpdateDragAndDrop(Point& pos, std::vector<Point> hitBox, Input
 
     if (beingHold)
     {
-        if (input.MouseFlag() & 0x0001)
+        if (input.MouseFlag() & 0x0101)
         {
             pos += input.MouseToScreen() + camPos - prevPos;
         }
@@ -152,11 +152,11 @@ void DragAndDrop::UpdateDragAndDrop(Point& pos, std::vector<Point> hitBox, Input
             beingHold = false;
         }
     }
-    else if(input.MouseFlag() & 0x0001 & clickable)
+    else if(input.MouseFlag() & 0x0101 & clickable)
     {
         beingHold = true;
     }
-    else if (!(input.MouseFlag() & 0x0001) & mouseInside)
+    else if (!(input.MouseFlag() & 0x0101) & mouseInside)
     {
         clickable = true;
     }

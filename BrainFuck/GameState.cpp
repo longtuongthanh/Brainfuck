@@ -15,6 +15,7 @@ GameState::~GameState()
 	DESTROY(inputEvents);
 	delete invokable1;
 	DESTROY(map);
+	DESTROY(sound);
 }
 
 RESULT GameState::Initialize(ID3D11Device* device,
@@ -45,8 +46,6 @@ RESULT GameState::Initialize(ID3D11Device* device,
 	inputEvents->SubscribeWhileKeyDown(VK_LEFT, invokable1);
 	inputEvents->SubscribeWhileKeyDown(VK_RIGHT, invokable1);
 
-	inputEvents->Lock();
-
     //NewTextureObject(TEXTURE_FILE);
     BLOCKALLOC(HexagonMap, map);
     BLOCKCALL(map->Initialize(pDevice, textureLib, pShaderLib),"cannot initialize map");
@@ -55,7 +54,7 @@ RESULT GameState::Initialize(ID3D11Device* device,
     debugText->Initialize(pDevice, 100, textureLib, pShaderLib->GetFontShader());
     sound = new Sound();
     sound->LoadWaveFile("gwyn.wav");
-    //sound->PlayWaveFile();
+	sound->PlayWaveFile();
 
     testWorldMatrix = new TestDragable();
     testWorldMatrix->Initialize(pDevice, TEXTURE_FILE, textureLib, pShaderLib->GetTextureShader());
@@ -75,10 +74,12 @@ RESULT GameState::Frame(Input* input)
         }
     debugText->ChangePosition(cameraPos);
 
+	testWorldMatrix->Frame(*input, cameraPos);
 	inputEvents->Frame();
 	
 	//Point x = GetCoord(input->MouseToField() + cameraPos);
     Point x = input->MouseToScreen() + cameraPos;
+	/*
     if (input->keyboard(VK_LEFT) == KEY_STATE_DOWN || input->keyboard(VK_LEFT) == KEY_STATE_ON_DOWN)
     {
         //camera->position.x -= frameTimer.GetTimeSpan();
@@ -95,6 +96,7 @@ RESULT GameState::Frame(Input* input)
     {
         //camera->position.y -= frameTimer.GetTimeSpan();
     }
+	//*/
     if (map->Frame(Point(camera->position.x, camera->position.y)) == 1)
     {
         debugText->InputString("error " + std::to_string((float)x.x) + "," + std::to_string((float)x.y));
@@ -103,7 +105,6 @@ RESULT GameState::Frame(Input* input)
     {
         debugText->InputString("" + std::to_string((float)x.x) + "," + std::to_string((float)x.y));
     }
-    testWorldMatrix->Frame(*input, cameraPos);
     return 0;
 }
 
@@ -129,14 +130,18 @@ RESULT GameState::Draw()
         }
 
     // else cerr << "object on\n";
-    testWorldMatrix->MakeWorldMatrix();
-    testWorldMatrix->Render(pContext, *testWorldMatrix->pMatWorld, camera->viewMatrix, pShaderLib->projectionMatrix);
-    
     debugText->Render(pContext, pShaderLib->worldMatrix, camera->viewMatrix, pShaderLib->projectionMatrix);
 
 	BLOCKCALL(camera->Render(), "Cannot switch perspective.");
 
     return 0;
+}
+
+RESULT GameState::DrawUI()
+{
+	testWorldMatrix->MakeWorldMatrix();
+	testWorldMatrix->Render(pContext, *testWorldMatrix->pMatWorld, camera->viewMatrix, pShaderLib->projectionMatrix);
+	return 0;
 }
 
 TextureObject* GameState::NewTextureObject(const CHAR* filename, TextureObject* target)
