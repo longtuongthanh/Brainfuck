@@ -1,13 +1,15 @@
 #pragma once
-#include "HexagonTile.h"
+
+#include "TilePrototype.h"
+
+#define TILE_DETERMINATION_ID 1
 
 static const CHAR* DETERMINATION_TEXTURE_FILE = "texture.dds";
-class TileDetermination : public HexagonTileMiddle<1> {
+class TileDetermination : public HexagonTilePrototype {
 public:
-	TileDetermination();
-	TileDetermination(Point position);
-	RESULT Release();
-	RESULT Initialize(ID3D11Device*, TextureLibrary*, TextureShader*, ItemLibrary*);
-
-	virtual RESULT Frame();
+	int id();
+	const char* name();
+	RESULT Frame();
+	RESULT TileBehaviour(TileStorage&, GlobalEffect*);
+	RESULT InitializeStorage(TileStorage&);
 };

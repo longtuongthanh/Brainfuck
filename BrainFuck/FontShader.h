@@ -4,7 +4,6 @@
 #include <D3D11.h>
 #include <D3DX10math.h>
 #include <D3DX11async.h>
-
 class FontShader : private NonCopyable
 {
 private:

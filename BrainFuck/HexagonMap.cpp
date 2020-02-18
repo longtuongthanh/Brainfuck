@@ -8,6 +8,7 @@ HexagonMap::HexagonMap()
 
 HexagonMap::~HexagonMap()
 {
+	DESTROY(tileLib);
 	DESTROY(itemLib);
 }
 
@@ -72,13 +73,13 @@ HRESULT HexagonMap::Render(Point cameraPos,
 			{
 				int trgx = i + cameraTile.x;
 				int trgy = j + cameraTile.y;
-				HexagonTileBase*& tile = map[trgx][trgy];
+				HexagonTile*& tile = map[trgx][trgy];
 				if (tile == NULL) {
 					if (trgx % 10 == 0 && trgy % 10 == 0)
-						tile = new TileDetermination(GetLocation(trgx, trgy));
+						tile = new HexagonTile(GetLocation(trgx, trgy), TILE_DETERMINATION_ID);
 					else
-						tile = new HexagonTile(GetLocation(trgx, trgy));
-					tile->Initialize(pDevice, pTextureLib, pShaderLib->GetTextureShader(), itemLib);
+						tile = new HexagonTile(GetLocation(trgx, trgy), TILE_DEFAULT_ID);
+					tile->Initialize(itemLib, tileLib);
 				}
 				tile->Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
 			}
@@ -94,6 +95,8 @@ RESULT HexagonMap::Initialize(ID3D11Device* device, TextureLibrary* textureLib, 
 
 	BLOCKALLOC(ItemLibrary, itemLib);
 	BLOCKCALL(itemLib->Initialize(device, textureLib, shaderLib->GetTextureShader()), "Cannot initialize item library");
+	BLOCKALLOC(TileLibrary, tileLib);
+	BLOCKCALL(tileLib->Initialize(device, textureLib, shaderLib->GetTextureShader()), "Cannot initialize tile library");
 
     InitializeData();
 
@@ -124,12 +127,12 @@ RESULT HexagonMap::InitializeData()
 			if (i - j >= min_X && i - j <= max_X)
 			{				
             // this is a test, in real game we will load data from file
-				HexagonTileBase* newTile;
+				HexagonTile* newTile;
 				if (i % 10 == 0 && j % 10 == 0)
-					newTile = new TileDetermination(GetLocation(i, j));
+					newTile = new HexagonTile(GetLocation(i, j), TILE_DETERMINATION_ID);
 				else
-					newTile = new HexagonTile(GetLocation(i, j));
-				newTile->Initialize(pDevice, pTextureLib, pShaderLib->GetTextureShader(), itemLib);
+					newTile = new HexagonTile(GetLocation(i, j), TILE_DEFAULT_ID);
+				newTile->Initialize(itemLib, tileLib);
 				map[i][j] = newTile;
 			}
     return 0;

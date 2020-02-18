@@ -165,6 +165,7 @@
     <ClCompile Include="EventDistributor.cpp" />
     <ClCompile Include="FontShader.cpp" />
     <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="GlobalEffect.cpp" />
     <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="HexagonMap.cpp" />
     <ClCompile Include="GraphicObject.cpp" />
@@ -180,6 +181,8 @@
     <ClCompile Include="TextureObject.cpp" />
     <ClCompile Include="TextureShader.cpp" />
     <ClCompile Include="TileDetermination.cpp" />
+    <ClCompile Include="TileLibrary.cpp" />
+    <ClCompile Include="TilePrototype.cpp" />
     <ClCompile Include="TileStorage.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="useful_stuff.cpp" />
@@ -192,6 +195,7 @@
     <ClInclude Include="EventDistributor.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="game_constants.h" />
+    <ClInclude Include="GlobalEffect.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="HexagonMap.h" />
     <ClInclude Include="GraphicObject.h" />
@@ -207,6 +211,8 @@
     <ClInclude Include="TextureObject.h" />
     <ClInclude Include="TextureShader.h" />
     <ClInclude Include="TileDetermination.h" />
+    <ClInclude Include="TileLibrary.h" />
+    <ClInclude Include="TilePrototype.h" />
     <ClInclude Include="TileStorage.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="useful_stuff.h" />

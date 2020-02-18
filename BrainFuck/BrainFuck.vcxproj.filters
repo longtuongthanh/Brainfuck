@@ -1,73 +1,237 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="BrainFuck.cpp" />
-    <ClCompile Include="CameraClass.cpp" />
-    <ClCompile Include="D3Dcontroller.cpp" />
-    <ClCompile Include="EventDistributor.cpp" />
-    <ClCompile Include="FontShader.cpp" />
-    <ClCompile Include="GameState.cpp" />
-    <ClCompile Include="Graphic.cpp" />
-    <ClCompile Include="HexagonMap.cpp" />
-    <ClCompile Include="GraphicObject.cpp" />
-    <ClCompile Include="HexagonTile.cpp" />
-    <ClCompile Include="Input.cpp" />
-    <ClCompile Include="ItemLibrary.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="ShaderLibrary.cpp" />
-    <ClCompile Include="SoundClass.cpp" />
-    <ClCompile Include="TestWorldMatrix.cpp" />
-    <ClCompile Include="TextString.cpp" />
-    <ClCompile Include="TextureClass.cpp" />
-    <ClCompile Include="TextureObject.cpp" />
-    <ClCompile Include="TextureShader.cpp" />
-    <ClCompile Include="TileDetermination.cpp" />
-    <ClCompile Include="TileStorage.cpp" />
-    <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="useful_stuff.cpp" />
-    <ClCompile Include="WindowInitialSetting.cpp" />
+    <ClCompile Include="useful_stuff.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphic.cpp">
+      <Filter>Source\System\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicObject.cpp">
+      <Filter>Source\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="BrainFuck.cpp">
+      <Filter>Source\System\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source\System\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowInitialSetting.cpp">
+      <Filter>Source\System\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraClass.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="D3Dcontroller.cpp">
+      <Filter>Source\System\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="EventDistributor.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="TileDetermination.cpp">
+      <Filter>Source\Objects\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemLibrary.cpp">
+      <Filter>Source\Objects\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="FontShader.cpp">
+      <Filter>Source\System\Graphic\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="HexagonMap.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="HexagonTile.cpp">
+      <Filter>Source\Objects\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderLibrary.cpp">
+      <Filter>Source\System\Graphic\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundClass.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="TextString.cpp">
+      <Filter>Source\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="TestWorldMatrix.cpp">
+      <Filter>Source\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="TileStorage.cpp">
+      <Filter>Source\Objects\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureShader.cpp">
+      <Filter>Source\System\Graphic\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureObject.cpp">
+      <Filter>Source\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureClass.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="TileLibrary.cpp">
+      <Filter>Source\Objects\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalEffect.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="TilePrototype.cpp">
+      <Filter>Source\Objects\Tile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CameraClass.h" />
-    <ClInclude Include="D3Dcontroller.h" />
-    <ClInclude Include="FontShader.h" />
-    <ClInclude Include="EventDistributor.h" />
-    <ClInclude Include="GameState.h" />
-    <ClInclude Include="game_constants.h" />
-    <ClInclude Include="Graphic.h" />
-    <ClInclude Include="HexagonMap.h" />
-    <ClInclude Include="GraphicObject.h" />
-    <ClInclude Include="HexagonTile.h" />
-    <ClInclude Include="Input.h" />
-    <ClInclude Include="ItemLibrary.h" />
-    <ClInclude Include="Main.h" />
-    <ClInclude Include="ShaderLibrary.h" />
-    <ClInclude Include="SoundClass.h" />
-    <ClInclude Include="TestWorldMatrix.h" />
-    <ClInclude Include="TextString.h" />
-    <ClInclude Include="TextureClass.h" />
-    <ClInclude Include="TextureObject.h" />
-    <ClInclude Include="TextureShader.h" />
-    <ClInclude Include="TileDetermination.h" />
-    <ClInclude Include="TileStorage.h" />
-    <ClInclude Include="Timer.h" />
-    <ClInclude Include="useful_stuff.h" />
+    <ClInclude Include="CameraClass.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="D3Dcontroller.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="EventDistributor.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="FontShader.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="game_constants.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphic.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicObject.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="HexagonMap.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="HexagonTile.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemLibrary.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Main.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderLibrary.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundClass.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="TestWorldMatrix.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="TextString.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="useful_stuff.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="TileStorage.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="TileDetermination.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureShader.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureObject.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureClass.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="TileLibrary.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalEffect.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="TilePrototype.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Media Include="gwyn.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="font.png" />
-    <Image Include="texture.dds" />
+    <Image Include="font.png">
+      <Filter>Resource</Filter>
+    </Image>
+    <Image Include="texture.dds">
+      <Filter>Resource</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
-    <None Include="font.PS" />
-    <None Include="font.VS" />
-    <None Include="texture.PS" />
-    <None Include="texture.VS" />
+    <None Include="font.PS">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="font.VS">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="texture.PS">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="texture.VS">
+      <Filter>Resource</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="char_size.txt" />
+    <Filter Include="Header">
+      <UniqueIdentifier>{cb5b50e1-f9e6-4467-9c8a-806e89650268}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{29c5abbd-ecd7-4398-9e98-a469b3abe7ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{2b245666-7c04-4c8c-916a-f4527839cddc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Objects">
+      <UniqueIdentifier>{3866aba8-fb6b-494b-89f3-4bd4a870591e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\System">
+      <UniqueIdentifier>{32c78163-a2df-465e-9d2d-6ec7e18b320c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\System\Core">
+      <UniqueIdentifier>{70e4824e-7859-4c7c-b1a2-85f8aa379a37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\System\Graphic">
+      <UniqueIdentifier>{c66a56a2-b7f1-48be-a195-10b5b421f17e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Objects\Tile">
+      <UniqueIdentifier>{0e5f87ea-a973-4db0-b1ce-08db3bce1a39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Objects\Item">
+      <UniqueIdentifier>{1ccd0784-a6f1-4eba-bba2-d2dcc96d843d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\System\Graphic\Shader">
+      <UniqueIdentifier>{bfc3638a-d168-465b-912e-4f358a366060}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="char_size.txt">
+      <Filter>Resource</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="gwyn.wav">
+      <Filter>Resource</Filter>
+    </Media>
   </ItemGroup>
 </Project>
