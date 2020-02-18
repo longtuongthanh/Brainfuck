@@ -76,10 +76,11 @@ private:
 
 	std::string textureFile;
 
-	mydeque<mydeque<HexagonTileBase*>> map;
+	mydeque<mydeque<HexagonTile*>> map;
 
 	TextureLibrary* pTextureLib;
 	ShaderLibrary* pShaderLib;
 	ID3D11Device* pDevice;
 	ItemLibrary* itemLib;
+	TileLibrary* tileLib;
 };

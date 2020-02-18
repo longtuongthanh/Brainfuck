@@ -89,6 +89,7 @@ struct Point
 
 // Given three colinear points p, q, r, the function checks if 
 // point q lies on line segment 'pr' 
+// OR it should, but it returns whether p is in the rectangle made by q & r instead.
 bool onSegment(Point p, Point q, Point r);
 
 // To find orientation of ordered triplet (p, q, r). 

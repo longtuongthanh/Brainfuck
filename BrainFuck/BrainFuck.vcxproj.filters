@@ -1,203 +1,182 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Source Files\Object">
-      <UniqueIdentifier>{020b337d-bf0c-4a5b-91f6-bfeebd4b4a1e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Graphic">
-      <UniqueIdentifier>{67c5a1f3-2ca9-4df9-9982-997cc53e12e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Camera">
-      <UniqueIdentifier>{d79b1e5d-c8ab-40b8-ba28-00bd6066642f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Graphic">
-      <UniqueIdentifier>{529fb429-4631-4481-8673-9288d1bee180}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Camera">
-      <UniqueIdentifier>{bf89101e-7426-484a-9d93-d638352cb134}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Object">
-      <UniqueIdentifier>{d2f7af2c-cca1-413e-b452-0f665cc7ae13}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Library">
-      <UniqueIdentifier>{9a503b2a-6cab-4fca-8038-df67413f7fc4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Library">
-      <UniqueIdentifier>{19711f9f-178f-40c8-9162-52b528ef1553}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Object\Tiles">
-      <UniqueIdentifier>{66a5e8d1-b436-473e-8fcf-ba28af1ecbcc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Object\Tiles">
-      <UniqueIdentifier>{54ab073c-1ff5-4f6a-9ce1-c96c0bb28694}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="BrainFuck.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="useful_stuff.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WindowInitialSetting.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureObject.cpp">
-      <Filter>Source Files\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="D3Dcontroller.cpp">
-      <Filter>Source Files\Graphic</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureShader.cpp">
-      <Filter>Source Files\Graphic</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Graphic.cpp">
-      <Filter>Source Files\Graphic</Filter>
-    </ClCompile>
-    <ClCompile Include="GameState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraClass.cpp">
-      <Filter>Source Files\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="FontShader.cpp">
-      <Filter>Source Files\Graphic</Filter>
-    </ClCompile>
-    <ClCompile Include="TextString.cpp">
-      <Filter>Source Files\Object</Filter>
+      <Filter>Source\System\Graphic</Filter>
     </ClCompile>
     <ClCompile Include="GraphicObject.cpp">
-      <Filter>Source Files\Object</Filter>
+      <Filter>Source\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="HexagonMap.cpp">
-      <Filter>Source Files\Object</Filter>
+    <ClCompile Include="Input.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="BrainFuck.cpp">
+      <Filter>Source\System\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source\System\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowInitialSetting.cpp">
+      <Filter>Source\System\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraClass.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="D3Dcontroller.cpp">
+      <Filter>Source\System\Graphic</Filter>
     </ClCompile>
     <ClCompile Include="EventDistributor.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source\System</Filter>
     </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="TileDetermination.cpp">
+      <Filter>Source\Objects\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemLibrary.cpp">
+      <Filter>Source\Objects\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="FontShader.cpp">
+      <Filter>Source\System\Graphic\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="HexagonMap.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="HexagonTile.cpp">
+      <Filter>Source\Objects\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderLibrary.cpp">
+      <Filter>Source\System\Graphic\Shader</Filter>
     </ClCompile>
     <ClCompile Include="SoundClass.cpp">
-      <Filter>Source Files</Filter>
-    <ClCompile Include="HexagonTile.cpp">
-      <Filter>Source Files\Object</Filter>
+      <Filter>Source\System</Filter>
     </ClCompile>
     <ClCompile Include="HexagonTile.cpp">
       <Filter>Source Files\Object</Filter>
     </ClCompile>
     <ClCompile Include="ItemLibrary.cpp">
       <Filter>Source Files\Library</Filter>
+    <ClCompile Include="TextString.cpp">
+      <Filter>Source\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderLibrary.cpp">
-      <Filter>Source Files\Library</Filter>
+    <ClCompile Include="TestWorldMatrix.cpp">
+      <Filter>Source\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="TileStorage.cpp">
+      <Filter>Source\Objects\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureShader.cpp">
+      <Filter>Source\System\Graphic\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureObject.cpp">
+      <Filter>Source\Objects</Filter>
     </ClCompile>
     <ClCompile Include="TextureClass.cpp">
-      <Filter>Source Files\Library</Filter>
+      <Filter>Source\System</Filter>
     </ClCompile>
-    <ClCompile Include="TileDetermination.cpp">
-      <Filter>Source Files\Object\Tiles</Filter>
+    <ClCompile Include="TileLibrary.cpp">
+      <Filter>Source\Objects\Tile</Filter>
     </ClCompile>
     <ClCompile Include="TileStorage.cpp">
       <Filter>Source Files\Object\Tiles</Filter>
       <Filter>Source Files\Object</Filter>
     </ClCompile>
-    <ClCompile Include="TestWorldMatrix.cpp">
-      <Filter>Source Files\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="DragAndDrop.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="TilePrototype.cpp">
+      <Filter>Source\Objects\Tile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Main.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="useful_stuff.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="CameraClass.h">
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="D3Dcontroller.h">
-      <Filter>Header Files\Graphic</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphic.h">
-      <Filter>Header Files\Graphic</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureShader.h">
-      <Filter>Header Files\Graphic</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraClass.h">
-      <Filter>Header Files\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureObject.h">
-      <Filter>Header Files\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="FontShader.h">
-      <Filter>Header Files\Graphic</Filter>
-    </ClInclude>
-    <ClInclude Include="TextString.h">
-      <Filter>Header Files\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicObject.h">
-      <Filter>Header Files\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="HexagonMap.h">
-      <Filter>Header Files\Object</Filter>
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="EventDistributor.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="FontShader.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="game_constants.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphic.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicObject.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="HexagonMap.h">
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="HexagonTile.h">
-      <Filter>Header Files\Object</Filter>
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemLibrary.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Main.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderLibrary.h">
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="SoundClass.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="TestWorldMatrix.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="TextString.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="useful_stuff.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="TileStorage.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="TileDetermination.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureShader.h">
+      <Filter>Header</Filter>
     <ClInclude Include="ShaderLibrary.h">
       <Filter>Header Files\Library</Filter>
     </ClInclude>
-    <ClInclude Include="ItemLibrary.h">
-      <Filter>Header Files\Library</Filter>
+    <ClInclude Include="TextureObject.h">
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="TestWorldMatrix.h">
       <Filter>Header Files\Object</Filter>
     <ClInclude Include="TextureClass.h">
-      <Filter>Header Files\Library</Filter>
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="TileDetermination.h">
-      <Filter>Header Files\Object\Tiles</Filter>
+    <ClInclude Include="TileLibrary.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="TileStorage.h">
-      <Filter>Header Files\Object\Tiles</Filter>
+    <ClInclude Include="GlobalEffect.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="game_constants.h">
-      <Filter>Header Files\Object</Filter>
+    <ClInclude Include="TilePrototype.h">
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="TestWorldMatrix.h">
       <Filter>Header Files\Object</Filter>
@@ -207,24 +186,68 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="texture.PS" />
-    <None Include="texture.VS" />
-    <None Include="font.PS" />
-    <None Include="font.VS" />
-    <None Include="cpp.hint" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="texture.dds" />
     <Image Include="font.png">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource</Filter>
+    </Image>
+    <Image Include="texture.dds">
+      <Filter>Resource</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="char_size.txt" />
+    <None Include="cpp.hint" />
+    <None Include="font.PS">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="font.VS">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="texture.PS">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="texture.VS">
+      <Filter>Resource</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header">
+      <UniqueIdentifier>{cb5b50e1-f9e6-4467-9c8a-806e89650268}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{29c5abbd-ecd7-4398-9e98-a469b3abe7ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{2b245666-7c04-4c8c-916a-f4527839cddc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Objects">
+      <UniqueIdentifier>{3866aba8-fb6b-494b-89f3-4bd4a870591e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\System">
+      <UniqueIdentifier>{32c78163-a2df-465e-9d2d-6ec7e18b320c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\System\Core">
+      <UniqueIdentifier>{70e4824e-7859-4c7c-b1a2-85f8aa379a37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\System\Graphic">
+      <UniqueIdentifier>{c66a56a2-b7f1-48be-a195-10b5b421f17e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Objects\Tile">
+      <UniqueIdentifier>{0e5f87ea-a973-4db0-b1ce-08db3bce1a39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Objects\Item">
+      <UniqueIdentifier>{1ccd0784-a6f1-4eba-bba2-d2dcc96d843d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\System\Graphic\Shader">
+      <UniqueIdentifier>{bfc3638a-d168-465b-912e-4f358a366060}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="char_size.txt">
+      <Filter>Resource</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <Media Include="gwyn.wav">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource</Filter>
     </Media>
   </ItemGroup>
 </Project>

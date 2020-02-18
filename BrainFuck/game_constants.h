@@ -3,6 +3,8 @@
 // Tile
 static const double HEXAGON_SIZE = 0.15;
 static const double HEXAGON_PADDING = 0.01;
+static const int NO_OF_DIF_TILE = 10;
+
 
 // Item
 static const int NO_OF_DIF_ITEM = 10;

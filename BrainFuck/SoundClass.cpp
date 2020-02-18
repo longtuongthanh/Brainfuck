@@ -79,7 +79,6 @@ Sound::Sound()
 	pXAudio2 = nullptr;
 	pMasterVoice = nullptr;
 	pSourceVoice = nullptr;
-	volume = 1;
 	Initialize();
 }
 
@@ -89,10 +88,7 @@ Sound::Sound(const Sound&)
 
 Sound::~Sound()
 {
-	if (pXAudio2)
-	{
-		pXAudio2->Release();
-	}
+	DESTROY(pXAudio2);
 }
 
 RESULT Sound::Initialize()
@@ -109,6 +105,7 @@ RESULT Sound::Initialize()
 	wfx = { 0 };
 	mainBuffer = { 0 };
 	tempBuffer = { 0 };
+	volume = 1;
 
 	return 0;
 }

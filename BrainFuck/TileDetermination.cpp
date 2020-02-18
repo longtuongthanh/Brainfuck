@@ -1,33 +1,22 @@
 #include "TileDetermination.h"
 
-TileDetermination::TileDetermination()
-{
-	
-}
-
-TileDetermination::TileDetermination(Point position): HexagonTileMiddle(position)
-{
-	storage.InitializeData(7,0,0,0,0,0,0,0);
-}
-
-RESULT TileDetermination::Release()
-{
-	DESTROY(prototype);
+RESULT TileDetermination::Frame() {
 	return 0;
 }
 
-RESULT TileDetermination::Initialize(ID3D11Device* device, TextureLibrary* textureLib, TextureShader* texShader, ItemLibrary* itemLib)
-{
-	__super::Initialize(device, textureLib, texShader, itemLib);
-	DEBUG(if (prototype) return 1);
-	BLOCKALLOC(HexagonTilePrototype, prototype);
-	BLOCKCALL(prototype->Initialize(device, HEXAGON_TEXTURE_FILE, textureLib, texShader),
-		"Cannot initiate prototype TileDetermination");
+int TileDetermination::id() {
+	return TILE_DETERMINATION_ID;
+}
 
+const char* TileDetermination::name() {
+	return "Determination";
+}
+
+RESULT TileDetermination::InitializeStorage(TileStorage& storage) {
+	storage.InitializeData(7, 0, 0, 0, 0, 0, 0, 0);
 	return 0;
 }
-RESULT TileDetermination::Frame()
-{
-	storage.amount[0] = 1;
+
+RESULT TileDetermination::TileBehaviour(TileStorage&, GlobalEffect*) {
 	return 0;
 }

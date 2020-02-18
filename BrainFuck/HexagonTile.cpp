@@ -1,44 +1,52 @@
 #include "HexagonTile.h"
 
-RESULT HexagonTilePrototype::InitializeData()
-{
-	float height = HEXAGON_SIZE - HEXAGON_PADDING;
-	float width = HEXAGON_SIZE * sqrt(3) / 2 - HEXAGON_PADDING;
-	BLOCKALLOC(VertexType[6], pointArray);
+HexagonTile::HexagonTile() { id = 0; }
 
-	pointArray[0].position = D3DXVECTOR3(0, height / 2, 1);
-	pointArray[1].position = D3DXVECTOR3(width / 2, height / 4, 1);
-	pointArray[2].position = D3DXVECTOR3(-width / 2, height / 4, 1);
-	pointArray[3].position = D3DXVECTOR3(width / 2, -height / 4, 1);
-	pointArray[4].position = D3DXVECTOR3(-width / 2, -height / 4, 1);
-	pointArray[5].position = D3DXVECTOR3(0, -height / 2, 1);
+HexagonTile::HexagonTile(Point position, int id) : position(position) , id(id) {}
 
-	pointArray[0].texture = D3DXVECTOR2(0.5, 0);
-	pointArray[1].texture = D3DXVECTOR2(1, 0.25);
-	pointArray[2].texture = D3DXVECTOR2(0, 0.25);
-	pointArray[3].texture = D3DXVECTOR2(1, 0.75);
-	pointArray[4].texture = D3DXVECTOR2(0, 0.75);
-	pointArray[5].texture = D3DXVECTOR2(0.5, 1);
 
-	pointCount = 6;
-	return 0;
+HexagonTile::HexagonTile(const HexagonTile & x) : position(x.position), storage(x.storage) {}
+
+Point HexagonTile::GetPosition() { return position; }
+
+RESULT HexagonTile::Frame(GlobalEffect* effect) { 
+	return tileLib->GetPrototype(id)->TileBehaviour(storage, effect); 
 }
-
-HexagonTile::HexagonTile() {}
-HexagonTile::HexagonTile(Point position) : HexagonTileMiddle(position) {}
 
 RESULT HexagonTile::Release()
 {
-	DESTROY(prototype);
+	delete this;
+	return 0;
+}
+RESULT HexagonTile::Initialize(ItemLibrary * itemLib, TileLibrary* tileLib) {
+	BLOCKCALL(storage.Initialize(itemLib), "cannot initialize tile storage");
+	tileLib->GetPrototype(id)->InitializeStorage(storage);
+
+	this->tileLib = tileLib;
 	return 0;
 }
 
-RESULT HexagonTile::Initialize(ID3D11Device* device, TextureLibrary* textureLib, TextureShader* texShader, ItemLibrary* itemLib)
+RESULT HexagonTile::FramePrototype() { return tileLib->GetPrototype(id)->Frame(); }
+
+RESULT HexagonTile::Render(ID3D11DeviceContext * deviceContext, D3DXMATRIX worldMatrix, D3DXMATRIX viewMatrix, D3DXMATRIX projectionMatrix) {
+	WorldMatrix(worldMatrix);
+	BLOCKCALL(tileLib->GetPrototype(id)->Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix),
+		"cannot render prototype of tile");
+	BLOCKCALL(storage.Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix),
+		"cannot render storage.");
+	return 0;
+}
+
+void HexagonTile::WorldMatrix(D3DXMATRIX & worldMatrixOriginal)
 {
-	__super::Initialize(device, textureLib, texShader, itemLib);
-	DEBUG(if (prototype) return 1;)
-	BLOCKALLOC(HexagonTilePrototype, prototype);
-	BLOCKCALL(prototype->Initialize(device, HEXAGON_TEXTURE_FILE, textureLib, texShader),
-		"Cannot initiate prototype HexagonTile");
+	D3DXMATRIX newMatrix;
+	D3DXMatrixTranslation(&newMatrix, position.x, position.y, 0);
+	worldMatrixOriginal *= newMatrix;
+}
+
+RESULT HexagonTile::ChangeType(int id)
+{
+	this->id = id;
+	tileLib->GetPrototype(id)->InitializeStorage(storage);
 	return 0;
 }

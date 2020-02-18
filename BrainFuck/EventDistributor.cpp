@@ -4,7 +4,6 @@
 
 EventDistributor::EventDistributor()
 {
-	locked = false;
 	pInput = 0;
 }
 
@@ -21,7 +20,6 @@ RESULT EventDistributor::Initialize(Input* input)
 
 RESULT EventDistributor::Frame()
 {
-	if (!locked) return 1;
 	char i = 0;
 	for (int j = 0; j < 255; j++) {
 		i = j;
@@ -40,11 +38,11 @@ RESULT EventDistributor::Frame()
 		}
 	}
 	if (pInput->MouseFlag() & 0x0100) {
-		for (int i = 0; i < mouseClickCondition.size(); i++)
+		for (auto item : onMouseClick)
 		{
-			void* result = mouseClickCondition[i](pInput->MouseToScreen());
+			void* result = item.second(pInput->MouseToScreen());
 			if (result != NULL)
-				onMouseClick[i]->Invoke(result);
+				item.first->Invoke(result);
 		}
 	}
 	return 0;
@@ -56,49 +54,47 @@ RESULT EventDistributor::Release()
 	return 0;
 }
 
-RESULT EventDistributor::Lock()
+RESULT EventDistributor::Remove(Invokable* command)
 {
-	for (int i = 0; i < 256; i++) {
-		onKeyDown[i].shrink_to_fit();
-		whileKeyDown[i].shrink_to_fit();
+	for (int i = 0; i < 255; i++) {
+		UnsubscribeOnKeyDown(i, command);
+		UnsubscribeWhileKeyDown(i, command);
+		UnsubscribeMouseClick(command);
 	}
-	mouseClickCondition.shrink_to_fit();
-	onMouseClick.shrink_to_fit();
-	DEBUG(
-	if (mouseClickCondition.size() != onMouseClick.size()) {
-		cerr << "EventDistributor Error: wrong array size.";
-		return 1;
-	}
-	);
-	// end DEBUG
-	locked = true;
 	return 0;
 }
-
 RESULT EventDistributor::SubscribeOnKeyDown(char x, Invokable* command)
 {
-	if (!locked) {
-		onKeyDown[x].push_back(command);
-		return 0;
-	}
-	else return 1;
+	onKeyDown[x].insert(command);
+	return 0;
 }
 
 RESULT EventDistributor::SubscribeWhileKeyDown(char x, Invokable* command)
 {
-	if (!locked) {
-		whileKeyDown[x].push_back(command);
-		return 0;
-	}
-	else return 1;
+	whileKeyDown[x].insert(command);
+	return 0;
+}
+
+RESULT EventDistributor::UnsubscribeOnKeyDown(char i, Invokable* command)
+{
+	onKeyDown[i].erase(command);
+	return 0;
+}
+
+RESULT EventDistributor::UnsubscribeWhileKeyDown(char i, Invokable* command)
+{
+	whileKeyDown[i].erase(command);
+	return 0;
 }
 
 RESULT EventDistributor::SubscribeMouseClick(FUNCTION(void *, check, Point), Invokable* command)
 {
-	if (locked) {
-		mouseClickCondition.push_back(check);
-		onMouseClick.push_back(command);
-		return 0;
-	}
+	onMouseClick[command] = check;
 	return 1;
+}
+
+RESULT EventDistributor::UnsubscribeMouseClick(Invokable* command)
+{
+	onMouseClick.erase(command);
+	return 0;
 }

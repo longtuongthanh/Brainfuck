@@ -113,12 +113,17 @@ RESULT Main::frame()
         return 1;
     }
 
+	if (graphic->ClearScreen()) return 1;
+
     if (graphic->DrawSetup2D()) return 1;
 
-    if (gameState->Draw()) {
-        cerr << "OBJECT DRAW FAILED";
-        return 1;
-    }
+	BLOCKCALL(gameState->Draw(),
+		"OBJECT DRAW FAILED");
+
+	//if (graphic->DrawSetupUI()) return 1;
+
+	BLOCKCALL(gameState->DrawUI(),
+		"UI DRAW FAILED");
 
     if (graphic->draw()){
         cerr << "RENDER FAILED\n";
