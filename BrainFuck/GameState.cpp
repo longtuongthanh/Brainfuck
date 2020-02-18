@@ -77,9 +77,17 @@ RESULT GameState::Frame(Input* input)
 
 	inputEvents->Frame();
 	
+<<<<<<<<< Temporary merge branch 1
 	Point mouseTileCenter = map->GetCoord(input->MouseToField() + cameraPos);
 
     if (map->Frame(cameraPos) == 1)
+    {
+        debugText->InputString("error " + std::to_string((int)mouseTileCenter.x) + "," + std::to_string((int)mouseTileCenter.y));
+    }
+    else
+    {
+        debugText->InputString("keep going " + std::to_string((int)mouseTileCenter.x) + "," + std::to_string((int)mouseTileCenter.y));
+=========
 	//Point x = GetCoord(input->MouseToField() + cameraPos);
     Point x = input->MouseToScreen() + cameraPos;
     if (input->keyboard(VK_LEFT) == KEY_STATE_DOWN || input->keyboard(VK_LEFT) == KEY_STATE_ON_DOWN)
@@ -104,7 +112,8 @@ RESULT GameState::Frame(Input* input)
     }
     else
     {
-        debugText->InputString("keep going " + std::to_string((int)mouseTileCenter.x) + "," + std::to_string((int)mouseTileCenter.y));
+        debugText->InputString("" + std::to_string((float)x.x) + "," + std::to_string((float)x.y));
+>>>>>>>>> Temporary merge branch 2
     }
 
     testWorldMatrix->Frame(*input, cameraPos);

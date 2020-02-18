@@ -98,6 +98,8 @@
     </ClCompile>
     <ClCompile Include="SoundClass.cpp">
       <Filter>Source Files</Filter>
+    <ClCompile Include="HexagonTile.cpp">
+      <Filter>Source Files\Object</Filter>
     </ClCompile>
     <ClCompile Include="HexagonTile.cpp">
       <Filter>Source Files\Object</Filter>
@@ -183,6 +185,8 @@
     <ClInclude Include="ItemLibrary.h">
       <Filter>Header Files\Library</Filter>
     </ClInclude>
+    <ClInclude Include="TestWorldMatrix.h">
+      <Filter>Header Files\Object</Filter>
     <ClInclude Include="TextureClass.h">
       <Filter>Header Files\Library</Filter>
     </ClInclude>
