@@ -8,17 +8,25 @@ TileStorage::TileStorage(const TileStorage & x) {
 }
 
 TileStorage::TileStorage() {
-	types = 0;
+	ntypes = 0;
 }
-RESULT TileStorage::InitializeData(char types, char typeIDs ...)
+RESULT TileStorage::InitializeData(unsigned char types, int typeIDs ...)
 {
 	va_list args;
 	va_start(args, types);
 
-	this->types = types;
+	this->ntypes = types;
 
 	for (int i = 0; i < types; i++) {
-		typeID[i] = va_arg(args, char);
+		int temp = va_arg(args, int);
+		if (temp > 0) {
+			typeID[i] = temp;
+			any.set(i, false);
+		}
+		else {
+			any.set(i, true);
+		}
+		amount[i] = 0;
 		DEBUG(if (typeID[i] > NO_OF_DIF_ITEM) return 1;)
 	}
 		
@@ -35,7 +43,7 @@ RESULT TileStorage::Initialize(ItemLibrary* itemLib)
 
 RESULT TileStorage::Frame()
 {
-	for (int i = 0; i < types; i++)
+	for (int i = 0; i < ntypes; i++)
 		for (int j = 0; j < amount[i]; j++)
 			switch (itemLib->GetPrototype(i)->FrameBehaviour())
 			{
@@ -58,13 +66,30 @@ RESULT TileStorage::Frame()
 RESULT TileStorage::Render(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatrix, 
 							D3DXMATRIX viewMatrix, D3DXMATRIX projectionMatrix)
 {
-	for (int i = 0; i < types; i++)
-		BLOCKCALL(itemLib->GetPrototype(typeID[i])->Render(deviceContext, offsetType(types, i), worldMatrix, viewMatrix, projectionMatrix),
-			"cannot render item");
+	for (int i = 0; i < ntypes; i++)
+		if (amount[i] > 0)
+			BLOCKCALL(itemLib->GetPrototype(typeID[i])->Render(deviceContext, offsetType(ntypes, i), worldMatrix, viewMatrix, projectionMatrix, amount[i]),
+				"cannot render item");
 	return 0;
 }
 
 int TileStorage::offsetType(int types, int current)
 {
 	return OFFSET_TYPE[types - 1][current];
+}
+
+RESULT TileStorage::AddItem(unsigned char itemID)
+{
+	for (int i = 0; i < ntypes; i++)
+		if (typeID[i] == itemID) {
+			amount[i]++;
+			return 0;
+		}
+	for (int i = 0; i < ntypes; i++)
+		if (any[i] && amount[i] == 0) {
+			typeID[i] = itemID;
+			amount[i]++;
+			return 0;
+		}
+	return 1;
 }

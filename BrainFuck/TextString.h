@@ -38,11 +38,12 @@ public:
 	RESULT ChangePosition(Point newPosition);
 
 	ID3D11ShaderResourceView* GetTexture();
-protected:
-	RESULT Setup(ID3D11Device*);
 
 	std::string string;
 	float size;
+protected:
+	RESULT Setup(ID3D11Device*);
+
 	int maxLength;
 	Point position;
 	int pointCount;

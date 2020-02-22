@@ -1,6 +1,6 @@
 #include "ItemLibrary.h"
 
-
+TextString* Item::text = 0;
 
 ItemLibrary::ItemLibrary(): prototype()
 {
@@ -20,11 +20,14 @@ Item * ItemLibrary::GetPrototype(int id) {
 	return prototype[id]; 
 }
 
-RESULT ItemLibrary::Initialize(ID3D11Device* device, TextureLibrary* textureLib, TextureShader* texShader)
+RESULT ItemLibrary::Initialize(ID3D11Device* device, TextureLibrary* textureLib, ShaderLibrary* shaderLib)
 {
+	BLOCKALLOC(TextString, Item::text);
+	Item::text->Initialize(device, 1, textureLib, shaderLib->GetFontShader());
+	Item::text->size = 0.1;
 	Item* will;
 	BLOCKALLOC(ItemWill, will);
-	BLOCKCALL(will->Initialize(device, ITEM_WILL_FILE, textureLib, texShader),
+	BLOCKCALL(will->Initialize(device, ITEM_WILL_FILE, textureLib, shaderLib->GetTextureShader()),
 		"Cannot initialize Will");
 	AddItem(will);
 
@@ -84,12 +87,20 @@ RESULT Item::Render(ID3D11DeviceContext* deviceContext,
 					int offsetType,
 					D3DXMATRIX worldMatrix, 
 					D3DXMATRIX viewMatrix, 
-					D3DXMATRIX projectionMatrix)
+					D3DXMATRIX projectionMatrix,
+					int text)
 {
-
-	return __super::Render(deviceContext, 
-							WorldMatrix(worldMatrix, offsetType), 
-							viewMatrix, projectionMatrix);
+	D3DXMATRIX newWorld = WorldMatrix(worldMatrix, offsetType);
+	BLOCKCALL(__super::Render(deviceContext, 
+							  newWorld, 
+							  viewMatrix, projectionMatrix),
+		"can't render item\n");
+	this->text->InputString(std::to_string(text));
+	BLOCKCALL(this->text->Render(deviceContext,
+						  newWorld,
+						  viewMatrix, projectionMatrix),
+		"can't render item count");
+	return 0;
 }
 
 Point Item::Offset(int postype)
@@ -116,7 +127,7 @@ Point Item::Offset(int postype)
 
 int ItemWill::id()
 {
-	return 0;
+	return ITEM_WILL_ID;
 }
 
 const char * ItemWill::Name()

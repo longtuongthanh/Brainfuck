@@ -49,6 +49,7 @@ class GameState final : private NonCopyable
 		EventDistributor* inputEvents;
 		InvokableMoveCameraWithArrowKey* invokable1;
         TestDragable* testWorldMatrix;
+		GlobalEffect globalEffect;
 
 		// GetCoord, GetLocation moved to HexagonMap
 

@@ -1,5 +1,11 @@
 #include "TilePrototype.h"
 
+RESULT HexagonTilePrototype::AddItem(TileStorage& storage, int itemID)
+{
+	if (storage.amount[0] >= 3)
+		return 1;
+	return storage.AddItem(itemID);
+}
 RESULT HexagonTilePrototype::InitializeData()
 {
 	float height = HEXAGON_SIZE - HEXAGON_PADDING;
@@ -28,12 +34,35 @@ int HexagonTileDefault::id() { return TILE_DEFAULT_ID; }
 
 const char * HexagonTileDefault::name() { return ""; }
 
-RESULT HexagonTileDefault::TileBehaviour(TileStorage&, GlobalEffect*)
+RESULT HexagonTileDefault::TileBehaviour(TileStorage&, GlobalEffect*, Coord&)
 {
 	return 0;
 }
 
-RESULT HexagonTileDefault::InitializeStorage(TileStorage &)
+RESULT HexagonTileDefault::InitializeStorage(TileStorage& storage)
+{
+	storage.InitializeData(1, -1);
+	return 0;
+}
+/*
+int HexagonTileBasicStorage::id()
+{
+	return TILE_BASIC_STORAGE_ID;
+}
+
+const char * HexagonTileBasicStorage::name()
+{
+	return "";
+}
+
+RESULT HexagonTileBasicStorage::TileBehaviour(TileStorage &, GlobalEffect *)
 {
 	return 0;
 }
+
+RESULT HexagonTileBasicStorage::InitializeStorage(TileStorage& storage)
+{
+	storage.InitializeData(1, -1);
+	return 0;
+}
+//*/

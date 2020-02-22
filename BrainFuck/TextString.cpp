@@ -89,7 +89,7 @@ RESULT TextString::InitializeData()
 {
 	string = "Hello text! No new line support.";
 	size = 0.15f;
-	position = Point(1, 0);
+	position = Point(0, 0);
 	return 0;
 }
 RESULT TextString::Frame()
@@ -135,7 +135,7 @@ RESULT TextString::LoadRenderData(void* pData)
 			array[i * 6 + 2].color =
 			array[i * 6 + 3].color =
 			array[i * 6 + 4].color =
-			array[i * 6 + 5].color = D3DXVECTOR4(1, 1, 0, 1);
+			array[i * 6 + 5].color = D3DXVECTOR4(1, 0.5, 0, 1);
 
 		curx += width;
 	}

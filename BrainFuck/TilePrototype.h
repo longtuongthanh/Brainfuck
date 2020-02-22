@@ -14,9 +14,18 @@ public:
 	~HexagonTilePrototype() {}
 	virtual int id() = 0;
 	virtual const char* name() = 0;
+
+	/** Indicate whether a tile should change into another type*/
 	virtual int TileChange() { return -1; }
-	virtual RESULT TileBehaviour(TileStorage&, GlobalEffect*) = 0;
+	
+	/** Tile behaviour. indicate what the tile do*/
+	virtual RESULT TileBehaviour(TileStorage&, GlobalEffect*, Coord&) = 0;
+	
+	/** How storage should be initialized*/
 	virtual RESULT InitializeStorage(TileStorage&) = 0;
+	
+	/** How item should be added to tile*/
+	virtual RESULT AddItem(TileStorage&, int);
 protected:
 	RESULT InitializeData(); // We can use this to initialize data storage or behavior
 };
@@ -30,6 +39,19 @@ public:
 	~HexagonTileDefault() {}
 	int id();
 	const char* name();
+	RESULT TileBehaviour(TileStorage&, GlobalEffect*, Coord&);
+	RESULT InitializeStorage(TileStorage&);
+};
+/*
+#define TILE_BASIC_STORAGE_ID 2
+static const CHAR* TILE_BASIC_STORAGE_FILE = "texture.dds";
+class HexagonTileBasicStorage final : public HexagonTilePrototype {
+public:
+	HexagonTileBasicStorage() {}
+	~HexagonTileBasicStorage() {}
+	int id();
+	const char* name();
 	RESULT TileBehaviour(TileStorage&, GlobalEffect*);
 	RESULT InitializeStorage(TileStorage&);
 };
+//*/

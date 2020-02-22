@@ -10,6 +10,10 @@
 #include <limits>
 #include <vector>
 
+class HexagonTile;
+class GlobalEffect;
+class GlobalEffectOverflow;
+
 /**
     Typo:
         All function and class should start uppercase and be camelcase
@@ -71,21 +75,40 @@ public:
 	virtual void Invoke(void* param) {};
 };
 
-
-struct Point
+template <typename T>
+struct Coordinate
 {
-    double x;
-    double y;
-    double length();
-    double operator * (const Point& p) const;
-    Point operator * (double k) const;
-    Point operator - (const Point& p) const;
-    Point operator + (const Point& p) const;
-    Point& operator += (const Point& p);
-    bool operator == (const Point& right);
-    Point(double a=0, double b=0): x(a), y(b){}
-	Point(const Point& p):x(p.x), y(p.y) {}
+    T x;
+    T y;
+	T length() {
+		return sqrt(x*x + y * y);
+	}
+	T operator*(const Coordinate& p) const {
+		return x * p.x + y * p.y;
+	}
+	Coordinate operator*(T k) const {
+		return Coordinate(x*k, y*k);
+	}
+	Coordinate operator-(const Coordinate& p) const {
+		return Coordinate(x - p.x, y - p.y);
+	}
+	Coordinate operator+(const Coordinate& p) const {
+		return Coordinate(x + p.x, y + p.y);
+	}
+	Coordinate& operator+=(const Coordinate& p) {
+		this->x += p.x;
+		this->y += p.y;
+		return *this;
+	}
+	bool operator==(const Coordinate& right) {
+		return this->x == right.x && this->y == right.y;
+	}
+    Coordinate(T a=T(), T b=T()): x(a), y(b){}
+	Coordinate(const Coordinate& p):x(p.x), y(p.y) {}
 };
+
+typedef Coordinate<double> Point;
+typedef Coordinate<int> Coord;
 
 // Given three colinear points p, q, r, the function checks if 
 // point q lies on line segment 'pr' 

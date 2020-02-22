@@ -2,7 +2,6 @@
 
 #include "TileStorage.h"
 #include "game_constants.h"
-#include "GlobalEffect.h"
 #include "TileLibrary.h"
 #include "TilePrototype.h"
 
@@ -28,16 +27,10 @@ public:
 		D3DXMATRIX viewMatrix, D3DXMATRIX projectionMatrix) = 0;
 };
 //*/
-// Templated base class
-// this allows static members to be different accross classes with different id
-// the singleton (HexagonTilePrototype) need to be different to accomodate different pictures.
-// C++ disallows static virtual functions/members
-// template class need to be in header.
 class HexagonTile {
 public:
-	int id;
 	HexagonTile();
-	HexagonTile(Point position, int id = 0);
+	HexagonTile(Point position, Coord coord, int id = 0);
 	HexagonTile(const HexagonTile& x);
 	Point GetPosition();
 
@@ -52,11 +45,16 @@ public:
 	void WorldMatrix(D3DXMATRIX& worldMatrixOriginal);
 
 	RESULT ChangeType(int id);
-protected:
+	RESULT AddItem(int itemID);
+
+	int GetID();
 	TileStorage storage; // Storage for tile
+protected:
 	Point position;
+	Coord coord;
 	// Maybe we could add Behavior class that handle some behaviors for the brain-cell
 	TileLibrary* tileLib;
+	int id;
 };
 
 // default tile moved to tilePrototype

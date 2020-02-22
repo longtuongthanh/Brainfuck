@@ -10,6 +10,7 @@ public:
 	int id();
 	const char* name();
 	RESULT Frame();
-	RESULT TileBehaviour(TileStorage&, GlobalEffect*);
+	RESULT TileBehaviour(TileStorage&, GlobalEffect*, Coord&);
 	RESULT InitializeStorage(TileStorage&);
+	RESULT AddItem(TileStorage&, int);
 };

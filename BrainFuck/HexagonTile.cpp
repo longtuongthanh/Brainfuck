@@ -1,16 +1,24 @@
 #include "HexagonTile.h"
+#include "GlobalEffect.h"
 
 HexagonTile::HexagonTile() { id = 0; }
 
-HexagonTile::HexagonTile(Point position, int id) : position(position) , id(id) {}
-
+HexagonTile::HexagonTile(Point position, Coord coord, int id) :
+	position(position), coord(coord), id(id) {}
 
 HexagonTile::HexagonTile(const HexagonTile & x) : position(x.position), storage(x.storage) {}
 
 Point HexagonTile::GetPosition() { return position; }
 
 RESULT HexagonTile::Frame(GlobalEffect* effect) { 
-	return tileLib->GetPrototype(id)->TileBehaviour(storage, effect); 
+	auto temp = tileLib->GetPrototype(id);
+	BLOCKCALL(temp->TileBehaviour(storage, effect, coord), 
+		"cannot perform tile behaviour"); 
+	int type = temp->TileChange();
+	if (type != -1) {
+		ChangeType(type);
+	}
+	return 0;
 }
 
 RESULT HexagonTile::Release()
@@ -49,4 +57,14 @@ RESULT HexagonTile::ChangeType(int id)
 	this->id = id;
 	tileLib->GetPrototype(id)->InitializeStorage(storage);
 	return 0;
+}
+
+RESULT HexagonTile::AddItem(int itemID)
+{
+	return tileLib->GetPrototype(id)->AddItem(storage, itemID);
+}
+
+int HexagonTile::GetID()
+{
+	return id;
 }

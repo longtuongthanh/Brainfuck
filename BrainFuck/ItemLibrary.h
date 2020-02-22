@@ -1,6 +1,8 @@
 #pragma once
 #include "useful_stuff.h"
+#include "ShaderLibrary.h"
 #include "TextureObject.h"
+#include "TextString.h"
 #include <vector>
 #include "game_constants.h"
 
@@ -23,7 +25,7 @@ public:
 	virtual RESULT Frame() = 0;
 	virtual RESULT FrameBehaviour();
 	RESULT InitializeData() final;
-	RESULT Render(ID3D11DeviceContext*, int, D3DXMATRIX, D3DXMATRIX, D3DXMATRIX);
+	RESULT Render(ID3D11DeviceContext*, int, D3DXMATRIX, D3DXMATRIX, D3DXMATRIX, int);
 
 	D3DXMATRIX WorldMatrix(const D3DXMATRIX&, int);
 	/*
@@ -36,6 +38,7 @@ public:
 		4
 	*/
 	static Point Offset(int postype);
+	static TextString* text;
 };
 
 class ItemLibrary : NonCopyable
@@ -46,7 +49,7 @@ public:
 	~ItemLibrary();
 
 	// TODO: ADD ANY ITEM OBJECT HERE
-	RESULT Initialize(ID3D11Device*, TextureLibrary*, TextureShader*);
+	RESULT Initialize(ID3D11Device*, TextureLibrary*, ShaderLibrary*);
 	RESULT Release();
 	
 	RESULT AddItem(Item* item);
@@ -54,6 +57,7 @@ public:
 	Item* GetPrototype(int id);
 };
 
+#define ITEM_WILL_ID 0
 static const char* ITEM_WILL_FILE = "will.dds";
 class ItemWill final : public Item {
 	int id();

@@ -73,100 +73,115 @@
     <ClCompile Include="TextureObject.cpp">
       <Filter>Source\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="TextureClass.cpp">
-      <Filter>Source\System</Filter>
-    </ClCompile>
     <ClCompile Include="TileLibrary.cpp">
       <Filter>Source\Objects\Tile</Filter>
-    </ClCompile>
-    <ClCompile Include="GlobalEffect.cpp">
-      <Filter>Source\System</Filter>
     </ClCompile>
     <ClCompile Include="TilePrototype.cpp">
       <Filter>Source\Objects\Tile</Filter>
     </ClCompile>
+    <ClCompile Include="GlobalEffect.cpp">
+      <Filter>Source\System\GlobalEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureClass.cpp">
+      <Filter>Source\System\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalEffectOverflow.cpp">
+      <Filter>Source\System\GlobalEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalEffectTurnCycle.cpp">
+      <Filter>Source\System\GlobalEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CameraClass.h">
+    <ClInclude Include="useful_stuff.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="D3Dcontroller.h">
-      <Filter>Header</Filter>
+    <ClInclude Include="ItemLibrary.h">
+      <Filter>Header\Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="HexagonTile.h">
+      <Filter>Header\Object\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="TileDetermination.h">
+      <Filter>Header\Object\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="TilePrototype.h">
+      <Filter>Header\Object\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="TileLibrary.h">
+      <Filter>Header\Object\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="TileStorage.h">
+      <Filter>Header\Object\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicObject.h">
+      <Filter>Header\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureObject.h">
+      <Filter>Header\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="TestWorldMatrix.h">
+      <Filter>Header\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="TextString.h">
+      <Filter>Header\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraClass.h">
+      <Filter>Header\System</Filter>
     </ClInclude>
     <ClInclude Include="EventDistributor.h">
-      <Filter>Header</Filter>
+      <Filter>Header\System</Filter>
+    </ClInclude>
+    <ClInclude Include="HexagonMap.h">
+      <Filter>Header\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Header\System</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundClass.h">
+      <Filter>Header\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header\System</Filter>
+    </ClInclude>
+    <ClInclude Include="D3Dcontroller.h">
+      <Filter>Header\System\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphic.h">
+      <Filter>Header\System\Graphic</Filter>
     </ClInclude>
     <ClInclude Include="FontShader.h">
-      <Filter>Header</Filter>
+      <Filter>Header\System\Graphic\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureShader.h">
+      <Filter>Header\System\Graphic\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderLibrary.h">
+      <Filter>Header\System\Graphic\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Main.h">
+      <Filter>Header\System\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>Header\System</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalEffect.h">
+      <Filter>Header\System\GlobalEffect</Filter>
     </ClInclude>
     <ClInclude Include="game_constants.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="GameState.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphic.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicObject.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="HexagonMap.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="HexagonTile.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemLibrary.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Main.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderLibrary.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundClass.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="TestWorldMatrix.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="TextString.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="useful_stuff.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="TileStorage.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="TileDetermination.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureShader.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureObject.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="TextureClass.h">
+      <Filter>Header\System\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalEffectOverflow.h">
+      <Filter>Header\System\GlobalEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="mydeque.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="TileLibrary.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="GlobalEffect.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="TilePrototype.h">
-      <Filter>Header</Filter>
+    <ClInclude Include="GlobalEffectTurnCycle.h">
+      <Filter>Header\System\GlobalEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -222,6 +237,33 @@
     </Filter>
     <Filter Include="Source\System\Graphic\Shader">
       <UniqueIdentifier>{bfc3638a-d168-465b-912e-4f358a366060}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\System\GlobalEffect">
+      <UniqueIdentifier>{5a36e4d8-774a-43ce-8abc-c5e02843c580}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Object">
+      <UniqueIdentifier>{e3ad48a6-9e12-4cda-9621-20dadd155a56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Object\Item">
+      <UniqueIdentifier>{0546a9ec-3557-4c05-b352-2b6b9cce9278}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Object\Tile">
+      <UniqueIdentifier>{08ff0a5f-5f64-4cee-9d11-40c9170dca6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\System">
+      <UniqueIdentifier>{2bc2a299-c83d-4135-8ae2-f691c44fc290}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\System\Core">
+      <UniqueIdentifier>{6e668afd-81c0-4b52-b0ba-2f66b60831b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\System\Graphic">
+      <UniqueIdentifier>{88f861f5-b8d2-41e2-a7ba-4b87b38b552c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\System\GlobalEffect">
+      <UniqueIdentifier>{1de20cd8-a1a1-46c2-85e9-e50d99da8752}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\System\Graphic\Shader">
+      <UniqueIdentifier>{c81fa640-dbe3-44d7-bb33-04c19f35b2d4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

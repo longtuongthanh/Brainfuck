@@ -14,10 +14,11 @@ HexagonMap::~HexagonMap()
 
 HexagonMap& HexagonMap::operator=(const HexagonMap& map)
 {
+	DEBUG(throw "you are not supposed to do this";)
     return *this;
 }
 
-HRESULT HexagonMap::Frame(const Point& cameraPos)
+HRESULT HexagonMap::Frame(const Point& cameraPos, GlobalEffect* globalEffect)
 {
     // if camera move outside of all tile, then create new one 
 	// (MOVED TO RENDER) Reason: Frame is for all frame calculation.
@@ -47,12 +48,21 @@ HRESULT HexagonMap::Frame(const Point& cameraPos)
 
 	// TODO: Stays until add Fustrum Culling
 	// current largest source of lag
-	/*
+	//*
+	std::bitset<NO_OF_DIF_TILE> mark = {};
 	for (auto row : map.value)
-		for (auto tile : row.value)
-			if (tile != NULL) 
-				tile->Frame();
-	map.value[0].value[0]->FramePrototype();
+		for (auto tile : row.value) {
+			if (tile != NULL) {
+				if (tile->Frame(globalEffect))
+					cerr << "warning: cannot perform tile frame effect\n";
+			}
+			else
+				continue;
+			if (mark[tile->GetID()]) {
+				mark.set(tile->GetID());
+				tile->FramePrototype();
+			}
+		}
 	// */
 
     return 0;
@@ -64,7 +74,7 @@ HRESULT HexagonMap::Render(Point cameraPos,
                             D3DXMATRIX viewMatrix,
                             D3DXMATRIX projectionMatrix)
 {
-	Point cameraTile = GetCoord(cameraPos);
+	Coord cameraTile = GetCoord(cameraPos);
 	for (int i = min_X; i <= max_X; i++)
 		for (int j = min_Y; j <= max_Y; j++)
 		{
@@ -76,9 +86,9 @@ HRESULT HexagonMap::Render(Point cameraPos,
 				HexagonTile*& tile = map[trgx][trgy];
 				if (tile == NULL) {
 					if (trgx % 10 == 0 && trgy % 10 == 0)
-						tile = new HexagonTile(GetLocation(trgx, trgy), TILE_DETERMINATION_ID);
+						tile = new HexagonTile(GetLocation(trgx, trgy), Coord(trgx, trgy), TILE_DETERMINATION_ID);
 					else
-						tile = new HexagonTile(GetLocation(trgx, trgy), TILE_DEFAULT_ID);
+						tile = new HexagonTile(GetLocation(trgx, trgy), Coord(trgx, trgy), TILE_DEFAULT_ID);
 					tile->Initialize(itemLib, tileLib);
 				}
 				tile->Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
@@ -94,7 +104,7 @@ RESULT HexagonMap::Initialize(ID3D11Device* device, TextureLibrary* textureLib, 
     this->pShaderLib = shaderLib;
 
 	BLOCKALLOC(ItemLibrary, itemLib);
-	BLOCKCALL(itemLib->Initialize(device, textureLib, shaderLib->GetTextureShader()), "Cannot initialize item library");
+	BLOCKCALL(itemLib->Initialize(device, textureLib, shaderLib), "Cannot initialize item library");
 	BLOCKALLOC(TileLibrary, tileLib);
 	BLOCKCALL(tileLib->Initialize(device, textureLib, shaderLib->GetTextureShader()), "Cannot initialize tile library");
 
@@ -129,9 +139,9 @@ RESULT HexagonMap::InitializeData()
             // this is a test, in real game we will load data from file
 				HexagonTile* newTile;
 				if (i % 10 == 0 && j % 10 == 0)
-					newTile = new HexagonTile(GetLocation(i, j), TILE_DETERMINATION_ID);
+					newTile = new HexagonTile(GetLocation(i, j), Coord(i, j), TILE_DETERMINATION_ID);
 				else
-					newTile = new HexagonTile(GetLocation(i, j), TILE_DEFAULT_ID);
+					newTile = new HexagonTile(GetLocation(i, j), Coord(i, j), TILE_DEFAULT_ID);
 				newTile->Initialize(itemLib, tileLib);
 				map[i][j] = newTile;
 			}
@@ -197,13 +207,18 @@ RESULT HexagonMap::AddHexagon(FLOAT xCenter, FLOAT yCenter, FLOAT zCenter, FLOAT
     return 0;
 }
 
-Point HexagonMap::GetCoord(Point fieldCoord)
+Coord HexagonMap::GetCoord(Point fieldCoord)
 {
-	return Point(round((fieldCoord.x) / HEXAGON_SIZE / sqrt(3) * 2 + fieldCoord.y * 2 / HEXAGON_SIZE / 3), 
+	return Coord(round((fieldCoord.x) / HEXAGON_SIZE / sqrt(3) * 2 + fieldCoord.y * 2 / HEXAGON_SIZE / 3), 
 				 round(fieldCoord.y * 4 / HEXAGON_SIZE / 3));
 }
 
 Point HexagonMap::GetLocation(int x, int y)
 {
 	return Point((x - y / 2.0) * HEXAGON_SIZE * sqrt(3) / 2, 3 * y * HEXAGON_SIZE / 4);
+}
+
+mydeque<mydeque<HexagonTile*>>& HexagonMap::GetMap()
+{
+	return map;
 }

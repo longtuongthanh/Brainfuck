@@ -67,6 +67,9 @@ RESULT GameState::Frame(Input* input)
 	cameraPos = Point(camera->position.x, camera->position.y);
     frameTimer.Mark();
 
+	BLOCKCALL(globalEffect.FramePreCalc(&frameTimer),
+		"global effect pre-frame calculation failed\n");
+
     float time = frameTimer.GetTimeSpan();
     for (auto i : objects)
         if (i->Frame()) {
@@ -97,7 +100,7 @@ RESULT GameState::Frame(Input* input)
         //camera->position.y -= frameTimer.GetTimeSpan();
     }
 	//*/
-    if (map->Frame(Point(camera->position.x, camera->position.y)) == 1)
+    if (map->Frame(Point(camera->position.x, camera->position.y), &globalEffect) == 1)
     {
         debugText->InputString("error " + std::to_string((float)x.x) + "," + std::to_string((float)x.y));
     }
@@ -105,6 +108,10 @@ RESULT GameState::Frame(Input* input)
     {
         debugText->InputString("" + std::to_string((float)x.x) + "," + std::to_string((float)x.y));
     }
+
+	BLOCKCALL(globalEffect.FramePostCalc(map->GetMap()),
+		"global effect pre-frame calculation failed\n");
+
     return 0;
 }
 

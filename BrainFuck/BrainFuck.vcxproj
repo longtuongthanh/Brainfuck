@@ -166,6 +166,8 @@
     <ClCompile Include="FontShader.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GlobalEffect.cpp" />
+    <ClCompile Include="GlobalEffectOverflow.cpp" />
+    <ClCompile Include="GlobalEffectTurnCycle.cpp" />
     <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="HexagonMap.cpp" />
     <ClCompile Include="GraphicObject.cpp" />
@@ -196,6 +198,8 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="game_constants.h" />
     <ClInclude Include="GlobalEffect.h" />
+    <ClInclude Include="GlobalEffectOverflow.h" />
+    <ClInclude Include="GlobalEffectTurnCycle.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="HexagonMap.h" />
     <ClInclude Include="GraphicObject.h" />
@@ -203,6 +207,7 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="ItemLibrary.h" />
     <ClInclude Include="Main.h" />
+    <ClInclude Include="mydeque.h" />
     <ClInclude Include="ShaderLibrary.h" />
     <ClInclude Include="SoundClass.h" />
     <ClInclude Include="TestWorldMatrix.h" />

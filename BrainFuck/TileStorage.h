@@ -1,5 +1,6 @@
 #pragma once
 
+#include <bitset>
 #include "ItemLibrary.h"
 
 /*
@@ -23,7 +24,7 @@ class TileStorage
 {
 public:
 	TileStorage();
-	RESULT InitializeData(char types, char typeIDs...);
+	RESULT InitializeData(unsigned char types, int typeIDs...);
 	TileStorage(const TileStorage& x);
 	~TileStorage();
 
@@ -32,12 +33,13 @@ public:
 	RESULT Render(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX, D3DXMATRIX);
 
 	/** Return offsetType of the item at [current] if there are <types> item types.*/
-	static int offsetType(int types, int current);
-
+	static int offsetType(int, int);
+	RESULT AddItem(unsigned char);
 	// store some information here
-	char typeID[7];
-	char amount[7];
-	char types;
+	std::bitset<7> any;
+	unsigned char typeID[7];
+	unsigned char amount[7];
+	unsigned char ntypes;
 private:
 	ItemLibrary* itemLib;
 	/*
