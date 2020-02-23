@@ -48,7 +48,6 @@ class GameState final : private NonCopyable
         Sound* sound;
 		EventDistributor* inputEvents;
 		InvokableMoveCameraWithArrowKey* invokable1;
-        TestDragable* testWorldMatrix;
 
 		// GetCoord, GetLocation moved to HexagonMap
 
@@ -63,7 +62,5 @@ private:
 	CameraClass* camera;
 	Timer* timer;
 };
-
-
 
 #endif // GAMESTATE_H

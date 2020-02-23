@@ -1,8 +1,6 @@
 #pragma once
 #include "useful_stuff.h"
 
-
-
 class DragAndDrop
 {
 public:

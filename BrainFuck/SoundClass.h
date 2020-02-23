@@ -36,8 +36,6 @@ public:
 	RESULT SetVolumm(float volume);
 
 private:
-	RESULT InitializeDirectSound();
-	RESULT ShutdownDirectSound();
 
 	RESULT ShutdownWaveFile(IDirectSoundBuffer8**);
 private:

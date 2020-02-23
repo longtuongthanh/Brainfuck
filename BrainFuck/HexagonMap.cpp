@@ -1,5 +1,5 @@
 #include "HexagonMap.h"
-
+#include "TestDropTile.h"
 
 HexagonMap::HexagonMap()
 {
@@ -62,8 +62,14 @@ HRESULT HexagonMap::Render(Point cameraPos,
 							ID3D11DeviceContext* deviceContext, 
                             D3DXMATRIX worldMatrix,
                             D3DXMATRIX viewMatrix,
-                            D3DXMATRIX projectionMatrix)
+                            D3DXMATRIX projectionMatrix,
+                            EventDistributor* eventDistributor)
 {
+    /*
+    Maybe you wonder why we need EventDistributor here.
+    Some New Tile need EventDistributor to subscribe their function.
+    So maybe we can make EventDistributor a SingleTon?
+    */
 	Point cameraTile = GetCoord(cameraPos);
 	for (int i = min_X; i <= max_X; i++)
 		for (int j = min_Y; j <= max_Y; j++)
@@ -75,8 +81,10 @@ HRESULT HexagonMap::Render(Point cameraPos,
 				int trgy = j + cameraTile.y;
 				HexagonTile*& tile = map[trgx][trgy];
 				if (tile == NULL) {
-					if (trgx % 10 == 0 && trgy % 10 == 0)
-						tile = new HexagonTile(GetLocation(trgx, trgy), TILE_DETERMINATION_ID);
+					if (trgx % 3 == 0 && trgy % 3 == 0)
+						tile = new TestMovableTile(GetLocation(trgx, trgy), TILE_DETERMINATION_ID, eventDistributor);
+                    else if (trgx % 4 == 0 && trgy % 4 == 0)
+                        tile = new TestDropTile(GetLocation(trgx, trgy), TILE_DETERMINATION_ID, eventDistributor);
 					else
 						tile = new HexagonTile(GetLocation(trgx, trgy), TILE_DEFAULT_ID);
 					tile->Initialize(itemLib, tileLib);
@@ -87,7 +95,7 @@ HRESULT HexagonMap::Render(Point cameraPos,
     return 0;
 }
 
-RESULT HexagonMap::Initialize(ID3D11Device* device, TextureLibrary* textureLib, ShaderLibrary* shaderLib)
+RESULT HexagonMap::Initialize(ID3D11Device* device, TextureLibrary* textureLib, ShaderLibrary* shaderLib, EventDistributor* eventDistributor)
 {
     this->pDevice = device;
     this->pTextureLib = textureLib;
@@ -98,7 +106,7 @@ RESULT HexagonMap::Initialize(ID3D11Device* device, TextureLibrary* textureLib, 
 	BLOCKALLOC(TileLibrary, tileLib);
 	BLOCKCALL(tileLib->Initialize(device, textureLib, shaderLib->GetTextureShader()), "Cannot initialize tile library");
 
-    InitializeData();
+    InitializeData(eventDistributor);
 
     return 0;
 }
@@ -109,7 +117,7 @@ RESULT HexagonMap::Release()
 	return 0;
 }
 
-RESULT HexagonMap::InitializeData()
+RESULT HexagonMap::InitializeData(EventDistributor* eventDistributor)
 {
     FLOAT xCenter, yCenter, zCenter;
 
@@ -128,8 +136,10 @@ RESULT HexagonMap::InitializeData()
 			{				
             // this is a test, in real game we will load data from file
 				HexagonTile* newTile;
-				if (i % 10 == 0 && j % 10 == 0)
-					newTile = new HexagonTile(GetLocation(i, j), TILE_DETERMINATION_ID);
+				if (i % 3 == 0 && j % 3 == 0)
+					newTile = new TestMovableTile(GetLocation(i, j), TILE_DETERMINATION_ID, eventDistributor);
+                else if (i % 4 == 0 && j % 4 == 0)
+                    newTile = new TestDropTile(GetLocation(i, j), TILE_DEFAULT_ID, eventDistributor);
 				else
 					newTile = new HexagonTile(GetLocation(i, j), TILE_DEFAULT_ID);
 				newTile->Initialize(itemLib, tileLib);

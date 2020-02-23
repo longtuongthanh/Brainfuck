@@ -83,6 +83,7 @@ struct Point
     Point operator + (const Point& p) const;
     Point& operator += (const Point& p);
     bool operator == (const Point& right);
+    bool operator != (const Point& right);
     Point(double a=0, double b=0): x(a), y(b){}
 	Point(const Point& p):x(p.x), y(p.y) {}
 };

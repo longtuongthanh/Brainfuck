@@ -60,6 +60,7 @@
     </ClCompile>
     <ClCompile Include="ItemLibrary.cpp">
       <Filter>Source Files\Library</Filter>
+    </ClCompile>
     <ClCompile Include="TextString.cpp">
       <Filter>Source\Objects</Filter>
     </ClCompile>
@@ -91,6 +92,25 @@
     <ClCompile Include="TilePrototype.cpp">
       <Filter>Source\Objects\Tile</Filter>
     </ClCompile>
+    <ClCompile Include="DragAndDrop.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalEffect.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="IPointerDownHandler.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="IDragHandler.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="TestMovableTile.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="IDropHandler.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="TestDropTile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraClass.h">
@@ -158,6 +178,7 @@
     </ClInclude>
     <ClInclude Include="TextureShader.h">
       <Filter>Header</Filter>
+    </ClInclude>
     <ClInclude Include="ShaderLibrary.h">
       <Filter>Header Files\Library</Filter>
     </ClInclude>
@@ -166,6 +187,7 @@
     </ClInclude>
     <ClInclude Include="TestWorldMatrix.h">
       <Filter>Header Files\Object</Filter>
+    </ClInclude>
     <ClInclude Include="TextureClass.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -182,7 +204,28 @@
       <Filter>Header Files\Object</Filter>
     </ClInclude>
     <ClInclude Include="DragAndDrop.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="IPointerDownHandler.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="IDragHandler.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="TestMovableTile.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="PointerEventData.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="IDropHandler.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="TestDropTile.h">
+      <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

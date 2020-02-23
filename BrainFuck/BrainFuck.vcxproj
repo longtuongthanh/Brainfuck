@@ -23,7 +23,7 @@
     <ProjectGuid>{0B1CBF25-E487-4FB9-918B-E159A4A6F5BA}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>BrainFuck</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -42,13 +42,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -171,11 +171,16 @@
     <ClCompile Include="HexagonMap.cpp" />
     <ClCompile Include="GraphicObject.cpp" />
     <ClCompile Include="HexagonTile.cpp" />
+    <ClCompile Include="IDragHandler.cpp" />
+    <ClCompile Include="IDropHandler.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="IPointerDownHandler.cpp" />
     <ClCompile Include="ItemLibrary.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ShaderLibrary.cpp" />
     <ClCompile Include="SoundClass.cpp" />
+    <ClCompile Include="TestDropTile.cpp" />
+    <ClCompile Include="TestMovableTile.cpp" />
     <ClCompile Include="TestWorldMatrix.cpp" />
     <ClCompile Include="TextString.cpp" />
     <ClCompile Include="TextureClass.cpp" />
@@ -195,6 +200,7 @@
     <ClInclude Include="DragAndDrop.h" />
     <ClInclude Include="FontShader.h" />
     <ClInclude Include="EventDistributor.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="game_constants.h" />
     <ClInclude Include="GlobalEffect.h" />
@@ -202,11 +208,17 @@
     <ClInclude Include="HexagonMap.h" />
     <ClInclude Include="GraphicObject.h" />
     <ClInclude Include="HexagonTile.h" />
+    <ClInclude Include="IDragHandler.h" />
+    <ClInclude Include="IDropHandler.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="IPointerDownHandler.h" />
     <ClInclude Include="ItemLibrary.h" />
     <ClInclude Include="Main.h" />
+    <ClInclude Include="PointerEventData.h" />
     <ClInclude Include="ShaderLibrary.h" />
     <ClInclude Include="SoundClass.h" />
+    <ClInclude Include="TestDropTile.h" />
+    <ClInclude Include="TestMovableTile.h" />
     <ClInclude Include="TestWorldMatrix.h" />
     <ClInclude Include="TextString.h" />
     <ClInclude Include="TextureClass.h" />

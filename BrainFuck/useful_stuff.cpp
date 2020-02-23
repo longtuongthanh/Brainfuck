@@ -58,6 +58,11 @@ bool Point::operator==(const Point& right)
 	return this->x == right.x && this->y == right.y;
 }
 
+bool Point::operator!=(const Point& right)
+{
+    return !(*this == right);
+}
+
 bool onSegment(Point p, Point q, Point r)
 {
     if (q.x <= max(p.x, r.x) && q.x >= min(p.x, r.x) &&

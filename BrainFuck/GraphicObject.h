@@ -3,6 +3,7 @@
 #include "useful_stuff.h"
 #include <D3D11.h>
 #include <D3DX10math.h>
+#include "GlobalEffect.h"
 
 class GraphicObject
 {

@@ -5,6 +5,7 @@
 #include "GlobalEffect.h"
 #include "TileLibrary.h"
 #include "TilePrototype.h"
+#include "GameObject.h"
 
 /** Height of hexagon.
 	Width of hexagon is sqrt(3) / 2 * SIZE //*/
@@ -33,7 +34,8 @@ public:
 // the singleton (HexagonTilePrototype) need to be different to accomodate different pictures.
 // C++ disallows static virtual functions/members
 // template class need to be in header.
-class HexagonTile {
+class HexagonTile: public GameObject
+{
 public:
 	int id;
 	HexagonTile();
@@ -42,6 +44,7 @@ public:
 	Point GetPosition();
 
 	virtual RESULT Frame(GlobalEffect*);
+	virtual RESULT Frame() { return 0; }
 
 	virtual RESULT Release();
 	virtual RESULT Initialize(ItemLibrary*, TileLibrary*);

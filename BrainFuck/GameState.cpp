@@ -48,23 +48,21 @@ RESULT GameState::Initialize(ID3D11Device* device,
 
     //NewTextureObject(TEXTURE_FILE);
     BLOCKALLOC(HexagonMap, map);
-    BLOCKCALL(map->Initialize(pDevice, textureLib, pShaderLib),"cannot initialize map");
+    BLOCKCALL(map->Initialize(pDevice, textureLib, pShaderLib, inputEvents),"cannot initialize map");
     // else cerr << "object load success\n";
     debugText = new TextString();
     debugText->Initialize(pDevice, 100, textureLib, pShaderLib->GetFontShader());
     sound = new Sound();
     sound->LoadWaveFile("gwyn.wav");
-	sound->PlayWaveFile();
+	//sound->PlayWaveFile();
 
-    testWorldMatrix = new TestDragable();
-    testWorldMatrix->Initialize(pDevice, TEXTURE_FILE, textureLib, pShaderLib->GetTextureShader());
     return 0;
 }
 
 RESULT GameState::Frame(Input* input)
 /** Animations, calculations, etc goes here.*/
 {
-	cameraPos = Point(camera->position.x, camera->position.y);
+    cameraPos = Point(camera->position.x, camera->position.y);
     frameTimer.Mark();
 
     float time = frameTimer.GetTimeSpan();
@@ -74,11 +72,10 @@ RESULT GameState::Frame(Input* input)
         }
     debugText->ChangePosition(cameraPos);
 
-	testWorldMatrix->Frame(*input, cameraPos);
-	inputEvents->Frame();
-	
-<<<<<<<<< Temporary merge branch 1
-	Point mouseTileCenter = map->GetCoord(input->MouseToField() + cameraPos);
+    inputEvents->Frame(camera);
+
+    //<<<<<<<<< Temporary merge branch 1
+    Point mouseTileCenter = map->GetCoord(input->MouseToField() + cameraPos);
 
     if (map->Frame(cameraPos) == 1)
     {
@@ -87,39 +84,39 @@ RESULT GameState::Frame(Input* input)
     else
     {
         debugText->InputString("keep going " + std::to_string((int)mouseTileCenter.x) + "," + std::to_string((int)mouseTileCenter.y));
-=========
-	//Point x = GetCoord(input->MouseToField() + cameraPos);
-    Point x = input->MouseToScreen() + cameraPos;
-	/*
-    if (input->keyboard(VK_LEFT) == KEY_STATE_DOWN || input->keyboard(VK_LEFT) == KEY_STATE_ON_DOWN)
-    {
-        //camera->position.x -= frameTimer.GetTimeSpan();
-    }
-    if (input->keyboard(VK_RIGHT) == KEY_STATE_DOWN || input->keyboard(VK_RIGHT) == KEY_STATE_ON_DOWN)
-    {
-        //camera->position.x += frameTimer.GetTimeSpan();
-    }
-    if (input->keyboard(VK_UP) == KEY_STATE_DOWN || input->keyboard(VK_UP) == KEY_STATE_ON_DOWN)
-    {
-        //camera->position.y += frameTimer.GetTimeSpan();
-    }
-    if (input->keyboard(VK_DOWN) == KEY_STATE_DOWN || input->keyboard(VK_DOWN) == KEY_STATE_ON_DOWN)
-    {
-        //camera->position.y -= frameTimer.GetTimeSpan();
-    }
-	//*/
-    if (map->Frame(Point(camera->position.x, camera->position.y)) == 1)
-    {
-        debugText->InputString("error " + std::to_string((int)mouseTileCenter.x) + "," + std::to_string((int)mouseTileCenter.y));
-    }
-    else
-    {
-        debugText->InputString("" + std::to_string((float)x.x) + "," + std::to_string((float)x.y));
->>>>>>>>> Temporary merge branch 2
-    }
+        //=========
+            //Point x = GetCoord(input->MouseToField() + cameraPos);
+        Point x = input->MouseToScreen() + cameraPos;
+        /*
+        if (input->keyboard(VK_LEFT) == KEY_STATE_DOWN || input->keyboard(VK_LEFT) == KEY_STATE_ON_DOWN)
+        {
+            //camera->position.x -= frameTimer.GetTimeSpan();
+        }
+        if (input->keyboard(VK_RIGHT) == KEY_STATE_DOWN || input->keyboard(VK_RIGHT) == KEY_STATE_ON_DOWN)
+        {
+            //camera->position.x += frameTimer.GetTimeSpan();
+        }
+        if (input->keyboard(VK_UP) == KEY_STATE_DOWN || input->keyboard(VK_UP) == KEY_STATE_ON_DOWN)
+        {
+            //camera->position.y += frameTimer.GetTimeSpan();
+        }
+        if (input->keyboard(VK_DOWN) == KEY_STATE_DOWN || input->keyboard(VK_DOWN) == KEY_STATE_ON_DOWN)
+        {
+            //camera->position.y -= frameTimer.GetTimeSpan();
+        }
+        //*/
+        if (map->Frame(Point(camera->position.x, camera->position.y)) == 1)
+        {
+            //debugText->InputString("error " + std::to_string((int)mouseTileCenter.x) + "," + std::to_string((int)mouseTileCenter.y));
+        }
+        else
+        {
+           // debugText->InputString("" + std::to_string((float)x.x) + "," + std::to_string((float)x.y));
+            //>>>>>>>>> Temporary merge branch 2
+        }
 
-    testWorldMatrix->Frame(*input, cameraPos);
-    return 0;
+        return 0;
+    }
 }
 
 RESULT GameState::Release()
@@ -133,7 +130,8 @@ RESULT GameState::Draw()
     // Game object render
     map->Render(cameraPos, pContext, pShaderLib->worldMatrix,
         camera->viewMatrix,
-        pShaderLib->projectionMatrix);
+        pShaderLib->projectionMatrix,
+        inputEvents);
 
     for (auto i : objects)
         if (i->Render(pContext, pShaderLib->worldMatrix,
@@ -153,8 +151,6 @@ RESULT GameState::Draw()
 
 RESULT GameState::DrawUI()
 {
-	testWorldMatrix->MakeWorldMatrix();
-	testWorldMatrix->Render(pContext, *testWorldMatrix->pMatWorld, camera->viewMatrix, pShaderLib->projectionMatrix);
 	return 0;
 }
 

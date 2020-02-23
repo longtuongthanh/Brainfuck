@@ -1,9 +1,18 @@
 #include "TestWorldMatrix.h"
+#include "EventDistributor.h"
+#include <iostream>
 
-TestDragable::TestDragable()
+TestDragable::TestDragable(EventDistributor* eventDistributor)
+	:
+	IPointerDownHandler(&hitBox, &position)
 {
 	pMatWorld = new D3DXMATRIX();
 	D3DXMatrixIdentity(pMatWorld);
+}
+
+void TestDragable::OnPointerDown()
+{
+	std::cout << std::endl << "Pointer Down";
 }
 
 RESULT TestDragable::InitializeData()
@@ -22,9 +31,8 @@ RESULT TestDragable::InitializeData()
 	return 0;
 }
 
-RESULT TestDragable::Frame(Input& input, Point camPos)
+RESULT TestDragable::Frame()
 {
-	UpdateDragAndDrop(position, GetTransformedHitbox(), input, camPos);
 	return 0;
 }
 

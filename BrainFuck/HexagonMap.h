@@ -6,8 +6,9 @@
 #include <deque>
 #include "ShaderLibrary.h"
 #include "ItemLibrary.h"
-
+#include "EventDistributor.h"
 #include "TileDetermination.h"
+#include "TestMovableTile.h"
 
 template <typename T>
 class mydeque {
@@ -58,9 +59,9 @@ public:
 	HexagonMap& operator=(const HexagonMap &);
 	HRESULT Frame(const Point&);
 
-	HRESULT Render(Point, ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX, D3DXMATRIX);
+	HRESULT Render(Point, ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX, D3DXMATRIX, EventDistributor*);
 
-	RESULT Initialize(ID3D11Device*, TextureLibrary*, ShaderLibrary*);
+	RESULT Initialize(ID3D11Device*, TextureLibrary*, ShaderLibrary*, EventDistributor*);
 	RESULT Release();
 
 	/** Get the coordinate of the hexagon that contains this point.*/
@@ -68,7 +69,7 @@ public:
 	/** Return the center of the hexagon at that coordinate*/
 	Point GetLocation(int x, int y);
 protected:
-	RESULT InitializeData();
+	RESULT InitializeData(EventDistributor*);
 	RESULT AddHexagon(FLOAT xCenter, FLOAT yCenter, FLOAT zCenter, FLOAT tileWidth, FLOAT tileHeight);
 
 private:

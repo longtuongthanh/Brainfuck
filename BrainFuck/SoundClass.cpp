@@ -110,6 +110,12 @@ RESULT Sound::Initialize()
 	return 0;
 }
 
+RESULT Sound::Release()
+{
+	delete this;
+	return 0;
+}
+
 RESULT Sound::LoadWaveFile(const char* strFileName)
 {
 	HANDLE hFile = CreateFile(

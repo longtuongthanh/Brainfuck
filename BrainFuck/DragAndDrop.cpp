@@ -1,8 +1,6 @@
 #include "DragAndDrop.h"
 #include "Input.h"
 
-
-
 void DragAndDrop::UpdateDragAndDrop(Point& pos, std::vector<Point> hitBox, Input& input, Point camPos)
 {
     bool mouseInside = isInside(hitBox, input.MouseToField() + camPos);
